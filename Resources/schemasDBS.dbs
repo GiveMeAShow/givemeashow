@@ -136,12 +136,15 @@
 		</table>
 		<table name="video" >
 			<column name="id" type="int" jt="4" mandatory="y" autoincrement="y" />
-			<column name="title" type="varchar" length="150" jt="12" />
+			<column name="title" type="varchar" length="150" jt="12" mandatory="y" />
 			<column name="season_id" type="int" jt="4" >
 				<defo>0</defo>
 			</column>
 			<column name="lang_iso" type="varchar" length="2" jt="12" mandatory="y" >
 				<defo>&#039;fr&#039;</defo>
+			</column>
+			<column name="position" type="int" jt="4" mandatory="y" >
+				<defo>0</defo>
 			</column>
 			<index name="pk_video" unique="PRIMARY_KEY" >
 				<column name="id" />
@@ -161,15 +164,15 @@
 			<storage><![CDATA[engine=InnoDB]]></storage>
 		</table>
 	</schema>
-	<layout id="Layout9212303" name="GiveMeAShow" joined_routing="y" show_relation_columns="y" >
+	<layout id="Layout9212303" name="GiveMeAShow" joined_routing="y" >
 		<entity schema="givemeashow" name="show" color="d0def5" x="390" y="45" />
-		<entity schema="givemeashow" name="feedback_kind" color="d0def5" x="240" y="255" />
 		<entity schema="givemeashow" name="user" color="d0def5" x="45" y="45" />
 		<entity schema="givemeashow" name="feedback" color="d0def5" x="90" y="285" />
-		<entity schema="givemeashow" name="subtitle" color="d0def5" x="405" y="285" />
 		<entity schema="givemeashow" name="season" color="d0def5" x="510" y="120" />
-		<entity schema="givemeashow" name="video" color="d0def5" x="645" y="240" />
 		<entity schema="givemeashow" name="lang_iso" color="d0def5" x="270" y="180" />
+		<entity schema="givemeashow" name="subtitle" color="d0def5" x="420" y="285" />
+		<entity schema="givemeashow" name="video" color="d0def5" x="645" y="240" />
+		<entity schema="givemeashow" name="feedback_kind" color="d0def5" x="240" y="255" />
 		<group name="Group_Show" color="c4e0f9" >
 			<entity schema="givemeashow" name="video" />
 			<entity schema="givemeashow" name="show" />
