@@ -1,12 +1,12 @@
 CREATE SCHEMA givemeashow;
 
-CREATE TABLE givemeashow.feedback_answer ( 
- );
-
-CREATE TABLE givemeashow.feedback_kind ( 
+CREATE TABLE givemeashow.fb_kind ( 
 	kind                 varchar(10)  NOT NULL  ,
 	CONSTRAINT pk_feedback_kind PRIMARY KEY ( kind )
  ) engine=InnoDB;
+
+CREATE TABLE givemeashow.feedback_answer ( 
+ );
 
 CREATE TABLE givemeashow.lang_iso ( 
 	iso                  varchar(2)  NOT NULL  ,
@@ -49,6 +49,7 @@ CREATE TABLE givemeashow.feedback (
 	kind                 varchar(10)    ,
 	content              varchar(600)    ,
 	read                 bool   DEFAULT 'false' ,
+	posted_date          datetime  NOT NULL DEFAULT CURRENT_DATE ,
 	CONSTRAINT pk_feedback PRIMARY KEY ( id )
  ) engine=InnoDB;
 
@@ -80,6 +81,15 @@ CREATE INDEX idx_video ON givemeashow.video ( season_id );
 
 CREATE INDEX idx_video_0 ON givemeashow.video ( lang_iso );
 
+CREATE TABLE givemeashow.fb_answer ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	feedback_id          int  NOT NULL  ,
+	posted_date          datetime  NOT NULL DEFAULT CURRENT_DATE ,
+	CONSTRAINT pk_answer PRIMARY KEY ( id )
+ ) engine=InnoDB;
+
+CREATE INDEX idx_answer ON givemeashow.fb_answer ( feedback_id );
+
 CREATE TABLE givemeashow.subtitle ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
 	video_id             int  NOT NULL  ,
@@ -92,9 +102,11 @@ CREATE INDEX idx_subtitle ON givemeashow.subtitle ( lang_iso );
 
 CREATE INDEX idx_subtitle_0 ON givemeashow.subtitle ( video_id );
 
+ALTER TABLE givemeashow.fb_answer ADD CONSTRAINT fk_answer_feedback FOREIGN KEY ( feedback_id ) REFERENCES givemeashow.feedback( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 ALTER TABLE givemeashow.feedback ADD CONSTRAINT fk_feedback_user FOREIGN KEY ( user_id ) REFERENCES givemeashow.user( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE givemeashow.feedback ADD CONSTRAINT fk_feedback_feedback_kind FOREIGN KEY ( kind ) REFERENCES givemeashow.feedback_kind( kind ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE givemeashow.feedback ADD CONSTRAINT fk_feedback_feedback_kind FOREIGN KEY ( kind ) REFERENCES givemeashow.fb_kind( kind ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE givemeashow.season ADD CONSTRAINT fk_season_show FOREIGN KEY ( show_id ) REFERENCES givemeashow.show( id ) ON DELETE SET NULL ON UPDATE NO ACTION;
 

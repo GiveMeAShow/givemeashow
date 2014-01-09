@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="GiveMeAShow" id="Project9212301" database="MySql" >
 	<schema name="givemeashow" schemaname="givemeashow" defo="y" >
+		<table name="fb_answer" >
+			<column name="id" type="int" jt="4" mandatory="y" autoincrement="y" />
+			<column name="feedback_id" type="int" jt="4" mandatory="y" />
+			<column name="posted_date" type="datetime" jt="93" mandatory="y" >
+				<defo>CURRENT_DATE</defo>
+			</column>
+			<index name="pk_answer" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="idx_answer" unique="NORMAL" >
+				<column name="feedback_id" />
+			</index>
+			<fk name="fk_answer_feedback" to_schema="givemeashow" to_table="feedback" >
+				<fk_column name="feedback_id" pk="id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="fb_kind" >
+			<column name="kind" type="varchar" length="10" jt="12" mandatory="y" />
+			<index name="pk_feedback_kind" unique="PRIMARY_KEY" >
+				<column name="kind" />
+			</index>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
 		<table name="feedback" >
 			<column name="id" type="int" jt="4" mandatory="y" autoincrement="y" />
 			<column name="user_id" type="int" jt="4" mandatory="y" />
@@ -9,6 +33,9 @@
 			<column name="content" type="varchar" length="600" jt="12" />
 			<column name="read" type="bool" jt="-7" >
 				<defo>&#039;false&#039;</defo>
+			</column>
+			<column name="posted_date" type="datetime" jt="93" mandatory="y" >
+				<defo>CURRENT_DATE</defo>
 			</column>
 			<index name="pk_feedback" unique="PRIMARY_KEY" >
 				<column name="id" />
@@ -22,19 +49,12 @@
 			<fk name="fk_feedback_user" to_schema="givemeashow" to_table="user" >
 				<fk_column name="user_id" pk="id" />
 			</fk>
-			<fk name="fk_feedback_feedback_kind" to_schema="givemeashow" to_table="feedback_kind" >
+			<fk name="fk_feedback_feedback_kind" to_schema="givemeashow" to_table="fb_kind" >
 				<fk_column name="kind" pk="kind" />
 			</fk>
 			<storage><![CDATA[engine=InnoDB]]></storage>
 		</table>
 		<table name="feedback_answer" />
-		<table name="feedback_kind" >
-			<column name="kind" type="varchar" length="10" jt="12" mandatory="y" />
-			<index name="pk_feedback_kind" unique="PRIMARY_KEY" >
-				<column name="kind" />
-			</index>
-			<storage><![CDATA[engine=InnoDB]]></storage>
-		</table>
 		<table name="lang_iso" >
 			<column name="iso" type="varchar" length="2" jt="12" mandatory="y" />
 			<index name="pk_lang_iso" unique="PRIMARY_KEY" >
@@ -167,12 +187,13 @@
 	<layout id="Layout9212303" name="GiveMeAShow" joined_routing="y" >
 		<entity schema="givemeashow" name="show" color="d0def5" x="390" y="45" />
 		<entity schema="givemeashow" name="user" color="d0def5" x="45" y="45" />
-		<entity schema="givemeashow" name="feedback" color="d0def5" x="90" y="285" />
 		<entity schema="givemeashow" name="season" color="d0def5" x="510" y="120" />
 		<entity schema="givemeashow" name="lang_iso" color="d0def5" x="270" y="180" />
 		<entity schema="givemeashow" name="subtitle" color="d0def5" x="420" y="285" />
 		<entity schema="givemeashow" name="video" color="d0def5" x="645" y="240" />
-		<entity schema="givemeashow" name="feedback_kind" color="d0def5" x="240" y="255" />
+		<entity schema="givemeashow" name="fb_answer" color="d0def5" x="225" y="330" />
+		<entity schema="givemeashow" name="feedback" color="d0def5" x="75" y="345" />
+		<entity schema="givemeashow" name="fb_kind" color="d0def5" x="225" y="435" />
 		<group name="Group_Show" color="c4e0f9" >
 			<entity schema="givemeashow" name="video" />
 			<entity schema="givemeashow" name="show" />
@@ -181,11 +202,14 @@
 		</group>
 		<group name="Group_User" color="c4e0f9" >
 			<entity schema="givemeashow" name="user" />
-			<entity schema="givemeashow" name="feedback" />
 		</group>
 		<group name="Group_Utilities" color="c4e0f9" >
 			<entity schema="givemeashow" name="lang_iso" />
-			<entity schema="givemeashow" name="feedback_kind" />
+		</group>
+		<group name="Group_Feedback" color="c4e0f9" >
+			<entity schema="givemeashow" name="fb_kind" />
+			<entity schema="givemeashow" name="feedback" />
+			<entity schema="givemeashow" name="fb_answer" />
 		</group>
 	</layout>
 </project>
