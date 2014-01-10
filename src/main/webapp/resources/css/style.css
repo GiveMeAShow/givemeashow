@@ -1,0 +1,128 @@
+@CHARSET "UTF-8";
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    height: 100px;
+}
+
+.jcarousel ul {
+    width: 20000em;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.jcarousel li {
+    float: left;
+}
+
+fieldset {
+   	border: 1px solid #e5e5e5;
+    margin: 0;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.sugestion {
+  font-size: 16px;
+  line-height: 10px;
+  color: #999999;
+  font-weight: bold;
+}
+
+.form-control{
+    margin-left: 5px;
+    width: 50%;
+ 	
+}
+.navbar-form input[type="text"]{
+	height: 33px;
+	margin-top: -2;
+}
+.movie_field{
+	 width: 100%;	
+}
+
+#add_movie_form input[type="text"]{
+	 height: 30px;
+}
+
+#add_user_form input[type="text"]{
+	 height: 30px;
+}
+
+#add_user_form input[type="password"]{
+	 height: 30px;
+}
+#add_user_form select{
+	width: auto;
+}
+#search {
+	margin-left: 5px;
+	width: 10%;
+	height: 38px;
+   font-size: 18px;
+}
+
+textarea{
+	width: 100%;
+}
+
+#poster{
+	width: 120px;
+	margin-bottom: 10px;
+	height: 178px;
+}
+
+.nouveaute{
+	height: 160px;
+}
+
+.nouveate-movies{
+	border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    width: 100%;
+    background-color: #0088CC;
+  	border-color: #0088CC;
+  	text-align: center;
+  	height: 30px;
+  	color: #FFFFFF;
+  	font-weight: bold;
+}
+.identifier{
+	background-color: #FFFFFF;
+  	text-align: center;
+	width: 100%;
+  	color: #000000;
+  	font-weight: bold;
+  	font-size: 14px;
+  	height: 30px;
+  	border-bottom: 1px solid #cccccc;
+}
+
+#inscription .well{
+	padding: 0;	
+	border-bottom-left-radius:none;
+	border-bottom-right-radius: none;
+}
+
+.confidentialite{
+	font-size: 11px;
+	font-style: italic;
+}
+.forgotten_password a{
+	text-decoration: underline;
+	float: right;
+	font-size: 12px;
+	color: #0000000;
+}
+#clear{
+	clear: both;
+}
+
+#adminIcon
+{
+	margin-top: 10px;
+	margin-right: 15px;
+}

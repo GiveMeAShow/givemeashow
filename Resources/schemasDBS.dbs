@@ -191,9 +191,9 @@
 		<entity schema="givemeashow" name="lang_iso" color="d0def5" x="270" y="180" />
 		<entity schema="givemeashow" name="subtitle" color="d0def5" x="420" y="285" />
 		<entity schema="givemeashow" name="video" color="d0def5" x="645" y="240" />
-		<entity schema="givemeashow" name="fb_answer" color="d0def5" x="225" y="330" />
 		<entity schema="givemeashow" name="feedback" color="d0def5" x="75" y="345" />
 		<entity schema="givemeashow" name="fb_kind" color="d0def5" x="225" y="435" />
+		<entity schema="givemeashow" name="fb_answer" color="d0def5" x="225" y="330" />
 		<group name="Group_Show" color="c4e0f9" >
 			<entity schema="givemeashow" name="video" />
 			<entity schema="givemeashow" name="show" />
