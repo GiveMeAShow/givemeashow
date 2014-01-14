@@ -8,18 +8,18 @@
 
 	<http pattern="/resources/**" security="none"/>
 
-	<http auto-config="true" use-expressions="true">
+	<!-- <http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/login" access="permitAll"/>
 		<intercept-url pattern="/postLogin" access="permitAll"/>
 		<intercept-url pattern="/createMovieAdmin" access="hasRole('ROLE_ADMIN')"/>
 		<form-login login-page="/login" login-processing-url="/postLogin" default-target-url="/welcome" authentication-failure-url="/login"/>
 		<logout logout-success-url="/"/>
-	</http>
+	</http> -->
 	
 	
-	<authentication-manager alias="authentificationManager">
+	<!-- <authentication-manager alias="authentificationManager">
 		<authentication-provider user-service-ref="authService" />
-	</authentication-manager>
+	</authentication-manager> -->
 	
 </beans:beans>
