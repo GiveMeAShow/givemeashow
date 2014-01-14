@@ -2,29 +2,26 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
-USE `mydb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`lang_iso`
+-- Table `givemeashow`.`lang_iso`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`lang_iso` ;
+DROP TABLE IF EXISTS `givemeashow`.`lang_iso` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`lang_iso` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`lang_iso` (
   `lang_iso` VARCHAR(2) NOT NULL ,
   PRIMARY KEY (`lang_iso`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`User`
+-- Table `givemeashow`.`User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`User` ;
+DROP TABLE IF EXISTS `givemeashow`.`User` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`User` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(32) NOT NULL ,
-  `password` VARCHAR(32) NOT NULL ,
   `is_admin` TINYINT(1) NOT NULL DEFAULT false ,
   `invite_code` VARCHAR(32) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
@@ -39,34 +36,34 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`User` (
   INDEX `keytwo` (`sub_default_lang` ASC) ,
   CONSTRAINT `dontcare`
     FOREIGN KEY (`default_lang` )
-    REFERENCES `mydb`.`lang_iso` (`lang_iso` )
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `keytwo`
     FOREIGN KEY (`sub_default_lang` )
-    REFERENCES `mydb`.`lang_iso` (`lang_iso` )
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`fb_kind`
+-- Table `givemeashow`.`fb_kind`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`fb_kind` ;
+DROP TABLE IF EXISTS `givemeashow`.`fb_kind` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`fb_kind` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`fb_kind` (
   `fb_kind` VARCHAR(10) NOT NULL ,
   PRIMARY KEY (`fb_kind`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`feedback`
+-- Table `givemeashow`.`feedback`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`feedback` ;
+DROP TABLE IF EXISTS `givemeashow`.`feedback` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`feedback` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`feedback` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `user_id` INT NOT NULL ,
   `title` VARCHAR(100) NOT NULL ,
@@ -79,23 +76,23 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`feedback` (
   INDEX `fk_feedback_2` (`kind` ASC) ,
   CONSTRAINT `fk_feedback_1`
     FOREIGN KEY (`user_id` )
-    REFERENCES `mydb`.`User` (`id` )
+    REFERENCES `givemeashow`.`User` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_feedback_2`
     FOREIGN KEY (`kind` )
-    REFERENCES `mydb`.`fb_kind` (`fb_kind` )
+    REFERENCES `givemeashow`.`fb_kind` (`fb_kind` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`fb_answer`
+-- Table `givemeashow`.`fb_answer`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`fb_answer` ;
+DROP TABLE IF EXISTS `givemeashow`.`fb_answer` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`fb_answer` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`fb_answer` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `fb_id` INT NOT NULL ,
   `posted_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
@@ -104,18 +101,18 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`fb_answer` (
   INDEX `fk_fb_answer_1` (`fb_id` ASC) ,
   CONSTRAINT `fk_fb_answer_1`
     FOREIGN KEY (`fb_id` )
-    REFERENCES `mydb`.`feedback` (`id` )
+    REFERENCES `givemeashow`.`feedback` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`show`
+-- Table `givemeashow`.`show`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`show` ;
+DROP TABLE IF EXISTS `givemeashow`.`show` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`show` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`show` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(150) NOT NULL ,
   `icon_url` VARCHAR(150) NOT NULL ,
@@ -124,11 +121,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`season`
+-- Table `givemeashow`.`season`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`season` ;
+DROP TABLE IF EXISTS `givemeashow`.`season` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`season` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`season` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(200) NOT NULL ,
   `position` INT NOT NULL ,
@@ -138,18 +135,18 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`season` (
   INDEX `fk_season_1` (`show_id` ASC) ,
   CONSTRAINT `fk_season_1`
     FOREIGN KEY (`show_id` )
-    REFERENCES `mydb`.`show` (`id` )
+    REFERENCES `givemeashow`.`show` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`video`
+-- Table `givemeashow`.`video`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`video` ;
+DROP TABLE IF EXISTS `givemeashow`.`video` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`video` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`video` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(150) NOT NULL ,
   `season_id` INT NOT NULL ,
@@ -160,23 +157,23 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`video` (
   INDEX `fk_video_2` (`season_id` ASC) ,
   CONSTRAINT `fk_video_1`
     FOREIGN KEY (`lang_iso` )
-    REFERENCES `mydb`.`lang_iso` (`lang_iso` )
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_video_2`
     FOREIGN KEY (`season_id` )
-    REFERENCES `mydb`.`season` (`id` )
+    REFERENCES `givemeashow`.`season` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`subtitle`
+-- Table `givemeashow`.`subtitle`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`subtitle` ;
+DROP TABLE IF EXISTS `givemeashow`.`subtitle` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`subtitle` (
+CREATE  TABLE IF NOT EXISTS `givemeashow`.`subtitle` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `video_id` INT NOT NULL ,
   `lang_iso` VARCHAR(2) NOT NULL ,
@@ -186,12 +183,12 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`subtitle` (
   INDEX `fk_subtitle_2` (`video_id` ASC) ,
   CONSTRAINT `fk_subtitle_1`
     FOREIGN KEY (`lang_iso` )
-    REFERENCES `mydb`.`lang_iso` (`lang_iso` )
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_subtitle_2`
     FOREIGN KEY (`video_id` )
-    REFERENCES `mydb`.`video` (`id` )
+    REFERENCES `givemeashow`.`video` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
