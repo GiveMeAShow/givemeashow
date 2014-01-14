@@ -14,7 +14,7 @@
     <mvc:annotation-driven/>
 
     <!-- Tell to Spring where he will find ou @Controller -->
-	<context:component-scan base-package="com.cap.theater" />
+	<context:component-scan base-package="giveme" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

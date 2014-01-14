@@ -50,7 +50,7 @@ public class ShowDao {
 		{
 			e.printStackTrace();
 		}
-		
+		LOGGER.info(showList.size() + " shows found.");
 		return showList;
 	}
 	
