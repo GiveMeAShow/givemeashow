@@ -13,23 +13,23 @@
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
 	<fieldset>
 		<form:form method="post" action="${pageContext.request.contextPath}/admin/show/addShow" id="standardForm">
-			<div class="row-fluid">
-				<div class="span1">
+			<div class="row">
+				<div class="col-md-1">
 					<form:label path="name">Name: </form:label>
 				</div>
-				<div class="span4">
+				<div class="col-md-4">
 					<form:input id="nameInput" path="name" onchange="updateToolTip();"/>
 				</div>
 			</div>
-			<div class="row-fluid">
-				<div class="span1">
+			<div class="row">
+				<div class="col-md-1">
 					<form:label path="iconUrl">Icon url: </form:label>
 				</div>
-				<div class="span4">
+				<div class="col-md-4">
 					<form:input id="iconUrlInput" path="iconUrl" onchange="updateImageSrc()"/>
 				</div>
 			</div>
-			<div class="row-fluid">
+			<div class="row">
 				<img id="showIcon" alt="" height="20px" width="200px" src=""/>
 			</div>
 			<div class="row-fluid">

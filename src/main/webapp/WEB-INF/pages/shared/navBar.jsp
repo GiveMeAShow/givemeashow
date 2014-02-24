@@ -6,17 +6,18 @@
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <jsp:include page="inclusions.jsp"></jsp:include>
+
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="<c:url value="/"/>">GiveMeAShow</a>
-			<div class="nav-collapse collapse">
+			<a class="navbar-brand" href="<c:url value="/"/>">GiveMeAShow</a>
+			<div class="collapse navbar-collapse">
 				<sec:authorize ifNotGranted="ROLE_USER">
 					<p class="navbar-text pull-right">
 						<a href="<c:url value="/login"/>" class="navbar-link">Log In</a>
 					</p>
 				</sec:authorize>
-				<ul class="nav">
+				<ul class="nav navbar-nav">
 					<li><a href="<c:url value="/" />">Video</a></li>
 					<li><a href="<c:url value="/"/>">Controls</a></li>
 					<sec:authorize access="hasRole('ROLE_USER')">

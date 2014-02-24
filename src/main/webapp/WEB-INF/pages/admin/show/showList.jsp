@@ -9,13 +9,13 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
-	<div class="row-fluid">
+	<div class="row">
 		<div class="span8">
 			<c:forEach items="${showList}" var="show">
-				<div class="row-fluid">
-					<div class="span2">${show.name}</div>
-					<div class="span2">${show.iconUrl}</div>
-					<div class="span2">${show.id}</div>				
+				<div class="row">
+					<div class="col-md-2">${show.name}</div>
+					<div class="col-md-2">${show.iconUrl}</div>
+					<div class="col-md-2">${show.id}</div>				
 				</div>
 			</c:forEach>
 		</div>
