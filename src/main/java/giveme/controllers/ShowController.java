@@ -31,6 +31,19 @@ public class ShowController {
 	}
 	
 	/**
+	 * Returns the page associated to a show.
+	 * @param showId
+	 * @return
+	 */
+	@RequestMapping(value="/admin/show/{showId}", method = RequestMethod.GET)
+	public ModelAndView showShow(@ModelAttribute("showId") int showId)
+	{
+		ModelAndView mdv = new ModelAndView("admin/show/showShow");
+		mdv.addObject("show", showDao.findById(showId));
+		return mdv;
+	}
+	
+	/**
 	 * The admin page to create a new show
 	 * @return
 	 */
@@ -52,6 +65,7 @@ public class ShowController {
 	{
 		ModelAndView mdv = new ModelAndView("/admin/show/validInsertion");
 		showDao.save(show);
+		mdv.addObject("show", show);
 		return mdv;
 	}
 }

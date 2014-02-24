@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 
 @Component
 @Repository
-public class ShowDao {
+public class ShowDao{
 	private final String TABLE_NAME = DB_NAME + ".show";
 	private Connection connection;
 	public static Logger LOGGER = Logger.getLogger(ShowDao.class
@@ -140,5 +140,31 @@ public class ShowDao {
 		{
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Find a show by it's id
+	 * @param showId
+	 * @return
+	 */
+	public Show findById(int showId) {
+		connection = JdbcConnector.getConnection();
+		Show show = new Show();
+		try
+		{
+			final String query = "select * from " + TABLE_NAME + " WHERE id = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, showId);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next())
+			{
+				show = createShowFromResultSet(rs);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return show;
 	}
 }

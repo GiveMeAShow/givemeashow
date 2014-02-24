@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,15 +9,13 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
+	<jsp:include page="../../shared/adminToolBar.jsp"></jsp:include>
 	<div class="row-fluid">
 		<div class="span8">
-			<c:forEach items="${showList}" var="show">
-				<div class="row-fluid">
-					<div class="span2">${show.name}</div>
-					<div class="span2">${show.iconUrl}</div>
-					<div class="span2">${show.id}</div>				
-				</div>
-			</c:forEach>
+			<div class="row-fluid">
+				<div class="span2">${show.name}</div>
+				<div class="span2">${show.iconUrl}</div>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
