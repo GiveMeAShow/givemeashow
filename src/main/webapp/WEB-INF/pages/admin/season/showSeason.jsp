@@ -9,22 +9,22 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
-	<div class="row">
-		<div class="col-md-8">
-			<c:forEach items="${showList}" var="show">
-				<div class="row">
-					<div class="col-md-2">${show.name}</div>
-					<div class="col-md-2"><img src="${show.iconUrl}"/></div>
-					<div class="col-md-2">
-						<a href="${pageContext.request.contextPath}/admin/show/${show.id}">
-							<div class="btn btn-default">
-								<span class="glyphicon glyphicon-arrow-right"></span>
-							</div>
+	<div class="adminContent">
+		<fieldset>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-2">${season.name}</div>
+						<div class="col-md-2">${season.id}</div>
+						<img class="showIcon col-md-5" src="${season.iconUrl}" />
+						<a href="${pageContext.request.contextPath}/admin/season/new/${show.name}">
+							<button type="button" class="col-md-3 btn btn-primary">Add en Episode</button>
 						</a>
 					</div>
 				</div>
-			</c:forEach>
-		</div>
+			</div>
+		</fieldset>
+
 	</div>
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");

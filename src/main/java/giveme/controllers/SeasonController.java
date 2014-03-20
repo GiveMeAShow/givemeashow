@@ -1,7 +1,14 @@
 package giveme.controllers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import giveme.common.beans.Season;
+import giveme.common.beans.Show;
 import giveme.common.dao.SeasonDao;
+import giveme.common.dao.ShowDao;
+import giveme.controllers.bindings.SeasonAndShowName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +23,19 @@ public class SeasonController {
 	@Autowired
 	SeasonDao seasonDao;
 	
+	@Autowired
+	ShowDao showDao;
+
+    List<Integer> positionChooser;
+
+    public SeasonController(){
+        positionChooser = new ArrayList<Integer>();
+        for (int i = 0; i < 50; i++)
+        {
+            positionChooser.add(i);
+        }
+    }
+
 	/**
 	 * Show the entire showList for an admin.
 	 * @return
@@ -29,15 +49,33 @@ public class SeasonController {
 	}
 	
 	/**
-	 * Add a new season to a show
+	 * The admin page to create a new season
 	 * @return
 	 */
-	@RequestMapping(value="/admin/season/addNew", method = RequestMethod.POST)
-	public ModelAndView addSeasonToShow(@ModelAttribute("command") final Season season)
+	@RequestMapping(value="/admin/season/new", method = RequestMethod.GET)
+	public ModelAndView adminNewSeason()
 	{
-		ModelAndView view = new ModelAndView("/admin/season/validInsertion");
-		view.addObject("season", season);
-		return view;
+		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
+		mdv.addObject("seasonAndShowName", new SeasonAndShowName());
+		mdv.addObject("nameList", showDao.listNames());
+        mdv.addObject("positionList", positionChooser);
+		return mdv;
+	}
+	
+	/**
+	 * The admin page to create a new season
+	 * @return
+	 */
+	@RequestMapping(value="/admin/season/new/{showName}", method = RequestMethod.GET)
+	public ModelAndView adminNewSesonByShowName(@ModelAttribute("showName") String showName)
+	{
+		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
+		mdv.addObject("seasonAndShowName", new SeasonAndShowName());
+		List<String> nameList = new ArrayList<String>();
+		nameList.add(showName);
+		mdv.addObject("nameList", nameList);
+		mdv.addObject("positionList", positionChooser);
+		return mdv;
 	}
 
 	/**
@@ -51,4 +89,28 @@ public class SeasonController {
 		view.addObject("seasonList", seasonDao.listByShowId(showId));
 		return view;
 	}
+	
+	/**
+	 * Valid a show and insert it !
+	 * @param show
+	 * @return to a new page
+	 */
+	@RequestMapping(value="/admin/season/addSeason", method = RequestMethod.POST)
+	public ModelAndView adminInsertNewShow(@ModelAttribute("seasonAndShowName") final SeasonAndShowName seasonAndShowName)
+	{
+		ModelAndView mdv = new ModelAndView("/admin/season/validInsertion");
+		Show show = showDao.findByName(seasonAndShowName.getShowName());
+		seasonAndShowName.getSeason().setShowId(show.getId());
+		seasonDao.save(seasonAndShowName.getSeason());
+		return mdv;
+	}
+
+    @RequestMapping(value = "/admin/season/{id}", method = RequestMethod.GET)
+    public ModelAndView showSeasonDetails(@ModelAttribute("id") final Integer seasonId)
+    {
+        ModelAndView mdv = new ModelAndView("/admin/season/showSeason");
+        mdv.addObject("season", seasonDao.findById(seasonId));
+
+        return mdv;
+    }
 }

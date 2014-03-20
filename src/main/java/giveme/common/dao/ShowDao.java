@@ -55,6 +55,36 @@ public class ShowDao{
 	}
 	
 	/**
+	 * Get all the show present in the DB.
+	 * @return a List<Show>
+	 */
+	public List<String> listNames()
+	{
+		LOGGER.info("Listing shows.");
+		connection = JdbcConnector.getConnection();
+		
+		final List<String> showList = new ArrayList<String>();
+		try
+		{
+			final String query = "select name from " + TABLE_NAME;
+			final ResultSet rs = connection.createStatement().executeQuery(
+			        query);
+			while (rs.next())
+			{
+				final String movieName = rs.getString("name");
+				showList.add(movieName);
+			}
+			connection.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		LOGGER.info(showList.size() + " shows found.");
+		return showList;
+	}
+	
+	/**
 	 * Save a new show.
 	 * @param show
 	 */
@@ -155,6 +185,27 @@ public class ShowDao{
 			final String query = "select * from " + TABLE_NAME + " WHERE id = ?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, showId);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next())
+			{
+				show = createShowFromResultSet(rs);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return show;
+	}
+
+	public Show findByName(String showName) {
+		connection = JdbcConnector.getConnection();
+		Show show = new Show();
+		try
+		{
+			final String query = "select * from " + TABLE_NAME + " WHERE name = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, showName);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{

@@ -1,8 +1,12 @@
 package giveme.controllers;
 
+import giveme.common.beans.Season;
 import giveme.common.beans.Show;
+import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ShowController {
 	@Autowired
 	ShowDao showDao;
+	
+	@Autowired
+	SeasonDao seasonDao;
 	
 	/**
 	 * Show the entire showList for an admin.
@@ -40,6 +47,11 @@ public class ShowController {
 	{
 		ModelAndView mdv = new ModelAndView("admin/show/showShow");
 		mdv.addObject("show", showDao.findById(showId));
+		
+		List<Season> seasonList = seasonDao.listByShowId(showId);
+		Collections.sort(seasonList);
+		mdv.addObject("seasonList", seasonList);
+		
 		return mdv;
 	}
 	

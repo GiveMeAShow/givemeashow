@@ -31,7 +31,7 @@ public class SeasonDao extends IDao<Season>{
 		season.setName(rs.getString("name"));
 		season.setShowId(rs.getInt("show_id"));
 		season.setPosition(rs.getInt("position"));
-		return null;
+		return season;
 	}
 
 	/**
@@ -91,4 +91,26 @@ public class SeasonDao extends IDao<Season>{
 		}
 		return seasonList;
 	}
+
+    public Season findById(Integer seasonId) {
+        connection = JdbcConnector.getConnection();
+        Season season = new Season();
+        try
+        {
+            final String query = "select * from " + TABLE_NAME + " WHERE id = ?";
+            final PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, seasonId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next())
+            {
+                season = createObjectFromResultSet(rs);
+            }
+            connection.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return season;
+    }
 }

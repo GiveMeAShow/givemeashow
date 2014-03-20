@@ -1,6 +1,6 @@
 package giveme.common.beans;
 
-public class Season {
+public class Season implements Comparable<Season>{
 	private int id;
 	private String name;
 	private int position;
@@ -36,5 +36,8 @@ public class Season {
 	}
 	public void setShowId(int showId) {
 		this.showId = showId;
+	}
+	public int compareTo(Season o) {
+		return this.position - o.position;
 	}
 }
