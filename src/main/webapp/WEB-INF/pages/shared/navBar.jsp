@@ -28,6 +28,7 @@
 						<ul class="dropdown-menu">
 							<li id="adminShowListMenu"><a href="<c:url value="/admin/show/list"/>">Show List</a></li>
 							<li id="adminShowNewMenu"><a href="<c:url value="/admin/show/new"/>">New Show</a></li>
+                            <li id="adminSeasonNewMenu"><a href="<c:url value="/admin/season/new"/>">New Seson</a></li>
 						</ul></li>
 				</ul>
 

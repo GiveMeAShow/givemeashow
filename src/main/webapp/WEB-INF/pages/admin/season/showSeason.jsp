@@ -17,7 +17,7 @@
 						<div class="col-md-2">${season.name}</div>
 						<div class="col-md-2">${season.id}</div>
 						<img class="showIcon col-md-5" src="${season.iconUrl}" />
-						<a href="${pageContext.request.contextPath}/admin/season/new/${show.name}">
+						<a href="${pageContext.request.contextPath}/admin/video/new/${season.showId}/${season.id}">
 							<button type="button" class="col-md-3 btn btn-primary">Add en Episode</button>
 						</a>
 					</div>

@@ -36,6 +36,12 @@ public class FileExplorer {
 				"video extension filter", props.getProperty("extensions"));
 	}
 
+    /**
+     * Need to be rerfactorized
+     * Used to list video in a path, it needs to convert url compliant path and handle root path
+     * @param path
+     * @return
+     */
 	public List<VideoFile> listVideos(String path) {
 		path = path.replaceAll(SEPARATOR, "/");
 		List<VideoFile> videos = new ArrayList<VideoFile>();
