@@ -1,124 +1,214 @@
-CREATE SCHEMA givemeashow;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE TABLE givemeashow.fb_kind ( 
-	kind                 varchar(10)  NOT NULL  ,
-	CONSTRAINT pk_feedback_kind PRIMARY KEY ( kind )
- ) engine=InnoDB;
+DROP SCHEMA IF EXISTS `givemeashow` ;
+CREATE SCHEMA IF NOT EXISTS `givemeashow` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
+USE `givemeashow` ;
 
-CREATE TABLE givemeashow.feedback_answer ( 
- );
+-- -----------------------------------------------------
+-- Table `givemeashow`.`lang_iso`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`lang_iso` ;
 
-CREATE TABLE givemeashow.lang_iso ( 
-	iso                  varchar(2)  NOT NULL  ,
-	CONSTRAINT pk_lang_iso PRIMARY KEY ( iso )
- ) engine=InnoDB;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`lang_iso` (
+  `lang_iso` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`lang_iso`))
+ENGINE = InnoDB;
 
-CREATE TABLE givemeashow.show ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	name                 varchar(300)  NOT NULL  ,
-	icon_url             varchar(500)    ,
-	CONSTRAINT pk_show PRIMARY KEY ( id )
- ) engine=InnoDB;
 
-CREATE TABLE givemeashow.table_0 ( 
- );
+-- -----------------------------------------------------
+-- Table `givemeashow`.`User`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`User` ;
 
-CREATE TABLE givemeashow.user ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	login                varchar(32)  NOT NULL  ,
-	password             varchar(32)  NOT NULL  ,
-	is_admin             bool  NOT NULL DEFAULT 0 ,
-	invite_code          varchar(32)  NOT NULL  ,
-	time_spent           bigint UNSIGNED NOT NULL DEFAULT 0 ,
-	default_lang         varchar(2)   DEFAULT 'fr' ,
-	use_subtitles        bool   DEFAULT 'false' ,
-	subtitle_default_lang varchar(2)  NOT NULL DEFAULT 'fr' ,
-	confirmed            bool   DEFAULT 'false' ,
-	email                varchar(32)  NOT NULL  ,
-	CONSTRAINT pk_user PRIMARY KEY ( id )
- ) engine=InnoDB;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`User` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `login` VARCHAR(32) NOT NULL,
+  `is_admin` TINYINT(1) NOT NULL DEFAULT false,
+  `invite_code` VARCHAR(32) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `time_spent` BIGINT NOT NULL DEFAULT 0,
+  `default_lang` VARCHAR(2) NOT NULL,
+  `use_subtitles` TINYINT(1) NOT NULL DEFAULT false,
+  `sub_default_lang` VARCHAR(2) NOT NULL DEFAULT 'fr',
+  `confirmed` TINYINT(1) NOT NULL DEFAULT false,
+  `email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `dontcare_idx` (`default_lang` ASC),
+  INDEX `keytwo_idx` (`sub_default_lang` ASC),
+  CONSTRAINT `dontcare`
+    FOREIGN KEY (`default_lang`)
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `keytwo`
+    FOREIGN KEY (`sub_default_lang`)
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE INDEX idx_user ON givemeashow.user ( default_lang );
 
-CREATE INDEX idx_user_0 ON givemeashow.user ( subtitle_default_lang );
+-- -----------------------------------------------------
+-- Table `givemeashow`.`fb_kind`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`fb_kind` ;
 
-CREATE TABLE givemeashow.feedback ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	user_id              int  NOT NULL  ,
-	title                varchar(100)    ,
-	kind                 varchar(10)    ,
-	content              varchar(600)    ,
-	read                 bool   DEFAULT 'false' ,
-	posted_date          datetime  NOT NULL DEFAULT CURRENT_DATE ,
-	CONSTRAINT pk_feedback PRIMARY KEY ( id )
- ) engine=InnoDB;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`fb_kind` (
+  `fb_kind` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`fb_kind`))
+ENGINE = InnoDB;
 
-CREATE INDEX idx_feedback ON givemeashow.feedback ( user_id );
 
-CREATE INDEX idx_feedback_0 ON givemeashow.feedback ( kind );
+-- -----------------------------------------------------
+-- Table `givemeashow`.`feedback`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`feedback` ;
 
-CREATE TABLE givemeashow.season ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	name                 varchar(300)  NOT NULL  ,
-	position             int  NOT NULL DEFAULT 0 ,
-	icon_url             varchar(500)    ,
-	show_id              int  NOT NULL  ,
-	CONSTRAINT pk_season PRIMARY KEY ( id )
- ) engine=InnoDB;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`feedback` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `content` VARCHAR(600) NOT NULL,
+  `kind` VARCHAR(10) NOT NULL,
+  `hasBeenRead` TINYINT(1) NOT NULL,
+  `posted_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_feedback_1_idx` (`user_id` ASC),
+  INDEX `fk_feedback_2_idx` (`kind` ASC),
+  CONSTRAINT `fk_feedback_1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `givemeashow`.`User` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_feedback_2`
+    FOREIGN KEY (`kind`)
+    REFERENCES `givemeashow`.`fb_kind` (`fb_kind`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE INDEX idx_season ON givemeashow.season ( show_id );
 
-CREATE TABLE givemeashow.video ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	title                varchar(150)  NOT NULL  ,
-	season_id            int   DEFAULT 0 ,
-	lang_iso             varchar(2)  NOT NULL DEFAULT 'fr' ,
-	position             int  NOT NULL DEFAULT 0 ,
-	CONSTRAINT pk_video PRIMARY KEY ( id )
- ) engine=InnoDB;
+-- -----------------------------------------------------
+-- Table `givemeashow`.`fb_answer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`fb_answer` ;
 
-CREATE INDEX idx_video ON givemeashow.video ( season_id );
+CREATE TABLE IF NOT EXISTS `givemeashow`.`fb_answer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fb_id` INT NOT NULL,
+  `posted_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` VARCHAR(600) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_fb_answer_1_idx` (`fb_id` ASC),
+  CONSTRAINT `fk_fb_answer_1`
+    FOREIGN KEY (`fb_id`)
+    REFERENCES `givemeashow`.`feedback` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-CREATE INDEX idx_video_0 ON givemeashow.video ( lang_iso );
 
-CREATE TABLE givemeashow.fb_answer ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	feedback_id          int  NOT NULL  ,
-	posted_date          datetime  NOT NULL DEFAULT CURRENT_DATE ,
-	CONSTRAINT pk_answer PRIMARY KEY ( id )
- ) engine=InnoDB;
+-- -----------------------------------------------------
+-- Table `givemeashow`.`show`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`show` ;
 
-CREATE INDEX idx_answer ON givemeashow.fb_answer ( feedback_id );
+CREATE TABLE IF NOT EXISTS `givemeashow`.`show` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(150) NOT NULL,
+  `icon_url` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
-CREATE TABLE givemeashow.subtitle ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	video_id             int  NOT NULL  ,
-	lang_iso             varchar(2)  NOT NULL  ,
-	url                  varchar(300)  NOT NULL  ,
-	CONSTRAINT pk_subtitle PRIMARY KEY ( id )
- ) engine=InnoDB;
 
-CREATE INDEX idx_subtitle ON givemeashow.subtitle ( lang_iso );
+-- -----------------------------------------------------
+-- Table `givemeashow`.`season`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`season` ;
 
-CREATE INDEX idx_subtitle_0 ON givemeashow.subtitle ( video_id );
+CREATE TABLE IF NOT EXISTS `givemeashow`.`season` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  `position` INT NOT NULL,
+  `icon_url` VARCHAR(150) NOT NULL,
+  `show_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_season_1_idx` (`show_id` ASC),
+  CONSTRAINT `fk_season_1`
+    FOREIGN KEY (`show_id`)
+    REFERENCES `givemeashow`.`show` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-ALTER TABLE givemeashow.fb_answer ADD CONSTRAINT fk_answer_feedback FOREIGN KEY ( feedback_id ) REFERENCES givemeashow.feedback( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE givemeashow.feedback ADD CONSTRAINT fk_feedback_user FOREIGN KEY ( user_id ) REFERENCES givemeashow.user( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `givemeashow`.`video`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`video` ;
 
-ALTER TABLE givemeashow.feedback ADD CONSTRAINT fk_feedback_feedback_kind FOREIGN KEY ( kind ) REFERENCES givemeashow.fb_kind( kind ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`video` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(150) NOT NULL,
+  `season_id` INT NOT NULL,
+  `lang_iso` VARCHAR(2) NOT NULL,
+  `position` INT NOT NULL,
+  `is_transition` TINYINT(1) NOT NULL,
+  `relative_path` VARCHAR(500) NOT NULL,
+  `viewed` MEDIUMTEXT NOT NULL,
+  `url` VARCHAR(250) NOT NULL,
+  `show_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_video_1_idx` (`lang_iso` ASC),
+  INDEX `fk_video_2_idx` (`season_id` ASC),
+  INDEX `fk_video_show1_idx` (`show_id` ASC),
+  UNIQUE INDEX `relative_path_UNIQUE` (`relative_path` ASC),
+  CONSTRAINT `fk_video_1`
+    FOREIGN KEY (`lang_iso`)
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_video_2`
+    FOREIGN KEY (`season_id`)
+    REFERENCES `givemeashow`.`season` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_video_show1`
+    FOREIGN KEY (`show_id`)
+    REFERENCES `givemeashow`.`show` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-ALTER TABLE givemeashow.season ADD CONSTRAINT fk_season_show FOREIGN KEY ( show_id ) REFERENCES givemeashow.show( id ) ON DELETE SET NULL ON UPDATE NO ACTION;
 
-ALTER TABLE givemeashow.subtitle ADD CONSTRAINT fk_subtitle_lang_iso FOREIGN KEY ( lang_iso ) REFERENCES givemeashow.lang_iso( iso ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- -----------------------------------------------------
+-- Table `givemeashow`.`subtitle`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `givemeashow`.`subtitle` ;
 
-ALTER TABLE givemeashow.subtitle ADD CONSTRAINT fk_subtitle_video FOREIGN KEY ( video_id ) REFERENCES givemeashow.video( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+CREATE TABLE IF NOT EXISTS `givemeashow`.`subtitle` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `video_id` INT NOT NULL,
+  `lang_iso` VARCHAR(2) NOT NULL,
+  `url` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_subtitle_1_idx` (`lang_iso` ASC),
+  INDEX `fk_subtitle_2_idx` (`video_id` ASC),
+  CONSTRAINT `fk_subtitle_1`
+    FOREIGN KEY (`lang_iso`)
+    REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subtitle_2`
+    FOREIGN KEY (`video_id`)
+    REFERENCES `givemeashow`.`video` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
-ALTER TABLE givemeashow.user ADD CONSTRAINT fk_user_lang_iso FOREIGN KEY ( default_lang ) REFERENCES givemeashow.lang_iso( iso ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE givemeashow.user ADD CONSTRAINT fk_user_default_sub_lang_iso FOREIGN KEY ( subtitle_default_lang ) REFERENCES givemeashow.lang_iso( iso ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-ALTER TABLE givemeashow.video ADD CONSTRAINT fk_video_season FOREIGN KEY ( season_id ) REFERENCES givemeashow.season( id ) ON DELETE SET NULL ON UPDATE NO ACTION;
-
-ALTER TABLE givemeashow.video ADD CONSTRAINT fk_video_lang_iso FOREIGN KEY ( lang_iso ) REFERENCES givemeashow.lang_iso( iso ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

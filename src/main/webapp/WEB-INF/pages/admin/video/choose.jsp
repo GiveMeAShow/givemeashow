@@ -52,52 +52,79 @@
             videoPathInput.val(moviePath);
 		};
 
-		var requestAndFill = function (directoryName)
+        var videoElementAsString = "<div class='row'>"
+        								+ "<div class='col-md-2'>" + ":isAVideo" + "</div>"
+                                        + "<div class='col-md-9' style=\"cursor: pointer\" onClick=\"requestAndFill('" + ":id" +"')\">" + ":name" + "</div>"
+        								+ "<div class='col-md-1'>" + "+" + "</div>"
+        								+ "</div>"
+        								+ "</div>";
+
+        var folderElementAsString = "<div class='row'>"
+                + "<div class='col-md-2'>" + ":isAVideo" + "</div>"
+                + "<div class='col-md-9'" + " style=\"cursor: pointer\" onClick=\"fillInputs('" + ":name" + "','" + ":path" + "');\">"
+                + "<div class='col-md-1'>" + "+" + "</div>"
+                + "</div>"
+                + "</div>";
+
+		var requestAndFill = function (directoryId)
 		{
 			$.getJSON(
 					'${pageContext.request.contextPath}/admin/webservices/video/listVideos/'
-							+ directoryName, function(movies) {
+							+ directoryId, function(movies) {
 						fileChooser.empty();
-						var back = movies[0];
-						var i = 1
-						if (!back.avideo)
-							{
-						var firstRow = "<div class='row'>"
-							+ "<div class='col-md-2'>" + "" + "</div>"
-							+ "<div class='col-md-9' style=\"cursor: pointer\" onClick=\"requestAndFill('" + back.path +"')\">" + ".." + "</div>"
-							+ '<div class=\'col-md-1\'></div>';
-							fileChooser.append(firstRow);
-							}
-						else
-							{
-								i = 0;
-							}
+                        for (var i = 0; i < movies.length; i++) {
+                            var movie = movies[i];
+                            if (movie.isAVideo)
+                            {
 
-						for (i; i < movies.length; i++) {
-							var movie = movies[i];
-							var isAVideo = "Video";
-							var add = "";
-							var nameRow = "<div class='col-md-9'";
-							if(!movie.avideo)
-								{
-									nameRow = nameRow +  "style=\"cursor: pointer\" onClick=\"requestAndFill('" + movie.path +"')\">";
-									isAVideo = "Directory";
-								}
-							else
-								{
-								nameRow = nameRow + " style=\"cursor: pointer\" onClick=\"fillInputs('" + movie.name + "','" + movie.path + "');\">"
-								add = "+";
-								}
-							nameRow = nameRow + movie.name + "</div>";
-						fileChooser.append("<div class='row'>"
-								+ "<div class='col-md-2'>" + isAVideo + "</div>"
-								+ nameRow
-								+ "<div class='col-md-1'>" + add + "</div>"
-								+ "</div>");
-						}
+                            }
+                            else
+                            {
+                                var element = folderElementAsString;
+                                element = element.replace(":isAVideo", "Directory");
+                                element = element.replace(":name", movie.name);
+                                element = element.replace(":id", movie.folderId);
+                                fileChooser.append(folderElementAsString);
+                            }
+                        }
+//						if (!back.avideo)
+//							{
+//						var firstRow = "<div class='row'>"
+//							+ "<div class='col-md-2'>" + "" + "</div>"
+//							+ "<div class='col-md-9' style=\"cursor: pointer\" onClick=\"requestAndFill('" + back.path +"')\">" + ".." + "</div>"
+//							+ '<div class=\'col-md-1\'></div>';
+//							fileChooser.append(firstRow);
+//							}
+//						else
+//							{
+//								i = 0;
+//							}
+
+//						for (i; i < movies.length; i++) {
+//							var movie = movies[i];
+//							var isAVideo = "Video";
+//							var add = "";
+//							var nameRow = "<div class='col-md-9'";
+//							if(!movie.avideo)
+//								{
+//									nameRow = nameRow +  "style=\"cursor: pointer\" onClick=\"requestAndFill('" + movie.path +"')\">";
+//									isAVideo = "Directory";
+//								}
+//							else
+//								{
+//								nameRow = nameRow + " style=\"cursor: pointer\" onClick=\"fillInputs('" + movie.name + "','" + movie.path + "');\">"
+//								add = "+";
+//								}
+//							nameRow = nameRow + movie.name + "</div>";
+//						fileChooser.append("<div class='row'>"
+//								+ "<div class='col-md-2'>" + isAVideo + "</div>"
+//								+ nameRow
+//								+ "<div class='col-md-1'>" + add + "</div>"
+//								+ "</div>");
+//						}
 					});
 		};
-		requestAndFill("base");
+		requestAndFill(1);
 	</script>
 </body>
 </html>

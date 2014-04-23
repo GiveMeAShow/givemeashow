@@ -58,13 +58,25 @@ public class VideoController {
         return mdv;
     }*/
 	
-	@RequestMapping(value = "/admin/webservices/video/listVideos/{directoryName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/webservices/video/listVideos/{directoryId}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<VideoFile> listVideos(@ModelAttribute("directoryName") String directoryName)
+	public List<VideoFile> listVideos(@ModelAttribute("directoryId") int directoryId)
 	{
-		System.out.println("received directory " + directoryName);
-		return fileExplorer.listVideos(directoryName);
+		System.out.println("received directory " + directoryId);
+		return fileExplorer.listVideos(directoryId);
 	}
+
+    /**
+     * 1 is the root folder.
+     *
+     * @return
+     */
+    @RequestMapping(value = "/admin/webservices/video/listVideos", method = RequestMethod.GET)
+    @ResponseBody
+    public List<VideoFile> listVideos()
+    {
+        return fileExplorer.listVideos(1);
+    }
 	
 	@RequestMapping(value = "/admin/video/select", method = RequestMethod.POST)
 	public ModelAndView buildVideo(@ModelAttribute("selectedVideo") SelectedVideoFromFile selectedVideo, HttpServletRequest context)

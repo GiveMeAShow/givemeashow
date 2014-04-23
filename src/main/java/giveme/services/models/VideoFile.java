@@ -6,8 +6,18 @@ public class VideoFile {
 	private boolean isAVideo;
 	private String name;
 	private String path;
-	
-	public String getName() {
+    private boolean isRoot;
+    private Integer folderId;
+
+    public Integer getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Integer folderId) {
+        this.folderId = folderId;
+    }
+
+    public String getName() {
 		return name;
 	}
 	public void setName(String name) {
@@ -25,4 +35,12 @@ public class VideoFile {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
 }
