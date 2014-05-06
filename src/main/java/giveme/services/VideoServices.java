@@ -1,14 +1,10 @@
 package giveme.services;
 
-import giveme.shared.GiveMeProperties;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
 import javax.servlet.http.HttpServletRequest;
 
-import static giveme.shared.GiveMeProperties.BASE_FOLDER;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by couty on 21/03/14.
@@ -33,6 +29,7 @@ public class VideoServices {
         //urlBuilder.append(BASE_FOLDER);
         urlBuilder.append("/");
         urlBuilder.append(path.replaceAll("-", "/"));
+        LOGGER.info("Compute url for path : " + path);
         LOGGER.info("computed url : " + urlBuilder.toString());
         return urlBuilder.toString();
     }

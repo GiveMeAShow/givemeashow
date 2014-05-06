@@ -1,6 +1,8 @@
 package giveme.services.models;
 
-import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class VideoFile {
 	private boolean isAVideo;
@@ -8,6 +10,8 @@ public class VideoFile {
 	private String path;
     private boolean isRoot;
     private Integer folderId;
+    private Integer parentfolderId;
+    private String htmlPath;
 
     public Integer getFolderId() {
         return folderId;
@@ -34,6 +38,7 @@ public class VideoFile {
 	}
 	public void setPath(String path) {
 		this.path = path;
+		htmlPath = path.replace("\\", "\\\\");
 	}
 
     public boolean isRoot() {
@@ -43,4 +48,20 @@ public class VideoFile {
     public void setRoot(boolean isRoot) {
         this.isRoot = isRoot;
     }
+
+	public Integer getParentfolderId() {
+		return parentfolderId;
+	}
+
+	public void setParentfolderId(Integer parentfolderId) {
+		this.parentfolderId = parentfolderId;
+	}
+
+	public String getHtmlPath() {
+		return htmlPath;
+	}
+
+	public void setHtmlPath(String htmlPath) {
+		this.htmlPath = htmlPath;
+	}
 }

@@ -1,5 +1,6 @@
 package giveme.services;
 
+import giveme.common.beans.Video;
 import giveme.services.models.VideoFile;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import java.util.*;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -20,7 +22,11 @@ public class FileExplorer {
 	private final FileNameExtensionFilter videoFormatFilter;
 	private static final Logger LOGGER = Logger.getLogger(FileExplorer.class
 			.getName());
+	
     private Map<Integer, String> folderIdToPath = new HashMap<Integer, String>();
+    
+    private Map<Integer, VideoFile> foldersMap = new HashMap<Integer, VideoFile>();
+    
     private Integer folderCounter = 0;
 
 	public FileExplorer() {
@@ -37,12 +43,16 @@ public class FileExplorer {
         listFolders();
 	}
 
+		/**
+		 * Used at INIT to list all folders
+		 */
     private void listFolders() {
         LOGGER.info("Initilazing folder list");
         File baseFolder = new File(BASE_FOLDER);
+        
         if (baseFolder != null && baseFolder.listFiles() != null && baseFolder.listFiles().length != 0)
         {
-            fillFolderList(baseFolder);
+            fillFolderList(baseFolder, folderCounter);
         }
         else
         {
@@ -50,15 +60,39 @@ public class FileExplorer {
         }
     }
 
-    private void fillFolderList(File folder) {
+    /**
+     * Used at INIT to list all folders
+     * @param folder
+     * @param parentId
+     */
+    private void fillFolderList(File folder, Integer parentId) {
+    	
         folderCounter ++;
-        LOGGER.info("Adding directory id "  + folderCounter + " for path " + folder.getAbsolutePath());
+        LOGGER.info("Adding directory id "  + folderCounter + " for path " + folder.getAbsolutePath() + " and parent is " + parentId);
+        
         folderIdToPath.put(folderCounter, folder.getAbsolutePath());
+        
+        VideoFile bf = new VideoFile();
+        bf.setPath(folder.getAbsolutePath());
+        bf.setName(folder.getName());
+        if (foldersMap.isEmpty())
+        {
+        	bf.setRoot(true);
+        }
+        else
+        {
+        	bf.setRoot(false);
+        }
+        bf.setFolderId(folderCounter);
+        bf.setAVideo(false);
+        bf.setParentfolderId(parentId);
+        foldersMap.put(folderCounter, bf);
+        
         for (File f : folder.listFiles())
         {
             if (f != null && f.isDirectory())
             {
-                fillFolderList(f);
+                fillFolderList(f, bf.getFolderId());
             }
             else
             {
@@ -67,91 +101,60 @@ public class FileExplorer {
         }
     }
 
+    /**
+     * If ParentId == -1, then it is the root folder.
+     * @param directoryId
+     * @param parentId
+     * @return
+     */
     public List<VideoFile> listVideos(int directoryId) {
         List<VideoFile> fileList = new ArrayList<VideoFile>();
-        String path = folderIdToPath.get(directoryId);
-        VideoFile vf = new VideoFile();
-        vf.setName("...");
-        vf.setRoot(true);
-        vf.setAVideo(false);
-        fileList.add(vf);
+        
+        VideoFile vf = foldersMap.get(directoryId);
 
-        if ( path!= null)
+        if (vf != null)
         {
-            File directory = new File(folderIdToPath.get(directoryId));
-            if (directory.listFiles() != null)
-            {
-                for (File f : directory.listFiles())
-                {
-                    vf = new VideoFile();
-                    if (f.isDirectory())
-                    {
-                        vf.setAVideo(false);
-                    }
-                    else
-                    {
-                        vf.setAVideo(true);
-                    }
-                    vf.setName(f.getName());
-                    fileList.add(vf);
-                }
-            }
+        	// insert parent
+        	if (!vf.isRoot())
+        	{
+        		VideoFile rootFile = new VideoFile();
+        		rootFile.setName("...");
+        		rootFile.setFolderId(vf.getParentfolderId());
+        		rootFile.setParentfolderId(vf.getParentfolderId());
+        		rootFile.setPath(vf.getPath());
+        		rootFile.setAVideo(vf.isAVideo());
+        		rootFile.setRoot(vf.isRoot());
+        		fileList.add(rootFile);
+        	}
+        	
+        	// Get all directories there
+        	for (Integer directoryIds : foldersMap.keySet())
+        	{
+        		VideoFile d = foldersMap.get(directoryIds);
+        		if (!d.isRoot() && d.getParentfolderId() == directoryId)
+        		{
+        			fileList.add(d);
+        		}
+        	}
+        	
+        	// finish with files
+        	File directoryAsFile = new File(vf.getPath());
+        	if (directoryAsFile.listFiles() != null)
+        	{
+        		for (File f : directoryAsFile.listFiles()) 
+        		{
+        			if (!f.isDirectory())
+        			{
+        				VideoFile file = new VideoFile();
+        				file.setAVideo(true);
+        				file.setName(f.getName());
+        				file.setPath(f.getAbsolutePath());
+        				fileList.add(file);
+        			}
+				}
+        	}
+        	File dir = new File(vf.getPath());
         }
         return fileList;
     }
-
-//    /**
-//     * Need to be rerfactorized
-//     * Used to list video in a path, it needs to convert url compliant path and handle root path
-//     * @param path
-//     * @return
-//     */
-//	public List<VideoFile> listVideos(String path) {
-//		path = path.replaceAll(SEPARATOR, "/");
-//		List<VideoFile> videos = new ArrayList<VideoFile>();
-//		File folder = null;
-//		if (!"base".equals(path) && !"<- back".equals(path) && !BASE_FOLDER.contains(path)) {
-//			path = BASE_FOLDER + "/" + path;
-//			folder = new File(path);
-//			VideoFile back = new VideoFile();
-//			back.setAVideo(false);
-//			String backPath = folder.getParentFile().getAbsolutePath();
-//			System.out.println(backPath + " VS " + BASE_FOLDER);
-//			if (BASE_FOLDER.equals(backPath))
-//			{
-//				back.setPath(folder.getParentFile().getName());
-//			}
-//			else
-//			{
-//				System.out.println("back path " + backPath);
-//				backPath = backPath.replace(BASE_FOLDER, "");
-//				System.out.println("cleaned: " + backPath);
-//				back.setPath(backPath);
-//			}
-//			videos.add(back);
-//		} else{
-//			folder = new File(BASE_FOLDER);
-//		}
-//		System.out.println(	"exploring " + path);
-//		if (folder != null) {
-//			for (File file : folder.listFiles()) {
-//				VideoFile vf = new VideoFile();
-//				String filePath = file.getAbsolutePath();
-//				filePath = filePath.replace(BASE_FOLDER + "/", "");
-//				filePath = filePath.replace("/", SEPARATOR);
-//				vf.setPath(filePath);
-//				if (videoFormatFilter.accept(file) && !file.isDirectory()) {
-//					vf.setName(file.getName());
-//					vf.setAVideo(true);
-//					LOGGER.debug("Video : " + file.getPath() + " added.");
-//					videos.add(vf);
-//				} else if (file.isDirectory()) {
-//					vf.setName(file.getName());
-//					videos.add(vf);
-//					LOGGER.debug("Directory : " + file.getPath() + " added.");
-//				}
-//			}
-//		}
-//		return videos;
-//	}
 }
