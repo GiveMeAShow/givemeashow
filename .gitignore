@@ -9,3 +9,4 @@ log.out
 *.iml
 *.bak
 *.webm
+src/main/webapp/showsDB/*
