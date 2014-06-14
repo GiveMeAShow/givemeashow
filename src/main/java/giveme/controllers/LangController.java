@@ -18,7 +18,7 @@ public class LangController {
 	@RequestMapping(value = "/admin/lang/new", method = RequestMethod.GET)
 	public ModelAndView showNewPage()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/lang/creteNew");
+		ModelAndView mdv = new ModelAndView("/admin/lang/createNew");
 		mdv.addObject("lang", new ISOLang());
 		return mdv;
 	}
