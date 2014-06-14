@@ -68,22 +68,41 @@
                     <form:select path="position" items="${positionList}"></form:select>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <form:label path="endIntroTime">End intro </form:label>
+                </div>
+                <div class="col-md-2">
+                    <form:input path="endIntroTime" id="endIntroInput"/>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" onclick="setEndIntroTime();">Set</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <form:label path="startOutroTime">Start outro </form:label>
+                </div>
+                <div class="col-md-2">
+                    <form:input path="startOutroTime" id="startOutroInput"/>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" onclick="setStartOutroTime();">Set</button>
+                </div>
+            </div>
 		</form:form>
 	</fieldset>
-	<video id="videoClip" class="video-js vjs-default-skin"
-	  controls preload="auto" width="640" height="264"
-	  poster="http://video-js.zencoder.com/oceans-clip.png"
-	  data-setup='{"example_option":true}'>
-	 	<!--  <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />-->
-	 	<source src="" type='video/webm' />
-	 	<!-- <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' /> -->
-	 	<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-	</video>
+	<video id="videoClip" class="video-js vjs-default-skin videoContainer col-xs-6 col-xs-offset-2"
+            controls preload="auto" width="640px" height="360px">
+    </video>
 
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");
 		$("#adminShowNewMenu").addClass("active");
+		var endIntroTimeEl = $("#endIntroInput");
+		var startOutroTimeEl = $("#startOutroInput")
 		var seasonSelector = $("#seasonSelect");
+		var videoPlayer = videojs('videoClip');
 		
 		var getSeasonForShowId = function(showId) 
 		{
@@ -98,22 +117,25 @@
 							var option = $("<option></option>").attr("value", seasonList[i].id).text(seasonList[i].name);
 							seasonSelector.append(option);
 						}
-						
-						console.log(seasonList);
 					});
-			
-			
-			
-			console.log("selected show " + showId);
+		}
+		
+		var setEndIntroTime = function()
+		{
+			endIntroTimeEl.val(videoPlayer.currentTime());
+		}
+		
+		var setStartOutroTime = function()
+		{
+			startOutroTimeEl.val(videoPlayer.currentTime());
 		}
 		
 		$("#showSelect").change(function(e){
-			// var optionSelected = ("option:selected", this);
 			var showId = this.value;
 			getSeasonForShowId(showId);
 		});
 		
-		var videoPlayer = videojs('videoClip');
+		
 		videoPlayer.src({type: "video/webm", src: "${video.url}"});
 		
 		getSeasonForShowId($('#showSelect').find(":selected").val());

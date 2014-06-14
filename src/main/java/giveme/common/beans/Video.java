@@ -17,6 +17,10 @@ public class Video {
     private String relativePath;
     private long viewed;
     private String url;
+    private int endIntroTime;
+    private int startOutroTime;
+    
+    
 	public long getViewed() {
 		return viewed;
 	}
@@ -83,7 +87,23 @@ public class Video {
         LOGGER = Logger.getLogger(Video.class.getName());
     }
 
-    public void setUrl(String url) {
+    public int getEndIntroTime() {
+		return endIntroTime;
+	}
+
+	public void setEndIntroTime(int endIntroTime) {
+		this.endIntroTime = endIntroTime;
+	}
+
+	public int getStartOutroTime() {
+		return startOutroTime;
+	}
+
+	public void setStartOutroTime(int startOutroTime) {
+		this.startOutroTime = startOutroTime;
+	}
+
+	public void setUrl(String url) {
         this.url = url;
     }
 }
