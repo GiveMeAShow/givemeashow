@@ -28,9 +28,9 @@
 						<ul class="dropdown-menu">
 							<li id="adminShowListMenu"><a href="<c:url value="/admin/show/list"/>">Show List</a></li>
 							<li id="adminShowNewMenu"><a href="<c:url value="/admin/show/new"/>">New Show</a></li>
-							<li id="adminSeasonListMenu"><a href="<c:url value="/admin/show/new"/>">Season List</a></li>
-							<li id="adminSeasonNewMenu"><a href="<c:url value="/admin/show/new"/>">New Season</a></li>
-                            <li id="adminVideoNewMenu"><a href="<c:url value="/admin/season/new"/>">New Video</a></li>
+							<li id="adminSeasonListMenu"><a href="<c:url value="/admin/season/list/"/>">Season List</a></li>
+							<li id="adminSeasonNewMenu"><a href="<c:url value="/admin/season/new"/>">New Season</a></li>
+                            <li id="adminVideoNewMenu"><a href="<c:url value="/admin/video/new"/>">New Video</a></li>
 						</ul></li>
 				</ul>
 

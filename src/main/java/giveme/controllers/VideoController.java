@@ -2,6 +2,8 @@ package giveme.controllers;
 
 import static giveme.controllers.bindings.SharedBindings.positionChooser;
 import giveme.common.beans.Video;
+import giveme.common.dao.SeasonDao;
+import giveme.common.dao.ShowDao;
 import giveme.controllers.bindings.SelectedVideoFromFile;
 import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
@@ -30,6 +32,12 @@ public class VideoController {
 
     @Autowired
     VideoServices videoServices;
+    
+    @Autowired
+    ShowDao showDao;
+    
+    @Autowired
+    SeasonDao seasonDao;
     
     private static final Logger LOGGER = Logger.getLogger(VideoController.class
 			.getName());
@@ -68,11 +76,11 @@ public class VideoController {
 		Video videoModel = new Video();
 		
 		videoModel.setUrl(videoServices.buildUrl(context, selectedVideo.getPath()));
-		// To replace something with the File.separator, use Matcher.quoteReplacement(File.separator)
 		videoModel.setRelativePath(selectedVideo.getPath());
 		videoModel.setTitle(selectedVideo.getTitle());
         
 		mdv.addObject("video", videoModel);
+		mdv.addObject("shows", showDao.list());
         mdv.addObject("positionList", positionChooser);
 
 		return mdv;

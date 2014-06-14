@@ -10,16 +10,22 @@ import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.controllers.bindings.SeasonAndShowName;
 
+import org.apache.log4j.Logger;
+import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class SeasonController {
+	private static final Logger LOGGER = Logger.getLogger(SeasonController.class
+			.getName());
+	
 	@Autowired
 	SeasonDao seasonDao;
 	
@@ -88,6 +94,16 @@ public class SeasonController {
 		ModelAndView view = new ModelAndView("/admin/season/seasonList");
 		view.addObject("seasonList", seasonDao.listByShowId(showId));
 		return view;
+	}
+	
+	@RequestMapping(value="/webservices/season/getByShowId/{showId}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Season> getSeasonByShowId(@PathVariable(value = "showId") int showId)
+	{
+		List<Season> seasonList = seasonDao.listByShowId(showId);
+		LOGGER.info("WS : retrieving seasons for show " + showId);
+		LOGGER.info("WS : found " + seasonList.size() + " seasons");
+		return seasonList;
 	}
 	
 	/**

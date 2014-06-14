@@ -70,7 +70,15 @@ public class Video {
         return url;
     }
 
-    public Video()
+    public int getShowId() {
+		return showId;
+	}
+
+	public void setShowId(int showId) {
+		this.showId = showId;
+	}
+
+	public Video()
     {
         LOGGER = Logger.getLogger(Video.class.getName());
     }
