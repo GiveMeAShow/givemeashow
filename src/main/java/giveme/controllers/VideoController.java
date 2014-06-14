@@ -7,7 +7,9 @@ import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
 import giveme.services.models.VideoFile;
 
+import java.io.File;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,11 +65,13 @@ public class VideoController {
 	public ModelAndView buildVideo(@ModelAttribute("selectedVideo") SelectedVideoFromFile selectedVideo, HttpServletRequest context)
 	{
 		ModelAndView mdv = new ModelAndView("/admin/video/build-details");
-		selectedVideo.setPath(selectedVideo.getPath().replaceAll("-", "/"));
 		Video videoModel = new Video();
+		
+		videoModel.setUrl(videoServices.buildUrl(context, selectedVideo.getPath()));
+		// To replace something with the File.separator, use Matcher.quoteReplacement(File.separator)
 		videoModel.setRelativePath(selectedVideo.getPath());
 		videoModel.setTitle(selectedVideo.getTitle());
-        videoModel.setUrl(videoServices.buildUrl(context, videoModel.getRelativePath()));
+        
 		mdv.addObject("video", videoModel);
         mdv.addObject("positionList", positionChooser);
 

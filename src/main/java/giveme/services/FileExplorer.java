@@ -37,7 +37,9 @@ public class FileExplorer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BASE_FOLDER = props.getProperty("baseFolder");
+		
+		BASE_FOLDER = System.getProperty("catalina.base")  + props.getProperty("baseFolder");
+		LOGGER.info("Base folder " + BASE_FOLDER);
 		videoFormatFilter = new FileNameExtensionFilter(
 				"video extension filter", props.getProperty("extensions"));
         listFolders();
