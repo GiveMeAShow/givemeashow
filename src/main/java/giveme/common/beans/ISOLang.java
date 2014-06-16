@@ -18,7 +18,7 @@ public class ISOLang {
 	}
 
 	public void setIso(String iso) {
-		this.iso = iso;
+		this.iso = iso.toUpperCase();
 	}
 
 	public String getFlagUrl() {
@@ -28,6 +28,4 @@ public class ISOLang {
 	public void setFlagUrl(String flagUrl) {
 		this.flagUrl = flagUrl;
 	}
-	
-	
 }

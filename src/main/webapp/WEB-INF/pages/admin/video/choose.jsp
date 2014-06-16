@@ -41,7 +41,7 @@
 	</div>
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");
-		$("#adminShowListMenu").addClass("active");
+		$("#adminVideoNewMenu").addClass("active");
 		var videoTitleInput = $("#videoTitle");
 		var videoPathInput = $("#videoPath");
 		var fileChooser = $("#fileChooser");

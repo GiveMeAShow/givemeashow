@@ -31,6 +31,7 @@
 							<li id="adminSeasonListMenu"><a href="<c:url value="/admin/season/list/"/>">Season List</a></li>
 							<li id="adminSeasonNewMenu"><a href="<c:url value="/admin/season/new"/>">New Season</a></li>
                             <li id="adminVideoNewMenu"><a href="<c:url value="/admin/video/new"/>">New Video</a></li>
+                            <li id="adminLangNewMenu"><a href="<c:url value="/admin/lang/new"/>">New Language</a></li>
 						</ul></li>
 				</ul>
 

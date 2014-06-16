@@ -28,7 +28,7 @@
 	</div>
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");
-		$("#adminShowListMenu").addClass("active");
+		$("#adminSeasonListMenu").addClass("active");
 	</script>
 </body>
 </html>

@@ -34,10 +34,12 @@ public class ISOLangDao extends IDao<ISOLang>{
 		connection = JdbcConnector.getConnection();
 		try
 		{
-			final String query = "insert into " + TABLE_NAME + " (lang_iso) "
+			final String query = "insert into " + TABLE_NAME + " (lang_iso, lang_name, lang_flag_url) "
 					+ "VALUES (?)";
 			final PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, toSave.getLanguage());
+			statement.setString(1, toSave.getIso());
+			statement.setString(2, toSave.getLanguage());
+			statement.setString(3, toSave.getFlagUrl());
 			statement.executeUpdate();
 			connection.close();
 		}
@@ -52,7 +54,9 @@ public class ISOLangDao extends IDao<ISOLang>{
 	@Override
 	public ISOLang createObjectFromResultSet(ResultSet rs) throws SQLException {
 		ISOLang lang = new ISOLang();
-		lang.setLanguage(rs.getString("lang_iso"));
+		lang.setLanguage(rs.getString("lang_name"));
+		lang.setFlagUrl(rs.getString("lang_flag_url"));
+		lang.setIso(rs.getString("lang_iso"));
 		return lang;
 	}
 }

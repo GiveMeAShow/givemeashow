@@ -62,7 +62,7 @@
 
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");
-		$("#adminShowNewMenu").addClass("active");
+		$("#adminSeasonNewMenu").addClass("active");
 
 		function updateToolTip() {
 			$("#showIcon").attr("title", $("#nameInput").val());
