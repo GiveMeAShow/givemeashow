@@ -49,18 +49,18 @@ public class VideoDao extends IDao<Video>
 	@Override
 	public void save(Video toSave)
 	{
-		LOGGER.info("Saving a new Show");
+		LOGGER.info("Saving a new Video");
 		connection = JdbcConnector.getConnection();
 		try
 		{
-			final String query = "insert into "
-					+ TABLE_NAME
-					+ " (title, season_id, lang_iso, position, is_transition, relative_path, viewed, url, show_id, end_intro_time, start_outro_time) "
-					+ "VALUES (?, ?, ?, ?)";
+			final String query = "insert into " + TABLE_NAME
+					+ " (title, season_id, lang_iso, position, is_transition, relative_path,"
+					+ " viewed, url, show_id, end_intro_time, start_outro_time) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, toSave.getTitle());
 			statement.setInt(2, toSave.getSeasonId());
-			statement.setString(3, toSave.asString());
+			statement.setString(3, toSave.getLanguageIso().getIso());
 			statement.setInt(4, toSave.getPosition());
 			statement.setBoolean(5, toSave.isTransition());
 			statement.setString(6, toSave.getRelativePath());

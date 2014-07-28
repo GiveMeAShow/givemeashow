@@ -9,14 +9,22 @@ public class Video
 	private String			title;
 	private int				seasonId;
 	private int				showId;
-	private ISOLang			language;
+	private ISOLang			languageIso;
 	private int				position;
-	private boolean			isTransition;
+	public boolean			isTransition;
 	private String			relativePath;
 	private long			viewed;
 	private String			url;
 	private Double			endIntroTime;
 	private Double			startOutroTime;
+	private String			language;
+
+	public Video()
+	{
+		LOGGER = Logger.getLogger(Video.class.getName());
+		endIntroTime = 0.0;
+		startOutroTime = 0.0;
+	}
 
 	public long getViewed()
 	{
@@ -58,12 +66,23 @@ public class Video
 		this.seasonId = seasonId;
 	}
 
-	public ISOLang getLanguage()
+	public ISOLang getLanguageIso()
+	{
+		return languageIso;
+	}
+
+	public void setLanguageIso(ISOLang language)
+	{
+		languageIso = language;
+		this.language = language.getLanguage();
+	}
+
+	public String getLanguage()
 	{
 		return language;
 	}
 
-	public void setLanguage(ISOLang language)
+	public void setLanguage(String language)
 	{
 		this.language = language;
 	}
@@ -79,6 +98,11 @@ public class Video
 	}
 
 	public boolean isTransition()
+	{
+		return isTransition;
+	}
+
+	public boolean getIsTransition()
 	{
 		return isTransition;
 	}
@@ -113,11 +137,6 @@ public class Video
 		this.showId = showId;
 	}
 
-	public Video()
-	{
-		LOGGER = Logger.getLogger(Video.class.getName());
-	}
-
 	public Double getEndIntroTime()
 	{
 		return endIntroTime;
@@ -143,8 +162,8 @@ public class Video
 		this.url = url;
 	}
 
-	public String asString()
+	public String languageHasString()
 	{
-		return language.getLanguage();
+		return languageIso.getLanguage();
 	}
 }

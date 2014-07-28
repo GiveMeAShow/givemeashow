@@ -1,10 +1,12 @@
 package giveme.controllers;
 
 import static giveme.controllers.bindings.SharedBindings.positionChooser;
+import giveme.common.beans.ISOLang;
 import giveme.common.beans.Video;
 import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
+import giveme.common.dao.VideoDao;
 import giveme.controllers.bindings.SelectedVideoFromFile;
 import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
@@ -42,13 +44,27 @@ public class VideoController
 	@Autowired
 	ISOLangDao					langDao;
 
+	@Autowired
+	VideoDao					videoDao;
+
 	private static final Logger	LOGGER	= Logger.getLogger(VideoController.class.getName());
 
 	@RequestMapping(value = "/admin/video/new", method = RequestMethod.GET)
-	public ModelAndView addAVideo()
+	public ModelAndView newForm()
 	{
 		ModelAndView mdv = new ModelAndView("/admin/video/choose");
 		mdv.addObject("selectedVideo", new SelectedVideoFromFile());
+		return mdv;
+	}
+
+	@RequestMapping(value = "/admin/video/add", method = RequestMethod.POST)
+	public ModelAndView add(@ModelAttribute("video") Video video)
+	{
+		LOGGER.info("Saving video " + video.getTitle());
+		ISOLang lang = langDao.findByISO(video.getLanguage());
+		video.setLanguageIso(lang);
+		videoDao.save(video);
+		ModelAndView mdv = new ModelAndView("/admin/video/validInsertion");
 		return mdv;
 	}
 
