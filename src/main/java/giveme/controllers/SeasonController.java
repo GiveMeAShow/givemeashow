@@ -1,17 +1,15 @@
 package giveme.controllers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.controllers.bindings.SeasonAndShowName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.junit.runners.Parameterized.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,57 +20,61 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class SeasonController {
-	private static final Logger LOGGER = Logger.getLogger(SeasonController.class
-			.getName());
-	
-	@Autowired
-	SeasonDao seasonDao;
-	
-	@Autowired
-	ShowDao showDao;
+public class SeasonController
+{
+	private static final Logger	LOGGER	= Logger.getLogger(SeasonController.class.getName());
 
-    List<Integer> positionChooser;
+	@Autowired
+	SeasonDao					seasonDao;
 
-    public SeasonController(){
-        positionChooser = new ArrayList<Integer>();
-        for (int i = 0; i < 50; i++)
-        {
-            positionChooser.add(i);
-        }
-    }
+	@Autowired
+	ShowDao						showDao;
+
+	List<Integer>				positionChooser;
+
+	public SeasonController()
+	{
+		positionChooser = new ArrayList<Integer>();
+		for (int i = 0; i < 50; i++)
+		{
+			positionChooser.add(i);
+		}
+	}
 
 	/**
 	 * Show the entire showList for an admin.
+	 *
 	 * @return
 	 */
-	@RequestMapping(value="/admin/season/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/season/list", method = RequestMethod.GET)
 	public ModelAndView list()
 	{
 		ModelAndView view = new ModelAndView("/admin/season/seasonList");
 		view.addObject("seasonList", seasonDao.list());
 		return view;
 	}
-	
+
 	/**
 	 * The admin page to create a new season
+	 *
 	 * @return
 	 */
-	@RequestMapping(value="/admin/season/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/season/new", method = RequestMethod.GET)
 	public ModelAndView adminNewSeason()
 	{
 		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
 		mdv.addObject("seasonAndShowName", new SeasonAndShowName());
 		mdv.addObject("nameList", showDao.listNames());
-        mdv.addObject("positionList", positionChooser);
+		mdv.addObject("positionList", positionChooser);
 		return mdv;
 	}
-	
+
 	/**
 	 * The admin page to create a new season
+	 *
 	 * @return
 	 */
-	@RequestMapping(value="/admin/season/new/{showName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/season/new/{showName}", method = RequestMethod.GET)
 	public ModelAndView adminNewSesonByShowName(@ModelAttribute("showName") String showName)
 	{
 		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
@@ -86,17 +88,18 @@ public class SeasonController {
 
 	/**
 	 * Show the entire showList for an admin.
+	 *
 	 * @return
 	 */
-	@RequestMapping(value="/admin/season/list/{showId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/season/list/{showId}", method = RequestMethod.GET)
 	public ModelAndView listByShowId(@PathVariable(value = "showId") int showId)
 	{
 		ModelAndView view = new ModelAndView("/admin/season/seasonList");
 		view.addObject("seasonList", seasonDao.listByShowId(showId));
 		return view;
 	}
-	
-	@RequestMapping(value="/webservices/season/getByShowId/{showId}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/webservices/season/getByShowId/{showId}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Season> getSeasonByShowId(@PathVariable(value = "showId") int showId)
 	{
@@ -105,14 +108,16 @@ public class SeasonController {
 		LOGGER.info("WS : found " + seasonList.size() + " seasons");
 		return seasonList;
 	}
-	
+
 	/**
 	 * Valid a show and insert it !
+	 *
 	 * @param show
 	 * @return to a new page
 	 */
-	@RequestMapping(value="/admin/season/addSeason", method = RequestMethod.POST)
-	public ModelAndView adminInsertNewShow(@ModelAttribute("seasonAndShowName") final SeasonAndShowName seasonAndShowName)
+	@RequestMapping(value = "/admin/season/addSeason", method = RequestMethod.POST)
+	public ModelAndView adminInsertNewShow(
+			@ModelAttribute("seasonAndShowName") final SeasonAndShowName seasonAndShowName)
 	{
 		ModelAndView mdv = new ModelAndView("/admin/season/validInsertion");
 		Show show = showDao.findByName(seasonAndShowName.getShowName());
@@ -121,12 +126,12 @@ public class SeasonController {
 		return mdv;
 	}
 
-    @RequestMapping(value = "/admin/season/{id}", method = RequestMethod.GET)
-    public ModelAndView showSeasonDetails(@ModelAttribute("id") final Integer seasonId)
-    {
-        ModelAndView mdv = new ModelAndView("/admin/season/showSeason");
-        mdv.addObject("season", seasonDao.findById(seasonId));
+	@RequestMapping(value = "/admin/season/{id}", method = RequestMethod.GET)
+	public ModelAndView showSeasonDetails(@ModelAttribute("id") final Integer seasonId)
+	{
+		ModelAndView mdv = new ModelAndView("/admin/season/showSeason");
+		mdv.addObject("season", seasonDao.findById(seasonId));
 
-        return mdv;
-    }
+		return mdv;
+	}
 }

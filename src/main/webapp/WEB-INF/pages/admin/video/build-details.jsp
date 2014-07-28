@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Create a new show</title>
+<title>Add a video</title>
 
 <script src="<c:url value='/resources/video-js-4.6.2/video-js/video.js'/>"></script>
 <link rel="stylesheet" type="text/css"
@@ -38,12 +38,20 @@
 			</div>
 			<div class="row">
 				<div class="col-md-2">
-					<form:label path="seasonId">Show </form:label>
+					<form:label path="seasonId">Season </form:label>
 				</div>
 				<div class="col-md-4">
 					<form:select id="seasonSelect" path="seasonId" items="${shows}" itemLabel="name" itemValue="id"></form:select>
 				</div>
 			</div>
+			<div class="row">
+                <div class="col-md-2">
+                    <form:label path="position">Position </form:label>
+                </div>
+                <div class="col-md-4">
+                    <form:select path="position" items="${positionList}"></form:select>
+                </div>
+            </div>
 			<div class="row">
 				<div class="col-md-2">
 					<form:label path="relativePath">Relative path </form:label>
@@ -62,10 +70,18 @@
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <form:label path="position">Position </form:label>
+                    <form:label path="url">Url </form:label>
                 </div>
                 <div class="col-md-4">
-                    <form:select path="position" items="${positionList}"></form:select>
+                    <form:input id="urlInput" path="url"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <form:label path="isTransition">Is a transition </form:label>
+                </div>
+                <div class="col-md-4">
+                    <form:checkbox path="isTransition"/>
                 </div>
             </div>
             <div class="row">
