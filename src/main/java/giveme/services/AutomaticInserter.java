@@ -15,8 +15,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-class AutomaticInserter
+@Component
+@Repository
+public class AutomaticInserter
 {
 	private static final Logger LOGGER = Logger.getLogger(AutomaticInserter.class
 			.getName());
@@ -33,6 +37,9 @@ class AutomaticInserter
 	@Autowired
 	ISOLangDao languageDao;
 	
+	/**
+	 * 
+	 */
 	public AutomaticInserter()
 	{
 		final Properties props = new Properties();
@@ -51,8 +58,6 @@ class AutomaticInserter
 		videoFormatFilter = new FileNameExtensionFilter(
 				"video extension filter", props.getProperty("extensions"));
 		bannerSuffix = props.getProperty("bannerSuffixe");
-		
-		runAndBuildDatabase();
 	}
 	
 	/**
@@ -72,7 +77,7 @@ class AutomaticInserter
 	 * |-Show_Name_2
 	 * ...
 	 */
-	private void runAndBuildDatabase()
+	public void runAndBuildDatabase()
 	{
 		// Get shows names from the first folder level
 		final File baseFolder = new File(BASE_FOLDER_PATH);
@@ -99,68 +104,113 @@ class AutomaticInserter
 				}
 				
 				// now add the seasons if they don't exist
-				if (showFolder.listFiles() != null && showFolder.listFiles().length != 0)
+				buildSeasonsFromShowFolder(showFolder, show);
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param showFolder
+	 * @param show
+	 */
+	private void buildSeasonsFromShowFolder(final File showFolder, final Show show)
+	{
+		if (showFolder.listFiles() != null && showFolder.listFiles().length != 0)
+		{
+			for (final File seasonFolder : showFolder.listFiles())
+			{
+				final Season season = createSeason(show, seasonFolder);
+				
+				// Add all the files in a season folder. It can be a video, a subtitle or a poster
+				buildVideosFromSeasonFolder(show, seasonFolder, season);
+				
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param show
+	 * @param seasonFolder
+	 * @param season
+	 */
+	private void buildVideosFromSeasonFolder(final Show show, final File seasonFolder, final Season season)
+	{
+		if (seasonFolder.listFiles() != null && seasonFolder.listFiles().length != 0)
+		{
+			for (final File videoFile : seasonFolder.listFiles())
+			{
+				final String videoFileName = videoFile.getName();
+				
+				// if it is a video
+				if (videoFormatFilter.accept(videoFile))
 				{
-					for (final File seasonFolder : showFolder.listFiles())
-					{
-						final String seasonFolderName = seasonFolder.getName();
-						final Season season = new Season();
-						season.setName(seasonFolderName.replaceAll("_", ""));
-						season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase()
-								+ bannerSuffix);
-						
-						if (seasonDao.findByName(season.getName()) == null)
-						{
-							season.setShowId(show.getId());
-							season.setPosition(extractPositionFromSeasonFolderName(seasonFolderName));
-							seasonDao.save(season);
-						}
-						else
-						{
-							seasonDao.update(season);
-						}
-						
-						// Add all the files in a season folder. It can be a video, a subtitle or a poster
-						if (seasonFolder.listFiles() != null && seasonFolder.listFiles().length != 0)
-						{
-							for (final File videoFile : seasonFolder.listFiles())
-							{
-								final String videoFileName = videoFile.getName();
-								
-								// if it is a video
-								if (videoFormatFilter.accept(videoFile))
-								{
-									final Video video = new Video();
-									video.setSeasonId(season.getId());
-									video.setShowId(show.getId());
-									
-									final String tempName = videoFileName.substring(0,
-											videoFileName.lastIndexOf("-") - 1);
-									video.setTitle(tempName.replaceAll("_", ""));
-									video.setPosition(extractPositionFromVideoFileName(videoFileName));
-									final String languageISO = videoFileName.substring(
-											videoFileName.lastIndexOf("_") + 1,
-											videoFileName.lastIndexOf("."));
-									if (languageDao.findByISO(languageISO) != null)
-									{
-										video.setLanguageIso(languageDao.findByISO(languageISO));
-									}
-									// TODO Compute relative path
-									//video.setRelativePath(relativePath);
-									// TODO Compute URL ?
-									// TODO Thumbnails
-									video.setValidated(false);
-									video.setViewed(0);
-								}
-							}
-						}
-						
-					}
+					createVideo(show, season, videoFileName);
 				}
 			}
 		}
 	}
 	
+	/**
+	 * 
+	 * @param show
+	 * @param season
+	 * @param videoFileName
+	 */
+	private void createVideo(final Show show, final Season season, final String videoFileName)
+	{
+		final Video video = new Video();
+		video.setSeasonId(season.getId());
+		video.setShowId(show.getId());
+		
+		final String tempName = videoFileName.substring(0,
+				videoFileName.lastIndexOf("-") - 1);
+		video.setTitle(tempName.replaceAll("_", ""));
+		video.setPosition(extractPositionFromVideoFileName(videoFileName));
+		final String languageISO = videoFileName.substring(
+				videoFileName.lastIndexOf("_") + 1,
+				videoFileName.lastIndexOf("."));
+		if (languageDao.findByISO(languageISO) != null)
+		{
+			video.setLanguageIso(languageDao.findByISO(languageISO));
+		}
+		// TODO Compute relative path
+		//video.setRelativePath(relativePath);
+		// TODO Compute URL ?
+		// TODO Thumbnails
+		video.setValidated(false);
+		video.setViewed(0);
+	}
+	
+	/**
+	 * 
+	 * @param show
+	 * @param seasonFolder
+	 * @return
+	 */
+	private Season createSeason(final Show show, final File seasonFolder)
+	{
+		final String seasonFolderName = seasonFolder.getName();
+		final Season season = new Season();
+		season.setName(seasonFolderName.replaceAll("_", ""));
+		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase()
+				+ bannerSuffix);
+		season.setShowId(show.getId());
+		season.setPosition(extractPositionFromSeasonFolderName(seasonFolderName));
+		
+		seasonDao.update(season);
+		LOGGER.info("Season " + season.getName() + " from show " + season.getShowId() + " at pos "
+				+ season.getPosition() + " with icon " + season.getIconUrl() + " has been updated");
+		
+		return season;
+	}
+	
+	/**
+	 * 
+	 * @param videoFileName
+	 * @return
+	 */
 	private int extractPositionFromVideoFileName(final String videoFileName)
 	{
 		final int index = videoFileName.lastIndexOf("-");
@@ -168,6 +218,11 @@ class AutomaticInserter
 		return position;
 	}
 	
+	/**
+	 * 
+	 * @param seasonFolderName
+	 * @return
+	 */
 	private int extractPositionFromSeasonFolderName(final String seasonFolderName)
 	{
 		final int position = Integer.parseInt(seasonFolderName.substring(seasonFolderName.lastIndexOf("_") + 1));
