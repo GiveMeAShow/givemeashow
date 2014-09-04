@@ -1,6 +1,5 @@
 package giveme.common.dao;
 
-import static giveme.common.dao.SharedConstants.DB_NAME;
 import giveme.common.beans.Video;
 import giveme.services.JdbcConnector;
 
@@ -15,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import static giveme.common.dao.SharedConstants.DB_NAME;
+
 @Component
 @Repository
 public class VideoDao extends IDao<Video>
@@ -24,11 +25,11 @@ public class VideoDao extends IDao<Video>
 		TABLE_NAME = DB_NAME + ".video";
 		LOGGER = Logger.getLogger(VideoDao.class.getName());
 	}
-
+	
 	@Override
-	public Video createObjectFromResultSet(ResultSet rs) throws SQLException
+	public Video createObjectFromResultSet(final ResultSet rs) throws SQLException
 	{
-		Video video = new Video();
+		final Video video = new Video();
 		video.setId(rs.getInt("id"));
 		video.setTitle(rs.getString("title"));
 		// season.setLanguage(rs.getString("name"));
@@ -40,14 +41,15 @@ public class VideoDao extends IDao<Video>
 		video.setUrl(rs.getString(rs.getString("url")));
 		video.setStartOutroTime(rs.getDouble("start_intro_time"));
 		video.setEndIntroTime(rs.getDouble("start_outro_time"));
+		video.setValidated(rs.getBoolean("validated"));
 		return video;
 	}
-
+	
 	/**
 	 * Save a new season.
 	 */
 	@Override
-	public void save(Video toSave)
+	public void save(final Video toSave)
 	{
 		LOGGER.info("Saving a new Video");
 		connection = JdbcConnector.getConnection();
@@ -55,8 +57,8 @@ public class VideoDao extends IDao<Video>
 		{
 			final String query = "insert into " + TABLE_NAME
 					+ " (title, season_id, lang_iso, position, is_transition, relative_path,"
-					+ " viewed, url, show_id, end_intro_time, start_outro_time) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " viewed, url, show_id, end_intro_time, start_outro_time, validated) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, toSave.getTitle());
 			statement.setInt(2, toSave.getSeasonId());
@@ -69,19 +71,21 @@ public class VideoDao extends IDao<Video>
 			statement.setLong(9, toSave.getShowId());
 			statement.setDouble(10, toSave.getStartOutroTime());
 			statement.setDouble(11, toSave.getEndIntroTime());
+			statement.setBoolean(12, toSave.isValidated());
 			statement.executeUpdate();
-			ResultSet idresult = statement.getGeneratedKeys();
+			final ResultSet idresult = statement.getGeneratedKeys();
 			if (idresult.next() && idresult != null)
 			{
 				toSave.setId(idresult.getInt(1));
 			}
 			connection.close();
-		} catch (Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * List the seasons associated to a show
 	 *
@@ -91,26 +95,27 @@ public class VideoDao extends IDao<Video>
 	public List<Video> listByShowId(final int showId)
 	{
 		connection = JdbcConnector.getConnection();
-		List<Video> videoList = new ArrayList<Video>();
+		final List<Video> videoList = new ArrayList<Video>();
 		try
 		{
 			final String query = "select * from " + TABLE_NAME + " WHERE show_id = ?";
 			final PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, showId);
-			ResultSet rs = statement.executeQuery();
+			final ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{
 				videoList.add(createObjectFromResultSet(rs));
 			}
 			connection.close();
-		} catch (Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 		return videoList;
 	}
-
-	public Video findById(Integer videoId)
+	
+	public Video findById(final Integer videoId)
 	{
 		connection = JdbcConnector.getConnection();
 		Video video = new Video();
@@ -119,36 +124,38 @@ public class VideoDao extends IDao<Video>
 			final String query = "select * from " + TABLE_NAME + " WHERE id = ?";
 			final PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, videoId);
-			ResultSet rs = statement.executeQuery();
+			final ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{
 				video = createObjectFromResultSet(rs);
 			}
 			connection.close();
-		} catch (Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 		return video;
 	}
-
+	
 	public List<Video> findByShowAndSeasonId(final int showId, final int seasonId)
 	{
 		connection = JdbcConnector.getConnection();
-		List<Video> video = new ArrayList<Video>();
+		final List<Video> video = new ArrayList<Video>();
 		try
 		{
 			final String query = "select * from " + TABLE_NAME + " WHERE id = ?";
 			final PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, showId);
 			statement.setInt(2, seasonId);
-			ResultSet rs = statement.executeQuery();
+			final ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{
 				video.add(createObjectFromResultSet(rs));
 			}
 			connection.close();
-		} catch (Exception e)
+		}
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
