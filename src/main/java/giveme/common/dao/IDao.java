@@ -1,48 +1,45 @@
 package giveme.common.dao;
 
-import giveme.services.JdbcConnector;
-
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import javax.inject.Inject;
 
-public abstract class IDao<T> 
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+
+public abstract class IDao<T>
 {
 	protected String TABLE_NAME;
-	protected Connection connection;
 	public static Logger LOGGER;
+	
+	@Inject
+	protected JdbcTemplate jdbcTemplate;
 	
 	public List<T> list()
 	{
 		LOGGER.info("Listing shows.");
-		connection = JdbcConnector.getConnection();
 		
 		final List<T> resultList = new ArrayList<T>();
-		try
-		{
-			final String query = "select * from " + TABLE_NAME;
-			final ResultSet rs = connection.createStatement().executeQuery(
-			        query);
-			while (rs.next())
-			{
-				final T resultObject = createObjectFromResultSet(rs);
-				resultList.add(resultObject);
-			}
-			connection.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		final String query = "select * from " + TABLE_NAME;
+		
 		LOGGER.info(resultList.size() + " " + TABLE_NAME + " found.");
-		return resultList;
+		return jdbcTemplate.query(query, new MyObjectMapper());
 	}
 	
 	public abstract void save(T toSave);
 	
 	public abstract T createObjectFromResultSet(ResultSet rs) throws SQLException;
+	
+	protected class MyObjectMapper implements ParameterizedRowMapper<T>
+	{
+		public T mapRow(final ResultSet rs, final int rowNum) throws SQLException
+		{
+			return createObjectFromResultSet(rs);
+		}
+	}
+	
 }

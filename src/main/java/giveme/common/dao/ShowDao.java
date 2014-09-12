@@ -3,7 +3,6 @@ package giveme.common.dao;
 import giveme.common.beans.Show;
 import giveme.services.JdbcConnector;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,48 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import static giveme.common.dao.SharedConstants.DB_NAME;
 
 @Component
-@Repository
-public class ShowDao
+public class ShowDao extends IDao<Show>
 {
-	private final String TABLE_NAME = DB_NAME + ".show";
-	private Connection connection;
-	public static Logger LOGGER = Logger.getLogger(ShowDao.class
-			.getName());
-	
-	/**
-	 * Get all the show present in the DB.
-	 * @return a List<Show>
-	 */
-	public List<Show> list()
+	public ShowDao()
 	{
-		LOGGER.info("Listing shows.");
-		connection = JdbcConnector.getConnection();
-		
-		final List<Show> showList = new ArrayList<Show>();
-		try
-		{
-			final String query = "select * from " + TABLE_NAME;
-			final ResultSet rs = connection.createStatement().executeQuery(
-					query);
-			while (rs.next())
-			{
-				final Show movie = createShowFromResultSet(rs);
-				showList.add(movie);
-			}
-			connection.close();
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-		LOGGER.info(showList.size() + " shows found.");
-		return showList;
+		LOGGER = Logger.getLogger(ShowDao.class.getName());
+		TABLE_NAME = DB_NAME + ".show";
 	}
 	
 	/**
@@ -63,33 +32,17 @@ public class ShowDao
 	public List<String> listNames()
 	{
 		LOGGER.info("Listing shows.");
-		connection = JdbcConnector.getConnection();
 		
 		final List<String> showList = new ArrayList<String>();
-		try
-		{
-			final String query = "select name from " + TABLE_NAME;
-			final ResultSet rs = connection.createStatement().executeQuery(
-					query);
-			while (rs.next())
-			{
-				final String movieName = rs.getString("name");
-				showList.add(movieName);
-			}
-			connection.close();
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
-		LOGGER.info(showList.size() + " shows found.");
-		return showList;
+		final String query = "select name from " + TABLE_NAME;
+		return jdbcTemplate.queryForList(query, String.class);
 	}
 	
 	/**
 	 * Save a new show.
 	 * @param show
 	 */
+	@Override
 	public void save(final Show show)
 	{
 		LOGGER.info("Saving a new Show");
@@ -98,6 +51,7 @@ public class ShowDao
 		{
 			final String query = "insert into " + TABLE_NAME + " (name, icon_url) "
 					+ "VALUES (?, ?)";
+			
 			final PreparedStatement statement = connection.prepareStatement(
 					query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, show.getName());
@@ -222,6 +176,26 @@ public class ShowDao
 		{
 			e.printStackTrace();
 		}
+		return show;
+	}
+	
+	public JdbcTemplate getJdbcTemplate()
+	{
+		return jdbcTemplate;
+	}
+	
+	public void setJdbcTemplate(final JdbcTemplate jdbcTemplate)
+	{
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	@Override
+	public Show createObjectFromResultSet(final ResultSet rs) throws SQLException
+	{
+		final Show show = new Show();
+		show.setId(rs.getInt("id"));
+		show.setIconUrl(rs.getString("icon_url"));
+		show.setName(rs.getString("name"));
 		return show;
 	}
 }
