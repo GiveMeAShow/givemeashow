@@ -153,7 +153,9 @@ public class SeasonDao extends IDao<Season>
 			final PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, season.getName());
 			statement.setString(2, season.getIconUrl());
-			statement.setInt(3, season.getId());
+			statement.setInt(3, season.getPosition());
+			statement.setInt(4, season.getShowId());
+			statement.setInt(5, season.getId());
 			statement.executeUpdate();
 			connection.close();
 		}

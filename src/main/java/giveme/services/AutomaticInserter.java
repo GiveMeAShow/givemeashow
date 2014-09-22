@@ -87,7 +87,7 @@ public class AutomaticInserter
 			{
 				final String showFolderName = showFolder.getName();
 				final Show show = new Show();
-				show.setName(showFolderName.replaceAll("_", ""));
+				show.setName(showFolderName.replaceAll("_", " "));
 				show.setIconUrl(showFolderName + File.separator + showFolderName.toLowerCase() + bannerSuffix);
 				
 				if (showDao.findByName(show.getName()) == null)
@@ -120,11 +120,13 @@ public class AutomaticInserter
 		{
 			for (final File seasonFolder : showFolder.listFiles())
 			{
-				final Season season = createSeason(show, seasonFolder);
-				
-				// Add all the files in a season folder. It can be a video, a subtitle or a poster
-				buildVideosFromSeasonFolder(show, seasonFolder, season);
-				
+				if(seasonFolder.listFiles() != null && seasonFolder.listFiles().length != 0)
+				{
+					final Season season = createSeason(show, seasonFolder);
+					
+					// Add all the files in a season folder. It can be a video, a subtitle or a poster
+					buildVideosFromSeasonFolder(show, seasonFolder, season);
+				}
 			}
 		}
 	}
@@ -166,7 +168,7 @@ public class AutomaticInserter
 		
 		final String tempName = videoFileName.substring(0,
 				videoFileName.lastIndexOf("-") - 1);
-		video.setTitle(tempName.replaceAll("_", ""));
+		video.setTitle(tempName.replaceAll("_", " "));
 		video.setPosition(extractPositionFromVideoFileName(videoFileName));
 		final String languageISO = videoFileName.substring(
 				videoFileName.lastIndexOf("_") + 1,
@@ -193,12 +195,12 @@ public class AutomaticInserter
 	{
 		final String seasonFolderName = seasonFolder.getName();
 		final Season season = new Season();
-		season.setName(seasonFolderName.replaceAll("_", ""));
+		season.setName(seasonFolderName.replaceAll("_", " "));
 		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase()
 				+ bannerSuffix);
 		season.setShowId(show.getId());
 		season.setPosition(extractPositionFromSeasonFolderName(seasonFolderName));
-		
+		if(seasonDao.findByName(season.getName() != null)
 		seasonDao.update(season);
 		LOGGER.info("Season " + season.getName() + " from show " + season.getShowId() + " at pos "
 				+ season.getPosition() + " with icon " + season.getIconUrl() + " has been updated");
