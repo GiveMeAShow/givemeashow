@@ -25,6 +25,20 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+	<bean id="contentManager"
+	                class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	                <property name="favorPathExtension" value="true"/>
+	                <property name="ignoreAcceptHeader" value="true" />
+	                <property name="defaultContentType" value="text/html" />
+	                <property name="useJaf" value="false"/>
+	                <property name="mediaTypes">
+	                    <map>
+	                        <entry key="html" value="text/html" />
+	                        <entry key="json" value="application/json" />
+	                        <entry key="xml" value="application/xml" />
+	                    </map>
+	                </property>
+	        </bean>
 	
 	<!-- <bean id="authService" class="com.cap.theater.common.services.AuthorizationService"/> -->
 	

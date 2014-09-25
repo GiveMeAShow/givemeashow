@@ -3,7 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
@@ -30,9 +31,16 @@
 <script src="<c:url value='/resources/pickadate/picker.time.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/picker.date.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/legacy.js'/>"></script>
-<script type='text/javascript' src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
+<script src="<c:url value='/resources/'/>"></script>
+<script type='text/javascript'
+	src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css"
-    href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.1/video.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/javascript.js'/>"></script>
+
 </head>
 </html>
