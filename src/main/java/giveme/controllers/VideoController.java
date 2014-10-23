@@ -1,5 +1,6 @@
 package giveme.controllers;
 
+import static giveme.controllers.bindings.SharedBindings.positionChooser;
 import giveme.common.beans.ISOLang;
 import giveme.common.beans.Video;
 import giveme.common.dao.ISOLangDao;
@@ -25,36 +26,38 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import static giveme.controllers.bindings.SharedBindings.positionChooser;
-
 @Controller
 public class VideoController
 {
-	
+	public static final Logger	LOGGER	= Logger.getLogger(VideoController.class.getName());
+
 	@Autowired
-	FileExplorer fileExplorer;
-	
+	FileExplorer				fileExplorer;
+
 	@Autowired
-	VideoServices videoServices;
-	
+	VideoServices				videoServices;
+
 	@Autowired
-	ShowDao showDao;
-	
+	ShowDao						showDao;
+
 	@Autowired
-	SeasonDao seasonDao;
-	
+	SeasonDao					seasonDao;
+
 	@Autowired
-	ISOLangDao langDao;
-	
+	ISOLangDao					langDao;
+
 	@Autowired
-	VideoDao videoDao;
-	
+	VideoDao					videoDao;
+
 	@Autowired
-	AutomaticInserter autoInsert;
-	
-	@Autowired
-	private static final Logger LOGGER = Logger.getLogger(VideoController.class.getName());
-	
+	AutomaticInserter			autoInsert;
+
+	public VideoController()
+	{
+		LOGGER.info("lol");
+		// TODO Auto-generated constructor stub
+	}
+
 	@RequestMapping(value = "/admin/video/new", method = RequestMethod.GET)
 	public ModelAndView newForm()
 	{
@@ -62,15 +65,15 @@ public class VideoController
 		mdv.addObject("selectedVideo", new SelectedVideoFromFile());
 		return mdv;
 	}
-	
+
 	@RequestMapping(value = "/admin/video/auto", method = RequestMethod.GET)
 	public ModelAndView autoInsert()
 	{
 		final ModelAndView mdv = new ModelAndView();
-		autoInsert.runAndBuildDatabase();
+		autoInsert.runAndFillDatabase();
 		return mdv;
 	}
-	
+
 	@RequestMapping(value = "/admin/video/add", method = RequestMethod.POST)
 	public ModelAndView add(@ModelAttribute("video") final Video video)
 	{
@@ -81,7 +84,7 @@ public class VideoController
 		final ModelAndView mdv = new ModelAndView("/admin/video/validInsertion");
 		return mdv;
 	}
-	
+
 	@RequestMapping(value = "/admin/video/new/{showId}/{seasonId}", method = RequestMethod.GET)
 	public ModelAndView addAVideoWithShowAndSeason(@ModelAttribute("showId") final int showId,
 			@ModelAttribute("seasonId") final int seasonId)
@@ -93,7 +96,7 @@ public class VideoController
 		selectVideoModel.setSeasonId(seasonId);
 		return mdv;
 	}
-	
+
 	@RequestMapping(value = "/admin/webservices/video/listVideos/{directoryId}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<VideoFile> listVideos(@ModelAttribute("directoryId") final int directoryId)
@@ -101,23 +104,23 @@ public class VideoController
 		LOGGER.info("received directory " + directoryId);
 		return fileExplorer.listVideos(directoryId);
 	}
-	
+
 	@RequestMapping(value = "/admin/video/select", method = RequestMethod.POST)
 	public ModelAndView buildVideo(@ModelAttribute("selectedVideo") final SelectedVideoFromFile selectedVideo,
 			final HttpServletRequest context)
 	{
 		final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
 		final Video videoModel = new Video();
-		
+
 		videoModel.setUrl(videoServices.buildUrl(context, selectedVideo.getPath()));
 		videoModel.setRelativePath(selectedVideo.getPath());
 		videoModel.setTitle(selectedVideo.getTitle());
-		
+
 		mdv.addObject("video", videoModel);
 		mdv.addObject("shows", showDao.list());
 		mdv.addObject("langList", langDao.list());
 		mdv.addObject("positionList", positionChooser);
-		
+
 		return mdv;
 	}
 }

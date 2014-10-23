@@ -8,9 +8,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     
-    <bean id="corporateEventDao" class="com.example.JdbcCorporateEventDao">
+   <!--  <bean id="corporateEventDao" class="com.example.JdbcCorporateEventDao">
         <property name="dataSource" ref="dataSource"/>
-    </bean>
+    </bean> -->
     
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
