@@ -17,30 +17,35 @@
 	href="<c:url value='/resources/css/bootstrap.css'/>" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/resources/css/style.css'/>" />
-<script src="<c:url value='/resources/js/jquery.min.js'/>"></script>
-<script src="<c:url value='/resources/js/jquery.jcarousel.min.js'/>"></script>
-<script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
-<script src="<c:url value='/resources/js/javascript.js'/>"></script>
+    <link rel="stylesheet" type="text/css"
+	href="<c:url value='/resources/css/main.css'/>" />
+
+
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/resources/pickadate/themes/classic.css'/>" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/resources/pickadate/themes/classic.time.css'/>" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/resources/pickadate/themes/classic.date.css'/>" />
+
+    <script src="<c:url value='/resources/js/jquery-1.10.2.min.js'/>"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value='/resources/js/javascript.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/picker.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/picker.time.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/picker.date.js'/>"></script>
 <script src="<c:url value='/resources/pickadate/legacy.js'/>"></script>
-<script src="<c:url value='/resources/'/>"></script>
-<script type='text/javascript'
-	src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+<!-- JQUERY -->
 <link rel="stylesheet" type="text/css"
 	href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.1/video.js"></script>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/javascript.js'/>"></script>
+<script src="<c:url value='/resources/js/jquery.jcarousel.min.js'/>"></script>
+<!--<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.1/video.js"></script>-->
 
+    
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/app.js'/>"></script>
 </head>
 </html>

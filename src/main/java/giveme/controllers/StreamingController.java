@@ -2,6 +2,7 @@ package giveme.controllers;
 
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
+import giveme.common.dao.VideoDao;
 
 import java.util.List;
 
@@ -23,15 +24,18 @@ public class StreamingController
 	@Autowired
 	ShowDao						showDao;
 
+	@Autowired
+	VideoDao					videoDao;
+
 	List<Integer>				positionChooser;
 
 	/**
 	 * Show the entire showList for an admin.
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView list()
+	public ModelAndView welcome()
 	{
 		ModelAndView mdv = new ModelAndView("/index");
 		return mdv;

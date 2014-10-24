@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,9 +27,18 @@ public abstract class IDao<T>
 		final List<T> resultList = new ArrayList<T>();
 		final String query = "select * from " + TABLE_NAME;
 
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(query);
+		for (Map<String, Object> row : rows)
+		{
+			resultList.add(createObjectFromRows(row));
+		}
+
 		LOGGER.info(resultList.size() + " " + TABLE_NAME + " found.");
-		return jdbcTemplate.query(query, new MyObjectMapper());
+
+		return resultList;
 	}
+
+	public abstract T createObjectFromRows(Map<String, Object> row);
 
 	public abstract void save(T toSave);
 

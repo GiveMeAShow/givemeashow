@@ -16,6 +16,7 @@ import giveme.services.VideoServices;
 import giveme.services.models.VideoFile;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -145,6 +146,15 @@ public class VideoController
 		{ video.getPosition() });
 
 		return mdv;
+	}
+
+	@RequestMapping(value = "/webservices/video/shuffled", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Video> getShuffledList()
+	{
+		List<Video> videoList = videoDao.list();
+		Collections.shuffle(videoList);
+		return videoList;
 	}
 
 	@RequestMapping(value = "/admin/video/select", method = RequestMethod.POST)

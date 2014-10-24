@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -181,5 +182,12 @@ public class ShowDao extends IDao<Show>
 		show.setIconUrl(rs.getString("icon_url"));
 		show.setName(rs.getString("name"));
 		return show;
+	}
+
+	@Override
+	public Show createObjectFromRows(Map<String, Object> row)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

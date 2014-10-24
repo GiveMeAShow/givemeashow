@@ -204,6 +204,7 @@ public class VideoDao extends IDao<Video>
 		return videoList;
 	}
 
+	@Override
 	public Video createObjectFromRows(Map<String, Object> row)
 	{
 

@@ -18,8 +18,9 @@
 					</p>
 				</sec:authorize>
 				<ul class="nav navbar-nav">
-					<li><a href="<c:url value="/" />">Video</a></li>
-					<li><a href="<c:url value="/"/>">Controls</a></li>
+					<li><a id="videoMenu" >Video</a> </li>
+					<li><a id="controlsMenu" onClick="moveVideo(controlsClickHandler);">Controls</a></li>
+                    <li><a id="aboutMenu" onClick="moveVideo(aboutClickHandler);">About</a></li>
 					<sec:authorize access="hasRole('ROLE_USER')">
 						<li><a href="<c:url value="/Details"/>">My Account</a></li>
 					</sec:authorize>

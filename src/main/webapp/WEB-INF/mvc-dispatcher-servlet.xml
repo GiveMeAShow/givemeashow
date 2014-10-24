@@ -34,6 +34,7 @@
 	                <property name="mediaTypes">
 	                    <map>
 	                        <entry key="html" value="text/html" />
+	                        <entry key="js" value="text/javascript" />
 	                        <entry key="json" value="application/json" />
 	                        <entry key="xml" value="application/xml" />
 	                        <entry key="webm" value="video/webm" />

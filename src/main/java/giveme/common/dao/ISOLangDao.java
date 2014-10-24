@@ -5,6 +5,7 @@ import giveme.common.beans.ISOLang;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -62,5 +63,12 @@ public class ISOLangDao extends IDao<ISOLang>
 			e.printStackTrace();
 		}
 		return language;
+	}
+
+	@Override
+	public ISOLang createObjectFromRows(Map<String, Object> row)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
