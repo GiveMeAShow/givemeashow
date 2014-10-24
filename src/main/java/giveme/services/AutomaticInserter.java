@@ -114,8 +114,7 @@ public class AutomaticInserter
 				{
 					final Season season = createSeason(show, seasonFolder);
 					season.setShowId(show.getId());
-
-					final Season seasonInDb = seasonDao.findByName(season.getName());
+					final Season seasonInDb = seasonDao.findByNameAndShowID(season.getName(), season.getShowId());
 					if (seasonInDb == null)
 					{
 						seasonDao.save(season);
@@ -125,7 +124,6 @@ public class AutomaticInserter
 					{
 						season.setId(seasonInDb.getId());
 						LOGGER.info("Updated season " + season.getName() + " and id " + season.getId());
-
 					}
 
 					// Add all the files in a season folder. It can be a video,
@@ -228,7 +226,7 @@ public class AutomaticInserter
 		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase() + bannerSuffix);
 		season.setShowId(show.getId());
 		season.setPosition(extractPositionFromSeasonFolderName(seasonFolderName));
-		if (seasonDao.findByName(season.getName()) != null)
+		if (seasonDao.findByNameAndShowID(season.getName(), season.getShowId()) != null)
 		{
 			seasonDao.update(season);
 		}

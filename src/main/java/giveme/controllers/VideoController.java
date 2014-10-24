@@ -2,6 +2,8 @@ package giveme.controllers;
 
 import static giveme.controllers.bindings.SharedBindings.positionChooser;
 import giveme.common.beans.ISOLang;
+import giveme.common.beans.Season;
+import giveme.common.beans.Show;
 import giveme.common.beans.Video;
 import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.SeasonDao;
@@ -13,6 +15,7 @@ import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
 import giveme.services.models.VideoFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,15 +77,33 @@ public class VideoController
 		return mdv;
 	}
 
+	@RequestMapping(value = "/admin/video/pending", method = RequestMethod.GET)
+	public ModelAndView showPending()
+	{
+		final ModelAndView mdv = new ModelAndView("/admin/video/list");
+		mdv.addObject("videoList", videoDao.listPEnding());
+		return mdv;
+	}
+
 	@RequestMapping(value = "/admin/video/add", method = RequestMethod.POST)
-	public ModelAndView add(@ModelAttribute("video") final Video video)
+	public String add(@ModelAttribute("video") final Video video)
 	{
 		LOGGER.info("Saving video " + video.getTitle());
 		final ISOLang lang = langDao.findByISO(video.getLanguage());
 		video.setLanguageIso(lang);
-		videoDao.save(video);
+		Video existingVideo = videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(), video.getSeasonId(),
+				video.getTitle());
+		if (existingVideo != null)
+		{
+			video.setId(existingVideo.getId());
+			videoDao.update(video);
+		}
+		else
+		{
+			videoDao.save(video);
+		}
 		final ModelAndView mdv = new ModelAndView("/admin/video/validInsertion");
-		return mdv;
+		return "redirect: /admin/video/new";
 	}
 
 	@RequestMapping(value = "/admin/video/new/{showId}/{seasonId}", method = RequestMethod.GET)
@@ -105,6 +126,27 @@ public class VideoController
 		return fileExplorer.listVideos(directoryId);
 	}
 
+	@RequestMapping(value = "/admin/video/edit/{videoId}", method = RequestMethod.GET)
+	public ModelAndView buildVideo(@ModelAttribute("videoId") final int videoId, final HttpServletRequest context)
+	{
+		final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
+		LOGGER.info("Editing video");
+		Video video = videoDao.findById(videoId);
+		video.setValidated(true);
+		mdv.addObject("video", video);
+
+		mdv.addObject("seasons", Arrays.asList(new Season[]
+		{ seasonDao.findById(video.getSeasonId()) }));
+		mdv.addObject("shows", Arrays.asList(new Show[]
+		{ showDao.findById(video.getShowId()) }));
+		mdv.addObject("langList", Arrays.asList(new ISOLang[]
+		{ langDao.findByISO(video.getLanguageIso().getIso()) }));
+		mdv.addObject("positionList", new Integer[]
+		{ video.getPosition() });
+
+		return mdv;
+	}
+
 	@RequestMapping(value = "/admin/video/select", method = RequestMethod.POST)
 	public ModelAndView buildVideo(@ModelAttribute("selectedVideo") final SelectedVideoFromFile selectedVideo,
 			final HttpServletRequest context)
@@ -118,6 +160,7 @@ public class VideoController
 
 		mdv.addObject("video", videoModel);
 		mdv.addObject("shows", showDao.list());
+		mdv.addObject("seasons", seasonDao.list());
 		mdv.addObject("langList", langDao.list());
 		mdv.addObject("positionList", positionChooser);
 

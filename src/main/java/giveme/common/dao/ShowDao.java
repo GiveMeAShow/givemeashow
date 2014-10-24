@@ -3,6 +3,8 @@ package giveme.common.dao;
 import static giveme.common.dao.SharedConstants.DB_NAME;
 import giveme.common.beans.Show;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -50,10 +53,22 @@ public class ShowDao extends IDao<Show>
 		try
 		{
 			final String query = "insert into " + TABLE_NAME + " (name, icon_url) " + "VALUES (?, ?)";
+
 			KeyHolder keyHolder = new GeneratedKeyHolder();
-			jdbcTemplate.update(query, new Object[]
-			{ show.getName(), show.getIconUrl() }, keyHolder);
-			show.setId(keyHolder.getKey().intValue());
+
+			jdbcTemplate.update(new PreparedStatementCreator()
+			{
+
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException
+				{
+					PreparedStatement ps = con.prepareStatement(query, new String[]
+					{ "name", "icon_url" });
+					ps.setString(1, show.getName());
+					ps.setString(2, show.getIconUrl());
+					return ps;
+				}
+			}, keyHolder);
+
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
@@ -66,7 +81,7 @@ public class ShowDao extends IDao<Show>
 	 * @return a new Show
 	 * @throws SQLException
 	 */
-	private Show createShowFromResultSet(final ResultSet rs) throws SQLException
+	public Show createShowFromResultSet(final ResultSet rs) throws SQLException
 	{
 		final Show show = new Show();
 		show.setId(rs.getInt("id"));
@@ -85,6 +100,7 @@ public class ShowDao extends IDao<Show>
 		try
 		{
 			final String query = "update " + TABLE_NAME + " set name = ?, icon_url = ? where id = ?";
+
 			jdbcTemplate.update(query, new Object[]
 			{ s.getName(), s.getIconUrl(), s.getId() });
 		} catch (final Exception e)

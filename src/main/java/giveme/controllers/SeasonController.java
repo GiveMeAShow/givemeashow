@@ -4,6 +4,7 @@ import giveme.common.beans.Season;
 import giveme.common.beans.Show;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
+import giveme.common.dao.VideoDao;
 import giveme.controllers.bindings.SeasonAndShowName;
 
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class SeasonController
 	@Autowired
 	ShowDao						showDao;
 
+	@Autowired
+	VideoDao					videoDao;
+
 	List<Integer>				positionChooser;
 
 	public SeasonController()
@@ -43,7 +47,7 @@ public class SeasonController
 
 	/**
 	 * Show the entire showList for an admin.
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/season/list", method = RequestMethod.GET)
@@ -56,7 +60,7 @@ public class SeasonController
 
 	/**
 	 * The admin page to create a new season
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/season/new", method = RequestMethod.GET)
@@ -71,7 +75,7 @@ public class SeasonController
 
 	/**
 	 * The admin page to create a new season
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/season/new/{showName}", method = RequestMethod.GET)
@@ -88,7 +92,7 @@ public class SeasonController
 
 	/**
 	 * Show the entire showList for an admin.
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/season/list/{showId}", method = RequestMethod.GET)
@@ -111,7 +115,7 @@ public class SeasonController
 
 	/**
 	 * Valid a show and insert it !
-	 *
+	 * 
 	 * @param show
 	 * @return to a new page
 	 */
@@ -131,6 +135,7 @@ public class SeasonController
 	{
 		ModelAndView mdv = new ModelAndView("/admin/season/showSeason");
 		mdv.addObject("season", seasonDao.findById(seasonId));
+		mdv.addObject("videoList", videoDao.findBySeasonId(seasonId));
 
 		return mdv;
 	}

@@ -9,6 +9,7 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
+	<div class="adminContent">
 	<div class="row">
 		<div class="col-md-8">
 			<c:forEach items="${showList}" var="show">
@@ -25,6 +26,7 @@
 				</div>
 			</c:forEach>
 		</div>
+	</div>
 	</div>
 	<script type="text/javascript">
 		$("#adminDropDown").addClass("active");

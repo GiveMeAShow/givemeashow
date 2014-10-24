@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class VideoDao extends IDao<Video>
 		;
 		// season.setLanguage(rs.getString("name"));
 		video.setShowId(rs.getInt("show_id"));
+		video.setSeasonId(rs.getInt("season_id"));
 		video.setPosition(rs.getInt("position"));
 		video.setTransition(rs.getBoolean("is_transition"));
 		video.setRelativePath(rs.getString("relative_path"));
@@ -180,5 +182,81 @@ public class VideoDao extends IDao<Video>
 			return null;
 		}
 		return video;
+	}
+
+	public List<Video> listPEnding()
+	{
+		List<Video> videoList = new ArrayList<Video>();
+		try
+		{
+
+			final String query = "select * from " + TABLE_NAME + " WHERE validated = ?";
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(query, new Object[]
+			{ 0 });
+			for (Map<String, Object> row : rows)
+			{
+				videoList.add(createObjectFromRows(row));
+			}
+		} catch (final Exception e)
+		{
+
+		}
+		return videoList;
+	}
+
+	public Video createObjectFromRows(Map<String, Object> row)
+	{
+
+		Video video = new Video();
+		video.setTitle((String) row.get("TITLE"));
+		video.setId(Integer.parseInt(String.valueOf(row.get("ID"))));
+		video.setShowId(Integer.parseInt(String.valueOf(row.get("SHOW_ID"))));
+		video.setSeasonId(Integer.parseInt(String.valueOf(row.get("SEASON_ID"))));
+		video.setEndIntroTime(Double.parseDouble(String.valueOf(row.get("END_INTRO_TIME"))));
+		video.setStartOutroTime(Double.parseDouble(String.valueOf(row.get("START_OUTRO_TIME"))));
+		video.setLanguageIso(isolangDao.findByISO((String) row.get("LANG_ISO")));
+		video.setPosition(Integer.parseInt(String.valueOf(row.get("POSITION"))));
+		video.setValidated(Boolean.parseBoolean(String.valueOf(row.get("VALIDATED"))));
+		video.setTransition(Boolean.parseBoolean(String.valueOf(row.get("IS_TRANSITION"))));
+		video.setRelativePath((String) row.get("RELATIVE_PATH"));
+		video.setUrl((String) row.get("URL"));
+		video.setViewed(Long.parseLong((String) row.get("VIEWED")));
+		return video;
+	}
+
+	public void update(Video video)
+	{
+		LOGGER.info("Updating video " + video.getTitle());
+		jdbcTemplate
+				.update("update "
+						+ TABLE_NAME
+						+ " set title = ?, season_id = ?, lang_iso = ?, position = ?, is_transition = ?, relative_path = ?, viewed = ?, url = ?"
+						+ ", show_id = ?, end_intro_time = ?, start_outro_time = ?, validated = ? WHERE id = ?",
+						new Object[]
+						{ video.getTitle(), video.getSeasonId(), video.getLanguageIso().getIso(), video.getPosition(),
+								video.getIsTransition(), video.getRelativePath(), video.getViewed(), video.getUrl(),
+								video.getShowId(), video.getEndIntroTime(), video.getStartOutroTime(),
+								video.isValidated(), video.getId() });
+	}
+
+	public List<Video> findBySeasonId(Integer seasonId)
+	{
+		LOGGER.info("finding video seasonID " + seasonId);
+		List<Video> videoList = new ArrayList<Video>();
+		try
+		{
+
+			final String query = "select * from " + TABLE_NAME + " WHERE season_id = ?";
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(query, new Object[]
+			{ seasonId });
+			for (Map<String, Object> row : rows)
+			{
+				videoList.add(createObjectFromRows(row));
+			}
+		} catch (final Exception e)
+		{
+
+		}
+		return videoList;
 	}
 }

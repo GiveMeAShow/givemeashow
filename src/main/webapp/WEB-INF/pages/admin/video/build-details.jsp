@@ -45,7 +45,7 @@
 					<form:label path="seasonId">Season </form:label>
 				</div>
 				<div class="col-md-4">
-					<form:select id="seasonSelect" path="seasonId" items="${shows}"
+					<form:select id="seasonSelect" path="seasonId" items="${seasons}"
 						itemLabel="name" itemValue="id"></form:select>
 				</div>
 			</div>
@@ -99,6 +99,14 @@
 			</div>
 			<div class="row">
 				<div class="col-md-2">
+					<form:label path="validated">Validated </form:label>
+				</div>
+				<div class="col-md-4">
+					<form:checkbox path="validated" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
 					<form:label path="endIntroTime">End intro </form:label>
 				</div>
 				<div class="col-md-2">
@@ -138,6 +146,8 @@
 
 		var getSeasonForShowId = function(showId) {
 			console.log("showId " + showId);
+			if ($("#seasonSelect").length != 1)
+				{
 			$.getJSON(
 					'${pageContext.request.contextPath}/webservices/season/getByShowId/'
 							+ showId, function(seasonList) {
@@ -149,6 +159,14 @@
 							seasonSelector.append(option);
 						}
 					});
+				}
+			else
+				{
+					var option = $("<option></option>").attr("value",
+						${video.seasonId}).text(${video.seasonId});
+					option.prop("selected", true);
+					seasonSelector.append(option);
+				}
 		}
 
 		var setEndIntroTime = function() {
@@ -166,7 +184,7 @@
 
 		videoPlayer.src({
 			type : "video/webm",
-			src : "${video.url}"
+			src : "${baseURL}/GiveMeAShow/${video.url}"
 		});
 
 		getSeasonForShowId($('#showSelect').find(":selected").val());

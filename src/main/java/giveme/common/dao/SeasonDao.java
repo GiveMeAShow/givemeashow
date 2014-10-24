@@ -139,4 +139,20 @@ public class SeasonDao extends IDao<Season>
 		}
 
 	}
+
+	public Season findByNameAndShowID(String name, int showId)
+	{
+		Season season = null;
+		LOGGER.info("finding season " + " name " + name + " title " + showId);
+		try
+		{
+			final String query = "select * from " + TABLE_NAME + " WHERE name = ? AND show_id = ?";
+			season = jdbcTemplate.queryForObject(query, new Object[]
+			{ name, showId }, new MyObjectMapper());
+		} catch (final EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		return season;
+	}
 }
