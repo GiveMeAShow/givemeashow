@@ -24,6 +24,7 @@
 	</bean>
 
     <context:property-placeholder location="gmas-database.properties"/>
+  
  
 
 </beans>

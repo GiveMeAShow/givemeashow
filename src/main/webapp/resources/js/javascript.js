@@ -18,6 +18,14 @@ function changeVideo()
     return false;
 };
 
+function focusVideo()
+{
+	$("#aboutContent").hide("slide", {direction: "right"}, 400);
+	$("#aboutLI").removeClass("active");
+	$("#controlsContent").hide("slide", {direction: "right"}, 400);
+    $("#controlsLI").removeClass("active");
+}
+
 function decreaseIndex()
 {
 	if (index > 0)
@@ -108,6 +116,7 @@ function moveVideo(nextFunction)
         $("#videoMenu").attr("onClick", "showVideo();");
         $("#controlsMenu").attr("onClick", "controlsClickHandler();");
         $("#aboutMenu").attr("onClick", "aboutClickHandler()");
+        
         nextFunction();
 }
 

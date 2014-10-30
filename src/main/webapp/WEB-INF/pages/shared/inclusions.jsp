@@ -44,8 +44,5 @@
 <!--<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/4.1/video.js"></script>-->
 
-    
-<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/angular/app.js'/>"></script>
 </head>
 </html>

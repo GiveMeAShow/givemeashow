@@ -48,7 +48,7 @@
 	<!-- Without this, Spring MVC will handle inclusion like a Get request, but you have no controller to handle a css file for example. -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:resources mapping="/showsDB/**" location="/showsDB/" />
-	
-
-
+	  
+    <bean id="userDAO" class="giveme.common.dao.UserDao"></bean>
+    
 </beans>

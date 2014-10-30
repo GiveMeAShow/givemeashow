@@ -18,23 +18,26 @@
 					</p>
 				</sec:authorize>
 				<ul class="nav navbar-nav">
-					<li><a id="videoMenu" >Video</a> </li>
-					<li><a id="controlsMenu" onClick="moveVideo(controlsClickHandler);">Controls</a></li>
-                    <li><a id="aboutMenu" onClick="moveVideo(aboutClickHandler);">About</a></li>
-					<sec:authorize access="hasRole('ROLE_USER')">
+					<li id="videoMenu"><a  onClick="focusVideo();">Video</a> </li>
+					<li id="controlsLI"><a id="controlsMenu" onClick="moveVideo(controlsClickHandler);">Controls</a></li>
+                    <li id="aboutLI"><a id="aboutMenu" onClick="moveVideo(aboutClickHandler);">About</a></li>
+					<%-- <sec:authorize access="hasRole('ROLE_USER')">
 						<li><a href="<c:url value="/Details"/>">My Account</a></li>
-					</sec:authorize>
-					<li class="dropdown" id="adminDropDown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
-						<ul class="dropdown-menu">
-							<li id="adminShowListMenu"><a href="<c:url value="/admin/show/list"/>">Show List</a></li>
-							<li id="adminShowNewMenu"><a href="<c:url value="/admin/show/new"/>">New Show</a></li>
-							<li id="adminSeasonListMenu"><a href="<c:url value="/admin/season/list/"/>">Season List</a></li>
-							<li id="adminSeasonNewMenu"><a href="<c:url value="/admin/season/new"/>">New Season</a></li>
-                            <li id="adminVideoNewMenu"><a href="<c:url value="/admin/video/new"/>">New Video</a></li>
-                            <li id="adminLangNewMenu"><a href="<c:url value="/admin/lang/new"/>">New Language</a></li>
-                            <li id="adminPendingMenu"><a href="<c:url value="/admin/video/pending"/>">Pending</a></li>
-						</ul></li>
+					</sec:authorize> --%>
+					<sec:authorize access="hasRole('ROLE_ADMIN')" >
+						<li class="dropdown" id="adminDropDown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
+							<ul class="dropdown-menu">
+								<li id="adminShowListMenu"><a href="<c:url value="/admin/show/list"/>">Show List</a></li>
+								<li id="adminShowNewMenu"><a href="<c:url value="/admin/show/new"/>">New Show</a></li>
+								<li id="adminSeasonListMenu"><a href="<c:url value="/admin/season/list/"/>">Season List</a></li>
+								<li id="adminSeasonNewMenu"><a href="<c:url value="/admin/season/new"/>">New Season</a></li>
+	                            <li id="adminVideoNewMenu"><a href="<c:url value="/admin/video/new"/>">New Video</a></li>
+	                            <li id="adminLangNewMenu"><a href="<c:url value="/admin/lang/new"/>">New Language</a></li>
+	                            <li id="adminPendingMenu"><a href="<c:url value="/admin/video/pending"/>">Pending</a></li>
+							</ul>
+						</li>
+						</sec:authorize>
 				</ul>
 
 				<sec:authorize access="hasRole('ROLE_USER')">
@@ -51,10 +54,10 @@
 						data-toggle="dropdown" href="#"> <img id="adminIcon"
 							class="nav "  src="<c:url value='/resources/img/admin_icon.png'/>">
 					</a>
-						<ul class="dropdown-menu">
+						<%-- <ul class="dropdown-menu">
 							<li><a href="<c:url value="/admin/createMovie"/>">Ajouter un film</a></li>
 							<li><a href="<c:url value="/admin/showAll"/>">Liste complète</a></li>
-						</ul></li>
+						</ul></li> --%>
 				</ul>
 				</sec:authorize>
 			</div>

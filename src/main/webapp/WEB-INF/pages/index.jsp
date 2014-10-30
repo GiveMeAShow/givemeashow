@@ -13,9 +13,21 @@
 	href="<c:url value='/resources/css/video-js.css'/>" />
 <script src="<c:url value='/resources/js/videojs/video.js'/>"></script>
 <script src="<c:url value='/resources/js/keyListener.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-ui-router.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-animate.js'/>"></script>
+
+    
+    
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Video/Video.js'/>"></script>  
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Video/VideoPlayer.js'/>"></script>  
+     
+
+<script type="text/javascript" src="<c:url value='/resources/js/angular/app.js'/>"></script>
+
 
 </head>
-<body>
+<body ng-app="givemeashow">
 	<jsp:include page="shared/navBar.jsp"></jsp:include>
 	
 	<div class="mainContent row-fluid span12">
@@ -23,6 +35,7 @@
                 <div id="videoTitle" class="col-xs-6 col-xs-offset-2"></div>
             </div>
             <div class="row">
+            
                 <video id="videoClip" class="video-js vjs-default-skin videoContainer col-xs-6 col-xs-offset-2"
                     controls preload="auto" width="640px" height="360px">
                 </video>
@@ -46,6 +59,7 @@
                             It is our very first webSite and we need your feedbacks ! Contact us at : ogdabou@gmail.com.</br></br>
                             Dev stuff by Ogdabou</br>
                             Server stuff by Naixy</br>
+                            Feel free to send me feedbacks : ogdabou@gmail.com</br>
                         </p>
                     </div>
                     <div id="controlsContent">
@@ -92,24 +106,33 @@
             videoPlayer.on("fullscreenchange", removeVideoPlayerOffset);
             videoPlayer.on("error", changeVideo);
             console.log("path:", path);
-            var index = 0;
+            var index = 0;/* 
+            $("videoMenu").on("click", function(){
+            	$("#aboutContent").hide("slide", {direction: "right"}, 400);
+            	$("#aboutLI").removeClass("active");
+            	$("#controlsContent").hide("slide", {direction: "right"}, 400);
+                $("#controlsLI").removeClass("active");
+            }); */
     
     function aboutClickHandler()
 {
     if ((aboutShown === "true") && (controlsShown === "true"))
     {
         aboutShown = "false";
-        $("#aboutContent").hide("slide", {direction: "right"}, 400);    
+        $("#aboutContent").hide("slide", {direction: "right"}, 400);  
+        $("#aboutLI").removeClass("active");
     }
     else if (aboutShown === "false" && controlsShown == "true")
     {
         aboutShown = "true";
         $("#aboutContent").show("slide", {direction: "right"}, 400);
+        $("#aboutLI").addClass("active");
     }
     else if (aboutShown === "false" && controlsShown == "false")
     {
         aboutShown = "true";
         $("#aboutContent").show("slide", {direction: "right"}, 400);
+        $("#aboutLI").addClass("active");
     }
 }
 
@@ -118,17 +141,20 @@ function controlsClickHandler()
     if ((aboutShown === "true") && (controlsShown === "true"))
     {
         controlsShown = "false";
-        $("#controlsContent").hide("slide", {direction: "right"}, 400);    
+        $("#controlsContent").hide("slide", {direction: "right"}, 400);
+        $("#controlsLI").removeClass("active");
     }
     else if (controlsShown === "false" && aboutShown == "true")
     {
         controlsShown = "true";
         $("#controlsContent").show("slide", {direction: "right"}, 400);
+        $("#controlsLI").addClass("active");
     }
     else if (controlsShown === "false" && aboutShown == "false")
     {
         controlsShown = "true";
         $("#controlsContent").show("slide", {direction: "right"}, 400);
+        $("#controlsLI").addClass("active");
     }
 }
         </script>
