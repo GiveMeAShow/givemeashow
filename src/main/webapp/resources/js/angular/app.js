@@ -3,15 +3,17 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngSanitize',
-							   'givemeashow.show', 'givemeashow.video'])
+							   'givemeashow.index'])
 
 .config(['$routeProvider', function($routeProvider){
-	$routeProvider.when('/user', {
-		
-	}).
-	when('/', {
+	$routeProvider.
+	/*when('/', {
 		templateUrl:'resources/js/angular/Views/Player.html',
 		controller:'VideoPlayerController'
+	}).*/	
+	when('/', {
+		templateUrl:'resources/js/angular/Views/index.html',
+		controller: 'IndexController'
 	}).
 	otherwise({
 		redirectTo: '/'

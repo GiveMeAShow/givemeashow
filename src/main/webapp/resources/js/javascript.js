@@ -19,33 +19,6 @@ function decreaseIndex()
 	}
 }
 
-function changeToPreviousVideo()
-{
-	var url = "/GiveMeAShow/" + playList[index].url;
-	console.log(url);
-	setVideo(url);
-	decreaseIndex();
-}
-
-function setVideo(url)
-{
-	videoPlayer.src({type: "video/webm", src: url});
-	videoPlayer.currentTime(0);
-	videoPlayer.ready(function(){
-		var vp = this;
-		vp.play();
-	});
-}
-
-function changeToNextVideo()
-{
-	var url = "/GiveMeAShow/" + playList[index].url;
-	console.log(url);
-	setVideo(url);
-	index = index + 1;
-   
-}
-
 
 
 function managePath(folderName, id) 
@@ -144,18 +117,7 @@ function showVideo()
     $("#showChooser").show("fade", 400);
 }
 
-function removeVideoPlayerOffset()
-{
-    console.log($("#videoClip").hasClass("vjs-fullscreen"));
-    if ($("#videoClip").hasClass("vjs-fullscreen"))
-    {
-          $("#videoClip").removeClass("col-xs-offset-2"); 
-    }
-    else
-    {
-        $("#videoClip").addClass("col-xs-offset-2");  
-    }
-}
+
 
 function updVolumeByTen()
 {
