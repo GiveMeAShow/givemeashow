@@ -1,0 +1,11 @@
+<div>
+	<div id="showChooser" class="col-xs-2">
+		<div id="showChooserTitle"><h5>Choose your show.</h5></div>
+		<hr/>
+		<div id="showList" ng-repeat="show in shows">
+		  	<div class=\"showBox_hidden\" id="{{id}}">
+				<img src="{{baseURl}}/{{icon_url}}" ng-click="addToList(show);" />
+			</div>
+		</div>
+	</div>
+</div>

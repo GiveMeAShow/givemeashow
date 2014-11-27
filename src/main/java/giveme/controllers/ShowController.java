@@ -32,9 +32,18 @@ public class ShowController
 		return showDao.list();
 	}
 
+	@RequestMapping(value = "/webservices/show", method = RequestMethod.GET)
+	public ModelAndView showListWebservice()
+	{
+		ModelAndView mdv = new ModelAndView("/admin/show/showList");
+		List<Show> showList = showDao.list();
+		mdv.addObject("showList", showList);
+		return mdv;
+	}
+
 	/**
 	 * Show the entire showList for an admin.
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/show/list", method = RequestMethod.GET)
@@ -48,7 +57,7 @@ public class ShowController
 
 	/**
 	 * Returns the page associated to a show.
-	 *
+	 * 
 	 * @param showId
 	 * @return
 	 */
@@ -67,7 +76,7 @@ public class ShowController
 
 	/**
 	 * The admin page to create a new show
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/show/new", method = RequestMethod.GET)
@@ -80,7 +89,7 @@ public class ShowController
 
 	/**
 	 * Valid a show and insert it !
-	 *
+	 * 
 	 * @param show
 	 * @return to a new page
 	 */

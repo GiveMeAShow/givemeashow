@@ -17,7 +17,8 @@
 <script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-ui-router.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-animate.js'/>"></script>
 
-    
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Show/Show.js'/>"></script>  
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Show/ShowChooser.js'/>"></script>  
     
 <script type="text/javascript" src="<c:url value='/resources/js/angular/Video/Video.js'/>"></script>  
 <script type="text/javascript" src="<c:url value='/resources/js/angular/Video/VideoPlayer.js'/>"></script>  
@@ -39,15 +40,7 @@
                 <video id="videoClip" class="video-js vjs-default-skin videoContainer col-xs-6 col-xs-offset-2"
                     controls preload="auto" width="640px" height="360px">
                 </video>
-                <div id="showChooser" class="col-xs-2">
-                    <div id="showChooserTitle"><h5>Choose your show.</h5></div>
-                    <hr/>
-                    <div id="showList">
-                        <?php
-                                include("php/GenerateThumbs.php");
-                        ?>
-                    </div>
-                </div>
+                <show-chooser></show-chooser>
                 <div class="textContent col-xs-7 col-xs-offset-1">
                     <div id="aboutContent">
                         <h3>About</h3>
@@ -106,13 +99,8 @@
             videoPlayer.on("fullscreenchange", removeVideoPlayerOffset);
             videoPlayer.on("error", changeVideo);
             console.log("path:", path);
-            var index = 0;/* 
-            $("videoMenu").on("click", function(){
-            	$("#aboutContent").hide("slide", {direction: "right"}, 400);
-            	$("#aboutLI").removeClass("active");
-            	$("#controlsContent").hide("slide", {direction: "right"}, 400);
-                $("#controlsLI").removeClass("active");
-            }); */
+            var index = 0;
+	
     
     function aboutClickHandler()
 {

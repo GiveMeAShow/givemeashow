@@ -1,4 +1,4 @@
-angular.module("givemeashow.videoPlayer", ['ui-router', 'givemeashow.video.service'])
+angular.module("givemeashow.videoPlayer", ['ui-router', 'givemeashow.video.service', 'givemeashow.show.service'])
 
 .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) { 
 
@@ -15,9 +15,11 @@ angular.module("givemeashow.videoPlayer", ['ui-router', 'givemeashow.video.servi
 			}
 		},
 		
-		controller : ['$scope', '$state','videosSerivces', 'shuffledPlaylist',
-					 function($scope, $state, videosSerivces, shuffledPlaylist) {
-						 $scope.shuffledPlayList = shuffledPlaylist;
+		controller : ['$scope', '$state','videosSerivces', 'showService',
+					 function($scope, $state, videosSerivces, showService) {
+						 
+						 
+						 $scope.shuffledPlayList = videoServices.shuffled();
 						 var shuffledIndex = 0;
 						 $scope.currentVideo = $scope.shuffledPlayList[shuffledIndex];
 						 
@@ -27,7 +29,7 @@ angular.module("givemeashow.videoPlayer", ['ui-router', 'givemeashow.video.servi
 						 }
 						 
 						 $scope.nextVideo = function() {
-							 if(shuffledIndex < shuffledPlaylist.length)
+							 if(shuffledIndex < $scope.shuffledPlaylist.length)
 							 {
 								shuffledIndex = shuffledIndex + 1;
 							 	setVideoFromShuffledIndex();

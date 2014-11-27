@@ -70,6 +70,15 @@ public class AutomaticInserter
 	{
 		// Get shows names from the first folder level
 		final File baseFolder = new File(BASE_FOLDER_PATH);
+		buildShows(baseFolder);
+	}
+
+	/**
+	 * 
+	 * @param baseFolder
+	 */
+	private void buildShows(final File baseFolder)
+	{
 		if (baseFolder != null && baseFolder.listFiles() != null && baseFolder.listFiles().length != 0)
 		{
 			for (final File showFolder : baseFolder.listFiles())
@@ -77,7 +86,8 @@ public class AutomaticInserter
 				final String showFolderName = showFolder.getName();
 				final Show show = new Show();
 				show.setName(showFolderName.replaceAll("_", " "));
-				show.setIconUrl(showFolderName + File.separator + showFolderName.toLowerCase() + bannerSuffix);
+				final String showPath = showFolderName + File.separator + showFolderName.toLowerCase() + bannerSuffix;
+				show.setIconUrl(showPath.replace(File.separatorChar, '\\'));
 				final Show showInDb = showDao.findByName(show.getName());
 				if (showInDb == null)
 				{
