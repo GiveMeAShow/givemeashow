@@ -1,23 +1,4 @@
 
-function changeVideo() 
-{
-    addVideoToHistory(document.getElementById("videoClip_html5_api").getAttribute("src"));
-   
-    if (playList.length == 0)
-    {
-    	$.getJSON("webservices/video/shuffled", function(result){
-    		playList = result;
-    		changeToNextVideo();
-    	});
-    }
-    else
-    {
-    	changeToNextVideo();
-    }
-
-    return false;
-};
-
 function focusVideo()
 {
 	$("#aboutContent").hide("slide", {direction: "right"}, 400);
@@ -65,21 +46,7 @@ function changeToNextVideo()
    
 }
 
-function addVideoToHistory(videoPath)
-{
-    if (videoPath != null)
-    {
-        if (videosHystory == null)
-        {
-            videosHystory = new Array();
-            videosHystory.push(videoPath);
-        }
-        else
-        {
-            videosHystory.push(videoPath);
-        }
-    }
-}
+
 
 function managePath(folderName, id) 
 {
