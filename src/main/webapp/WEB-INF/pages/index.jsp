@@ -14,14 +14,18 @@
 <script src="<c:url value='/resources/js/videojs/video.js'/>"></script>
 <script src="<c:url value='/resources/js/keyListener.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-ui-router.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular-animate.js'/>"></script>
-
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular-route.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular-sanitize.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular-animate.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/lib/angular/angular-resource.js'/>"></script>
+ 
 <script type="text/javascript" src="<c:url value='/resources/js/angular/Show/Show.js'/>"></script>  
-<script type="text/javascript" src="<c:url value='/resources/js/angular/Show/ShowChooser.js'/>"></script>  
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Show/ShowChooser.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Show/ShowModule.js'/>"></script>    
     
 <script type="text/javascript" src="<c:url value='/resources/js/angular/Video/Video.js'/>"></script>  
-<script type="text/javascript" src="<c:url value='/resources/js/angular/Video/VideoPlayer.js'/>"></script>  
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Video/VideoPlayer.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/angular/Video/VideoModule.js'/>"></script>  
      
 
 <script type="text/javascript" src="<c:url value='/resources/js/angular/app.js'/>"></script>
@@ -36,10 +40,8 @@
                 <div id="videoTitle" class="col-xs-6 col-xs-offset-2"></div>
             </div>
             <div class="row">
-            
-                <video id="videoClip" class="video-js vjs-default-skin videoContainer col-xs-6 col-xs-offset-2"
-                    controls preload="auto" width="640px" height="360px">
-                </video>
+              <div ng-view></div>
+               
                 <show-chooser></show-chooser>
                 <div class="textContent col-xs-7 col-xs-offset-1">
                     <div id="aboutContent">
@@ -91,14 +93,9 @@
             var playList = [];
             var controlsShown = "false";
           	document.onkeydown = changeOnKeyDown;
-            var videoPlayer = videojs("videoClip");
-            changeVideo();
+            
             var videosHystory = null;
             var path = new Array();
-            videoPlayer.on("ended", changeVideo);
-            videoPlayer.on("fullscreenchange", removeVideoPlayerOffset);
-            videoPlayer.on("error", changeVideo);
-            console.log("path:", path);
             var index = 0;
 	
     

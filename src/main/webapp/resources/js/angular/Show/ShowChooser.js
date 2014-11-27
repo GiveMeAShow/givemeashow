@@ -1,19 +1,19 @@
-angular.module("givemeashow.show.showChooser", ['ui-router', 'givemeashow.show.service'])
+angular.module("givemeashow.show.showChooser", ['givemeashow.show.service'])
 
-.directive('showChooser', ['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+.directive('showChooser', [function() {
 	return {
 		restrict : 'E',
-		scioe : {},
+		scope : {},
 		controller:'ShowChooserController',
 		link : function (scope, element, attrs) {
-			
+			console.log("showChooser");
 		},
-		templateUrl : '/resources/js/angular/Show/Show.html'
+		templateUrl : 'resources/js/angular/Show/Show.html'
 	}
 }])
 
-.controller('ShowChooserController', ['$scope', '$state','showService', 'shuffledPlaylist',
-	 function($scope, $state, showService) {
+.controller('ShowChooserController', ['$scope','showServices',
+	 function($scope, showService) {
 		 $scope.shows = showService.query();
 		 
 		 $scope.addToList = function(show)

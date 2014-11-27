@@ -32,13 +32,11 @@ public class ShowController
 		return showDao.list();
 	}
 
-	@RequestMapping(value = "/webservices/show", method = RequestMethod.GET)
-	public ModelAndView showListWebservice()
+	@RequestMapping(value = "/webservices/show", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Show> showListWebservice()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/show/showList");
-		List<Show> showList = showDao.list();
-		mdv.addObject("showList", showList);
-		return mdv;
+		return showDao.list();
 	}
 
 	/**

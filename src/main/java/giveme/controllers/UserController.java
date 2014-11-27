@@ -46,19 +46,6 @@ public class UserController
 
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView create()
-	{
-
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security Custom Login Form");
-		model.addObject("message", "This is protected page!");
-		model.setViewName("admin");
-
-		return model;
-
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
