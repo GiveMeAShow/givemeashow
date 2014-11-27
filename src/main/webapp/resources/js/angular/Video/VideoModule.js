@@ -1,0 +1,1 @@
+angular.module('givemeashow.video', ['givemeashow.video.service', 'givemeashow.video.player']);

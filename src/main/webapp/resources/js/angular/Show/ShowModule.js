@@ -1,0 +1,1 @@
+angular.module('givemeashow.show', ['givemeashow.show.showChooser', 'givemeashow.show.service']);
