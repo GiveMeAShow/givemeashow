@@ -173,3 +173,14 @@ textarea {
 	top: -30px;
 }
 
+.hidden{
+	opacity: 0;
+	transition: opacity 1s linear;
+}
+
+.left400
+{
+	opacity: 1;
+	transition-delay: 1s;
+}
+

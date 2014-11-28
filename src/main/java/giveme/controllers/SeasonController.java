@@ -53,7 +53,7 @@ public class SeasonController
 	@RequestMapping(value = "/admin/season/list", method = RequestMethod.GET)
 	public ModelAndView list()
 	{
-		ModelAndView view = new ModelAndView("/admin/season/seasonList");
+		ModelAndView view = new ModelAndView("/admin/season/seasonList.jsp");
 		view.addObject("seasonList", seasonDao.list());
 		return view;
 	}
@@ -66,7 +66,7 @@ public class SeasonController
 	@RequestMapping(value = "/admin/season/new", method = RequestMethod.GET)
 	public ModelAndView adminNewSeason()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
+		ModelAndView mdv = new ModelAndView("/admin/season/createNew.jsp");
 		mdv.addObject("seasonAndShowName", new SeasonAndShowName());
 		mdv.addObject("nameList", showDao.listNames());
 		mdv.addObject("positionList", positionChooser);
@@ -81,7 +81,7 @@ public class SeasonController
 	@RequestMapping(value = "/admin/season/new/{showName}", method = RequestMethod.GET)
 	public ModelAndView adminNewSesonByShowName(@ModelAttribute("showName") String showName)
 	{
-		ModelAndView mdv = new ModelAndView("/admin/season/createNew");
+		ModelAndView mdv = new ModelAndView("/admin/season/createNew.jsp");
 		mdv.addObject("seasonAndShowName", new SeasonAndShowName());
 		List<String> nameList = new ArrayList<String>();
 		nameList.add(showName);
@@ -98,7 +98,7 @@ public class SeasonController
 	@RequestMapping(value = "/admin/season/list/{showId}", method = RequestMethod.GET)
 	public ModelAndView listByShowId(@PathVariable(value = "showId") int showId)
 	{
-		ModelAndView view = new ModelAndView("/admin/season/seasonList");
+		ModelAndView view = new ModelAndView("/admin/season/seasonList.jsp");
 		view.addObject("seasonList", seasonDao.listByShowId(showId));
 		return view;
 	}
@@ -123,7 +123,7 @@ public class SeasonController
 	public ModelAndView adminInsertNewShow(
 			@ModelAttribute("seasonAndShowName") final SeasonAndShowName seasonAndShowName)
 	{
-		ModelAndView mdv = new ModelAndView("/admin/season/validInsertion");
+		ModelAndView mdv = new ModelAndView("/admin/season/validInsertion.jsp");
 		Show show = showDao.findByName(seasonAndShowName.getShowName());
 		seasonAndShowName.getSeason().setShowId(show.getId());
 		seasonDao.save(seasonAndShowName.getSeason());
@@ -133,7 +133,7 @@ public class SeasonController
 	@RequestMapping(value = "/admin/season/{id}", method = RequestMethod.GET)
 	public ModelAndView showSeasonDetails(@ModelAttribute("id") final Integer seasonId)
 	{
-		ModelAndView mdv = new ModelAndView("/admin/season/showSeason");
+		ModelAndView mdv = new ModelAndView("/admin/season/showSeason.jsp");
 		mdv.addObject("season", seasonDao.findById(seasonId));
 		mdv.addObject("videoList", videoDao.findBySeasonId(seasonId));
 

@@ -65,7 +65,7 @@ public class VideoController
 	@RequestMapping(value = "/admin/video/new", method = RequestMethod.GET)
 	public ModelAndView newForm()
 	{
-		final ModelAndView mdv = new ModelAndView("/admin/video/choose");
+		final ModelAndView mdv = new ModelAndView("/admin/video/choose.jsp");
 		mdv.addObject("selectedVideo", new SelectedVideoFromFile());
 		return mdv;
 	}
@@ -81,7 +81,7 @@ public class VideoController
 	@RequestMapping(value = "/admin/video/pending", method = RequestMethod.GET)
 	public ModelAndView showPending()
 	{
-		final ModelAndView mdv = new ModelAndView("/admin/video/list");
+		final ModelAndView mdv = new ModelAndView("/admin/video/list.jsp");
 		mdv.addObject("videoList", videoDao.listPEnding());
 		return mdv;
 	}
@@ -103,7 +103,7 @@ public class VideoController
 		{
 			videoDao.save(video);
 		}
-		final ModelAndView mdv = new ModelAndView("/admin/video/validInsertion");
+		final ModelAndView mdv = new ModelAndView("/admin/video/validInsertion.jsp");
 		return "redirect: /admin/video/new";
 	}
 
@@ -111,7 +111,7 @@ public class VideoController
 	public ModelAndView addAVideoWithShowAndSeason(@ModelAttribute("showId") final int showId,
 			@ModelAttribute("seasonId") final int seasonId)
 	{
-		final ModelAndView mdv = new ModelAndView("/admin/video/choose");
+		final ModelAndView mdv = new ModelAndView("/admin/video/choose.jsp");
 		mdv.addObject("selectedVideo", new SelectedVideoFromFile());
 		final SelectedVideoFromFile selectVideoModel = new SelectedVideoFromFile();
 		selectVideoModel.setShowId(showId);
@@ -130,7 +130,7 @@ public class VideoController
 	@RequestMapping(value = "/admin/video/edit/{videoId}", method = RequestMethod.GET)
 	public ModelAndView buildVideo(@ModelAttribute("videoId") final int videoId, final HttpServletRequest context)
 	{
-		final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
+		final ModelAndView mdv = new ModelAndView("/admin/video/build-details.jsp");
 		LOGGER.info("Editing video");
 		Video video = videoDao.findById(videoId);
 		video.setValidated(true);
@@ -161,7 +161,7 @@ public class VideoController
 	public ModelAndView buildVideo(@ModelAttribute("selectedVideo") final SelectedVideoFromFile selectedVideo,
 			final HttpServletRequest context)
 	{
-		final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
+		final ModelAndView mdv = new ModelAndView("/admin/video/build-details.jsp");
 		final Video videoModel = new Video();
 
 		videoModel.setUrl(videoServices.buildUrl(context, selectedVideo.getPath()));

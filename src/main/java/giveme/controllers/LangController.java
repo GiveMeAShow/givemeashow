@@ -22,7 +22,7 @@ public class LangController
 	@RequestMapping(value = "/admin/lang/new", method = RequestMethod.GET)
 	public ModelAndView showNewPage()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/lang/createNew");
+		ModelAndView mdv = new ModelAndView("/admin/lang/createNew.jsp");
 		mdv.addObject("lang", new ISOLang());
 		return mdv;
 	}
@@ -31,7 +31,7 @@ public class LangController
 	public ModelAndView insertLang(@ModelAttribute ISOLang lang)
 	{
 		LOGGER.info("saving lang " + lang.getLanguage());
-		ModelAndView mdv = new ModelAndView("/admin/lang/validInsertion");
+		ModelAndView mdv = new ModelAndView("/admin/lang/validInsertion.jsp");
 		langDao.save(lang);
 		return mdv;
 	}

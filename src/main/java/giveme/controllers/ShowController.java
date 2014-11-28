@@ -47,7 +47,7 @@ public class ShowController
 	@RequestMapping(value = "/admin/show/list", method = RequestMethod.GET)
 	public ModelAndView adminListShows()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/show/showList");
+		ModelAndView mdv = new ModelAndView("/admin/show/showList.jsp");
 		List<Show> showList = showDao.list();
 		mdv.addObject("showList", showList);
 		return mdv;

@@ -21,10 +21,9 @@
 		<property name="prefix">
 			<value>/WEB-INF/pages/</value>
 		</property>
-		<property name="suffix">
-			<value>.jsp</value>
-		</property>
 	</bean>
+	  <mvc:default-servlet-handler/>
+	
 	<bean id="contentManager"
 	                class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 	                <property name="favorPathExtension" value="true"/>

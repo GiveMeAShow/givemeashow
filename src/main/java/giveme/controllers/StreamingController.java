@@ -37,7 +37,7 @@ public class StreamingController
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcome()
 	{
-		ModelAndView mdv = new ModelAndView("/index");
+		ModelAndView mdv = new ModelAndView("/index.html");
 		return mdv;
 	}
 }

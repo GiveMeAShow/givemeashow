@@ -1,12 +1,4 @@
 
-function focusVideo()
-{
-	$("#aboutContent").hide("slide", {direction: "right"}, 400);
-	$("#aboutLI").removeClass("active");
-	$("#controlsContent").hide("slide", {direction: "right"}, 400);
-    $("#controlsLI").removeClass("active");
-}
-
 function decreaseIndex()
 {
 	if (index > 0)
@@ -46,59 +38,8 @@ function processTitle(fullpath)
     document.getElementById("videoTitle").innerHTML = fullVideoName;
 }
 
-function moveVideo(nextFunction)
-{
-        $("#videoTitle").hide();
-        $("#showChooser").hide();
-        $("#videoClip").css("width", "320");
-        $("#videoClip").css("height", "180");
-        $("#videoClip").removeClass("col-xs-offset-2");
-        $("#videoMenu").attr("onClick", "showVideo();");
-        $("#controlsMenu").attr("onClick", "controlsClickHandler();");
-        $("#aboutMenu").attr("onClick", "aboutClickHandler()");
-        
-        nextFunction();
-}
 
-function aboutClickHandler()
-{
-    if ((aboutShown === "true") && (controlsShown === "true"))
-    {
-        aboutShown = "false";
-        $("#aboutContent").hide("slide", {direction: "right"}, 400);    
-    }
-    else if (aboutShown === "false" && controlsShown == "true")
-    {
-        aboutShown = "true";
-        $("#aboutContent").show("slide", {direction: "right"}, 400);
-    }
-    else if (aboutShown === "false" && controlsShown == "false")
-    {
-        aboutShown = "true";
-        $("#aboutContent").show("slide", {direction: "right"}, 400);
-    }
-}
-
-function controlsClickHandler()
-{
-    if ((aboutShown === "true") && (controlsShown === "true"))
-    {
-        controlsShown = "false";
-        $("#controlsContent").hide("slide", {direction: "right"}, 400);    
-    }
-    else if (controlsShown === "false" && aboutShown == "true")
-    {
-        controlsShown = "true";
-        $("#controlsContent").show("slide", {direction: "right"}, 400);
-    }
-    else if (controlsShown === "false" && aboutShown == "false")
-    {
-        controlsShown = "true";
-        $("#controlsContent").show("slide", {direction: "right"}, 400);
-    }
-}
-
-function showVideo()
+/*function showVideo()
 {
     aboutShown = "false";
     controlsShown = "false";
@@ -115,7 +56,7 @@ function showVideo()
     
     $(".video_playlist_side").switchClass("video_playlist_side", "video_playlist").show("fade", 400);
     $("#showChooser").show("fade", 400);
-}
+}*/
 
 
 

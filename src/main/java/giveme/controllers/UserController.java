@@ -49,7 +49,7 @@ public class UserController
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
-		ModelAndView model = new ModelAndView("/login");
+		ModelAndView model = new ModelAndView("/login.jsp");
 		User user = new User();
 		user.setLogin("dqsd");
 		user.setPassword("qdsd");
@@ -62,7 +62,7 @@ public class UserController
 	public ModelAndView validLogin(@ModelAttribute("user") User user, HttpServletRequest request,
 			HttpServletResponse response) throws IOException
 	{
-		ModelAndView model = new ModelAndView("/login");
+		ModelAndView model = new ModelAndView("/login.jsp");
 		if (user != null)
 		{
 			String login = user.getLogin();
@@ -84,134 +84,4 @@ public class UserController
 		}
 		return model;
 	}
-
-	// @RequestMapping(value = "/admin/video/new", method = RequestMethod.GET)
-	// public ModelAndView newForm()
-	// {
-	// final ModelAndView mdv = new ModelAndView("/admin/video/choose");
-	// mdv.addObject("selectedVideo", new SelectedVideoFromFile());
-	// return mdv;
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/auto", method = RequestMethod.GET)
-	// public ModelAndView autoInsert()
-	// {
-	// final ModelAndView mdv = new ModelAndView();
-	// autoInsert.runAndFillDatabase();
-	// return mdv;
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/pending", method =
-	// RequestMethod.GET)
-	// public ModelAndView showPending()
-	// {
-	// final ModelAndView mdv = new ModelAndView("/admin/video/list");
-	// mdv.addObject("videoList", videoDao.listPEnding());
-	// return mdv;
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/add", method = RequestMethod.POST)
-	// public String add(@ModelAttribute("video") final Video video)
-	// {
-	// LOGGER.info("Saving video " + video.getTitle());
-	// final ISOLang lang = langDao.findByISO(video.getLanguage());
-	// video.setLanguageIso(lang);
-	// Video existingVideo =
-	// videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(),
-	// video.getSeasonId(),
-	// video.getTitle());
-	// if (existingVideo != null)
-	// {
-	// video.setId(existingVideo.getId());
-	// videoDao.update(video);
-	// }
-	// else
-	// {
-	// videoDao.save(video);
-	// }
-	// final ModelAndView mdv = new ModelAndView("/admin/video/validInsertion");
-	// return "redirect: /admin/video/new";
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/new/{showId}/{seasonId}", method =
-	// RequestMethod.GET)
-	// public ModelAndView addAVideoWithShowAndSeason(@ModelAttribute("showId")
-	// final int showId,
-	// @ModelAttribute("seasonId") final int seasonId)
-	// {
-	// final ModelAndView mdv = new ModelAndView("/admin/video/choose");
-	// mdv.addObject("selectedVideo", new SelectedVideoFromFile());
-	// final SelectedVideoFromFile selectVideoModel = new
-	// SelectedVideoFromFile();
-	// selectVideoModel.setShowId(showId);
-	// selectVideoModel.setSeasonId(seasonId);
-	// return mdv;
-	// }
-	//
-	// @RequestMapping(value =
-	// "/admin/webservices/video/listVideos/{directoryId}", method =
-	// RequestMethod.GET)
-	// @ResponseBody
-	// public List<VideoFile> listVideos(@ModelAttribute("directoryId") final
-	// int directoryId)
-	// {
-	// LOGGER.info("received directory " + directoryId);
-	// return fileExplorer.listVideos(directoryId);
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/edit/{videoId}", method =
-	// RequestMethod.GET)
-	// public ModelAndView buildVideo(@ModelAttribute("videoId") final int
-	// videoId, final HttpServletRequest context)
-	// {
-	// final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
-	// LOGGER.info("Editing video");
-	// Video video = videoDao.findById(videoId);
-	// video.setValidated(true);
-	// mdv.addObject("video", video);
-	//
-	// mdv.addObject("seasons", Arrays.asList(new Season[]
-	// { seasonDao.findById(video.getSeasonId()) }));
-	// mdv.addObject("shows", Arrays.asList(new Show[]
-	// { showDao.findById(video.getShowId()) }));
-	// mdv.addObject("langList", Arrays.asList(new ISOLang[]
-	// { langDao.findByISO(video.getLanguageIso().getIso()) }));
-	// mdv.addObject("positionList", new Integer[]
-	// { video.getPosition() });
-	//
-	// return mdv;
-	// }
-	//
-	// @RequestMapping(value = "/webservices/video/shuffled", method =
-	// RequestMethod.GET)
-	// @ResponseBody
-	// public List<Video> getShuffledList()
-	// {
-	// List<Video> videoList = videoDao.list();
-	// Collections.shuffle(videoList);
-	// return videoList;
-	// }
-	//
-	// @RequestMapping(value = "/admin/video/select", method =
-	// RequestMethod.POST)
-	// public ModelAndView buildVideo(@ModelAttribute("selectedVideo") final
-	// SelectedVideoFromFile selectedVideo,
-	// final HttpServletRequest context)
-	// {
-	// final ModelAndView mdv = new ModelAndView("/admin/video/build-details");
-	// final Video videoModel = new Video();
-	//
-	// videoModel.setUrl(videoServices.buildUrl(context,
-	// selectedVideo.getPath()));
-	// videoModel.setRelativePath(selectedVideo.getPath());
-	// videoModel.setTitle(selectedVideo.getTitle());
-	//
-	// mdv.addObject("video", videoModel);
-	// mdv.addObject("shows", showDao.list());
-	// mdv.addObject("seasons", seasonDao.list());
-	// mdv.addObject("langList", langDao.list());
-	// mdv.addObject("positionList", positionChooser);
-	//
-	// return mdv;
-	// }
 }
