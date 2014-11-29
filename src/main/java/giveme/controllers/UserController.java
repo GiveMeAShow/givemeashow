@@ -5,6 +5,7 @@ import giveme.common.dao.UserDao;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -74,6 +75,19 @@ public class UserController
 		model.addObject("user", user);
 
 		return model;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ModelAndView logOut(HttpServletRequest request)
+	{
+		try
+		{
+			request.logout();
+		} catch (ServletException e)
+		{
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
