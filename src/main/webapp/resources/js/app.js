@@ -3,7 +3,7 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize',
-							   'givemeashow.index', 'givemeashow.menu'])
+							   'givemeashow.index', 'givemeashow.menu', 'givemeashow.user.service'])
 
 .config(['$routeProvider', function($routeProvider){
 	$routeProvider.	
@@ -15,6 +15,11 @@ angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize
 		redirectTo: '/'
 	});
 }])
+
+.value('CREDENTIAL', {
+	isAdmin : false,
+	userName : ""
+})
 
 .constant('EVENTS', {
 	'menu' : {

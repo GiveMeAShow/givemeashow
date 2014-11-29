@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -43,13 +44,30 @@ public class UserController
 		model.setViewName("admin");
 
 		return model;
+	}
 
+	@RequestMapping(value = "/webservices/user", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public User getUser(HttpServletResponse resonse, HttpServletRequest request)
+	{
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		if (principal instanceof UserDetails)
+		{
+			userDetails = (UserDetails) principal;
+			User tmpUser = userDao.findByLoginAndPassword(userDetails.getUsername(), userDetails.getPassword());
+			User result = new User();
+			result.setAdmin(tmpUser.getIsAdmin());
+			result.setLogin(tmpUser.getLogin());
+			return result;
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
-		ModelAndView model = new ModelAndView("/login.jsp");
+		ModelAndView model = new ModelAndView("/login.html");
 		User user = new User();
 		user.setLogin("dqsd");
 		user.setPassword("qdsd");
@@ -62,7 +80,7 @@ public class UserController
 	public ModelAndView validLogin(@ModelAttribute("user") User user, HttpServletRequest request,
 			HttpServletResponse response) throws IOException
 	{
-		ModelAndView model = new ModelAndView("/login.jsp");
+		ModelAndView model = new ModelAndView("/login.html");
 		if (user != null)
 		{
 			String login = user.getLogin();

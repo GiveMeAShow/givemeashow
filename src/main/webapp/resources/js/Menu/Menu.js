@@ -1,6 +1,6 @@
-angular.module("givemeashow.menu", [])
+angular.module("givemeashow.menu", ['givemeashow.user.service'])
 
-.directive('menuBar', ['EVENTS', 'MENUS', function(EVENTS, MENUS) {
+.directive('menuBar', ['EVENTS', 'MENUS','CREDENTIAL', function(EVENTS, MENUS, CREDENTIAL) {
 	return {
 		restrict : 'E',
 		scope : {},
@@ -54,7 +54,8 @@ angular.module("givemeashow.menu", [])
 	};
 }])
 
-.controller('menuBarController', ['$scope', 'EVENTS', 'MENUS','$rootScope', function($scope, EVENTS, MENUS, $rootScope){					  
+.controller('menuBarController', ['$scope', 'EVENTS', 'MENUS', 'UserService', '$rootScope',
+								  function($scope, EVENTS, MENUS, UserService, $rootScope){					  
 	angular.extend($scope, {
 		sendEvent : function(event, menu) {
 			$rootScope.$broadcast(event, menu);

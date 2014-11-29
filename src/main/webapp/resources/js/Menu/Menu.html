@@ -3,20 +3,18 @@
 			<div class="container-fluid">
 				<a class="navbar-brand" href="/">GiveMeAShow</a>
 				<div class="collapse navbar-collapse">
-					<!--<sec:authorize ifNotGranted="ROLE_USER">-->
 						<p class="navbar-text pull-right">
-							<a href="/login" class="navbar-link">Log In</a>
+							<a href="/login" class="navbar-link">Log Out</a>
 						</p>
-				<!--	</sec:authorize>-->
+						<p class="navbar-text pull-right">
+							<a href="/Details">My Account</a>
+						</p>
 					<ul class="nav navbar-nav">
 						<li id="videoMenu" ng-class="{active: videoSelected}" ng-click="toggleVideo();"><a>Video</a> </li>
 						<li id="controlsLI" ng-class="{active: ctrlSelected}" ng-click="toggleCtrl();"><a id="controlsMenu">Controls</a></li>
 						<li id="aboutLI" ng-class="{active: aboutSelected}" ng-click="toggleAbout();"><a id="aboutMenu">About</a></li>
-						<!-- <sec:authorize access="hasRole('ROLE_USER')">-->
-							<li><a href="/Details">My Account</a></li>
-						<!--</sec:authorize> -->
-						<!--<sec:authorize access="hasRole('ROLE_ADMIN')" >-->
-							<li class="dropdown" id="adminDropDown">
+						
+							<li class="dropdown" id="adminDropDown" ng-if="CREDENTIAL.isAdmin">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
 								<ul class="dropdown-menu">
 									<li id="adminShowListMenu"><a href="/admin/show/list">Show List</li>
@@ -28,29 +26,8 @@
 									<li id="adminPendingMenu"><a href="/admin/video/pending">Pending</a></li>
 								</ul>
 							</li>
-							<!--</sec:authorize>-->
+							
 					</ul>
-
-					<!--<sec:authorize access="hasRole('ROLE_USER')">
-						<ul class="nav pull-right">
-							<li><a href="<c:url value="/j_spring_security_logout"/>">Se déconnecter</a></li>
-						</ul>
-						<p class="navbar-text pull-right">
-							<a><sec:authentication property="principal.username" /></a>
-						</p>
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<ul class="nav pull-right">
-						<li class="dropdown"><a class="dropdown-toggle"
-							data-toggle="dropdown" href="#"> <img id="adminIcon"
-								class="nav "  src="<c:url value='/resources/img/admin_icon.png'/>">
-						</a>
-							 <ul class="dropdown-menu">
-								<li><a href="<c:url value="/admin/createMovie"/>">Ajouter un film</a></li>
-								<li><a href="<c:url value="/admin/showAll"/>">Liste complète</a></li>
-							</ul></li> 
-					</ul>
-					</sec:authorize>-->
 				</div>
 			</div>
 		</div>
