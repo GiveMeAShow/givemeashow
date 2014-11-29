@@ -10,9 +10,7 @@ angular.module('givemeashow.index', [ 'givemeashow.show', 'givemeashow.video', '
 			console.log("xd");
 			$(".tab_content").hide();
             $(".file_content").hide();
-            scope.aboutShown = "false";
             scope.playList = [];
-            scope.controlsShown = "false";
           	/*document.onkeydown = changeOnKeyDown;*/
 			$("#controlPage").hide();
 			$("#aboutPage").hide();
@@ -25,14 +23,55 @@ angular.module('givemeashow.index', [ 'givemeashow.show', 'givemeashow.video', '
 				if (value)
 				{
 					
-					$(elementId).hide("slide", {direction: "right"}, 400);
+					
+					if(scope.aboutHidden && scope.controlHidden)
+					{
+						console.log("show");
+						$(elementId).hide("slide", {direction: "right"}, 400, scope.showVideo);
+					}
+					else
+					{
+						$(elementId).hide("slide", {direction: "right"}, 400);
+					}
 				}
 				else
 				{
 					$(elementId).show("slide", {direction: "right"}, 400);
+					if(!scope.aboutHidden || !scope.controlHidden)
+					{
+						console.log("slide");
+						scope.slideVideo();
+					}
 				}
 				
-			}			
+			};
+			
+			scope.reset = function()
+			{
+				scope.controlHidden = true;
+				scope.aboutHidden = true;
+				scope.toggle(scope.controlHidden, 'controlPage');
+				scope.toggle(scope.aboutHidden, 'aboutPage');
+				
+			}
+			
+			scope.slideVideo = function()
+			{
+				/*$("#videoTitle").hide();*/
+				$("#showChooser").hide();
+				$("#videoClip").css("width", "320");
+				$("#videoClip").css("height", "180");
+				$("#videoClip").removeClass("col-xs-offset-2");
+			};
+			
+			scope.showVideo = function()
+			{
+				/*$("#videoTitle").hide();*/
+				$("#showChooser").hide();
+				$("#videoClip").css("width", "640");
+				$("#videoClip").css("height", "360");
+				$("#videoClip").addClass("col-xs-offset-2");
+			};
 			
 		}
 	}
@@ -44,24 +83,21 @@ angular.module('givemeashow.index', [ 'givemeashow.show', 'givemeashow.video', '
 	
 	
 	$scope.$on(EVENTS.menu.toggle, function(event, menu) {
-		console.log(menu);
 		if (menu === MENUS.controle)
 		{
-			console.log(menu);	
 			$scope.controlHidden = !$scope.controlHidden;
+			
+			$scope.video
 			$scope.toggle($scope.controlHidden, 'controlPage');
 		}
 		else if (menu === MENUS.about)
 		{
-			console.log(menu);
 			$scope.aboutHidden = !$scope.aboutHidden;
 			$scope.toggle($scope.aboutHidden, 'aboutPage');
 		}
 		else if(menu === MENUS.video)
 		{
-			console.log(menu);
-			$scope.controlHidden = true;
-			$scope.aboutHidden = true;
+			$scope.reset();
 		}
 	})
 }]);

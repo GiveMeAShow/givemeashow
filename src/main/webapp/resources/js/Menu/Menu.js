@@ -16,18 +16,20 @@ angular.module("givemeashow.menu", [])
 			scope.toggleCtrl = function()
 			{
 				scope.ctrlSelected = !scope.ctrlSelected;
+				scope.videoSelected = false;
 				scope.sendEvent(EVENTS.menu.toggle, MENUS.controle)
 			}
 			
 			scope.toggleAbout = function()
 			{
 				scope.aboutSelected = !scope.aboutSelected;
+				scope.videoSelected = false;
 				scope.sendEvent(EVENTS.menu.toggle, MENUS.about)
 			}
 			
 			scope.toggleVideo = function()
 			{
-				scope.videoSelected = !scope.videoSelected;
+				scope.videoSelected = true;
 				scope.ctrlSelected = false;
 				scope.aboutSelected = false;
 				scope.sendEvent(EVENTS.menu.toggle, MENUS.video)
