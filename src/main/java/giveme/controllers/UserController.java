@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,16 +84,26 @@ public class UserController
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView logOut(HttpServletRequest request)
+	public ModelAndView logOut(HttpServletRequest request, HttpServletResponse response)
 	{
 		try
 		{
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null)
+			{
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+			}
+			HttpSession session = request.getSession();
+			if (session != null)
+			{
+				session.invalidate();
+			}
 			request.logout();
 		} catch (ServletException e)
 		{
 			e.printStackTrace();
 		}
-		return new ModelAndView("redirect:/");
+		return new ModelAndView("redirect:/login");
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
