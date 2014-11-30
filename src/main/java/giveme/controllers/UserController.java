@@ -2,6 +2,7 @@ package giveme.controllers;
 
 import giveme.common.beans.User;
 import giveme.common.dao.UserDao;
+import giveme.services.EncryptionServices;
 
 import java.io.IOException;
 
@@ -30,6 +31,9 @@ public class UserController
 	@Autowired
 	UserDao						userDao;
 
+	@Autowired
+	EncryptionServices			encryptionServices;
+
 	public UserController()
 	{
 		// TODO Auto-generated constructor stub
@@ -56,7 +60,7 @@ public class UserController
 		if (principal instanceof UserDetails)
 		{
 			userDetails = (UserDetails) principal;
-			User tmpUser = userDao.findByLoginAndPassword(userDetails.getUsername(), userDetails.getPassword());
+			User tmpUser = userDao.findByLogin(userDetails.getUsername());
 			User result = new User();
 			result.setAdmin(tmpUser.getIsAdmin());
 			result.setLogin(tmpUser.getLogin());
@@ -95,16 +99,17 @@ public class UserController
 			HttpServletResponse response) throws IOException
 	{
 		ModelAndView model = new ModelAndView("/login.html");
+		String password = user.getPassword();
 		if (user != null)
 		{
 			String login = user.getLogin();
-			user = userDao.findByLoginAndPassword(user.getLogin(), user.getPassword());
+			user = userDao.findByLogin(user.getLogin());
 			if (user == null)
 			{
 				model.addObject("error", "No username " + login + " found.");
 				return model;
 			}
-			else
+			else if (user != null && encryptionServices.match(password, user.getPassword()))
 			{
 				UserDetails userDetails = userDao.loadUserByUsername(user.getLogin());
 				Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),

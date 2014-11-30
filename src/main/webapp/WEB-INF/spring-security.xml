@@ -16,6 +16,14 @@
  
 		<!-- access denied page -->
 		<access-denied-handler error-page="/403" />
+ 
+		<form-login 
+		    login-page="/login" 
+		    default-target-url="/" 
+			authentication-failure-url="/login?error" 
+			username-parameter="login"
+			password-parameter="password" />
+		<logout logout-success-url="/"  />
 	</http>
 	
 	<beans:bean  id="autorisation" class="giveme.services.AuthorizationService">

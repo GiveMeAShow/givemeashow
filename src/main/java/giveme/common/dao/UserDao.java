@@ -2,6 +2,7 @@ package giveme.common.dao;
 
 import static giveme.common.dao.SharedConstants.DB_NAME;
 import giveme.common.beans.User;
+import giveme.services.EncryptionServices;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +29,10 @@ import org.springframework.stereotype.Repository;
 public class UserDao extends IDao<User> implements UserDetailsService
 {
 	@Autowired
-	public ISOLangDao	isolangDao;
+	public ISOLangDao			isolangDao;
+
+	@Autowired
+	public EncryptionServices	encryptionServices;
 
 	public UserDao()
 	{
@@ -167,6 +171,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 	public User findByLoginAndPassword(String userName, String password)
 	{
 		User user = null;
+		LOGGER.info("encrypted = " + password);
 		try
 		{
 			final String query = "select * from " + TABLE_NAME + " WHERE login = ? AND password = ?";

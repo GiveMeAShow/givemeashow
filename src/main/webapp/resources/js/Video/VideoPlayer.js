@@ -76,7 +76,7 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		
 		changeToNextVideo: function ()
 		{
-			var url = "/GiveMeAShow/" + $scope.playList[index].url;
+			var url = $scope.playList[index].url;
 			console.log(url);
 			$scope.setVideo(url);
 			$scope.index = $scope.index + 1;
@@ -96,7 +96,7 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		
 		changeToPreviousVideo: function()
 		{
-			var url = "/GiveMeAShow/" + $scope.playList[index].url;
+			var url = $scope.playList[index].url;
 			console.log(url);
 			$scope.setVideo(url);
 			$scope.decreaseIndex();
@@ -111,7 +111,7 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 			}
 			else
 			{
-				scope.changeToNextVideo();
+				$scope.changeToNextVideo();
 			}
 
 			return false;
