@@ -65,12 +65,10 @@
 
 <link href="resources/jsLibs/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="resources/jsLibs/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css">
+<link href="resources/jsLibs/toaster.css" rel="stylesheet" type="text/css">
 <link href="resources/jsLibs/video-js/video-js.css" rel="stylesheet" type="text/css">
 </head>
 <body onload='document.loginForm.username.focus();'>
-
-
-
 	<div id="login-box">
 		<div id="boxTitleBand">
 			<h3 id="boxtitle">GiveMeAShow</h3>
@@ -84,7 +82,7 @@
 				<div class="msg">${msg}</div>
 			</c:if>  -->
 			<table>
-			<form name='loginForm' action="login" method='POST'>
+				<form name='loginForm' action="login" method='POST'>
 					<tr>
 						<td class="fieldLabel">
 							<p>Login </p> 
@@ -102,9 +100,9 @@
 						</td>
 					</tr>
 					<tr class="row">
-							<td><button type="submit" class="btn btn-default">Submit</button></td>
+							<td><button type="submit" class="btn btn-default">Log in</button></td>
 					</tr>
-			</form>
+				</form>
 			</table>
 		</div>
 	</div>

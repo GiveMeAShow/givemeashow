@@ -23,11 +23,11 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 					console.log($("#videoClip").hasClass("vjs-fullscreen"));
 					if ($("#videoClip").hasClass("vjs-fullscreen"))
 					{
-						  $("#videoClip").removeClass("col-xs-offset-2"); 
+						  /*$("#videoClip").removeClass("col-xs-offset-2"); */
 					}
 					else
 					{
-						$("#videoClip").addClass("col-xs-offset-2");  
+						/*$("#videoClip").addClass("col-xs-offset-2");  */
 					}
 				}
 					

@@ -29,6 +29,11 @@ module.exports = function (grunt) {
                     src: 'bower_components/angular*/*.min.js',
                     dest: '<%= config.dist %>',
 					flatten: true
+                },{
+                    expand: true,
+                    src: 'bower_components/angularjs-toaster/toaster*',
+                    dest: '<%= config.dist %>',
+					flatten: true
                 }, {
                     expand: true,
                     cwd: 'bower_components/bootstrap/dist/',

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,13 +74,50 @@ public class UserController
 		return null;
 	}
 
+	@RequestMapping(value = "/webservices/user/me", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public User getMe(HttpServletResponse resonse, HttpServletRequest request)
+	{
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		if (principal instanceof UserDetails)
+		{
+			userDetails = (UserDetails) principal;
+			User tmpUser = userDao.findByLogin(userDetails.getUsername());
+			tmpUser.setPassword("");
+			tmpUser.setUserRole("");
+			return tmpUser;
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/webservices/user/changePassword", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public User changePw(@RequestBody String newPassword) throws JSONException
+	{
+		JSONObject datas = new JSONObject(newPassword);
+		JSONObject newPasswordDatas = datas.getJSONObject("newPassword");
+		String login = newPasswordDatas.getString("login");
+		String oldPassword = newPasswordDatas.getString("old");
+		User user = userDao.findByLogin(login);
+		if (encryptionServices.match(oldPassword, user.getPassword()))
+		{
+			String newPw = newPasswordDatas.getString("new");
+			userDao.updatePassword(user.getId(), encryptionServices.encryptPassword(newPw));
+			user.setPassword("");
+			return user;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
 		ModelAndView model = new ModelAndView("/login.html");
 		User user = new User();
-		user.setLogin("dqsd");
-		user.setPassword("qdsd");
 		model.addObject("user", user);
 
 		return model;
@@ -92,6 +132,7 @@ public class UserController
 			if (auth != null)
 			{
 				new SecurityContextLogoutHandler().logout(request, response, auth);
+
 			}
 			HttpSession session = request.getSession();
 			if (session != null)
@@ -123,6 +164,14 @@ public class UserController
 			}
 			else if (user != null && encryptionServices.match(password, user.getPassword()))
 			{
+				// // invite code generation
+				// if (user.getInviteCode() == null || user.getInviteCode() ==
+				// "")
+				// {
+				// user.setInviteCode(encryptionServices.getInvideCode());
+				// }
+
+				// authentification with spring security
 				UserDetails userDetails = userDao.loadUserByUsername(user.getLogin());
 				Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
 						userDetails.getAuthorities());

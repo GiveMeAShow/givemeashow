@@ -1,10 +1,10 @@
 <div class="row" index>
-		<menu-bar id="menuBarDirective"></menu-bar>
-		
-		
-		<video-player id="videoPlayerDirective"></video-player>
-		<show-chooser id="showChooserDirective"></show-chooser>
-		<div class="textContent col-xs-7 col-xs-offset-1">
+	<menu-bar id="menuBarDirective"></menu-bar>
+	<toaster-container></toaster-container>
+	<div id="centerElement" class="myCenter" style="width: 840px;">
+		<video-player id="videoPlayerDirective" style="float:left;"></video-player>
+		<show-chooser id="showChooserDirective" style="float:left; background-color: black;"></show-chooser>
+		<div class="textContent" style="float:left; width: 600px; margin-left:120px;">
 			<div id="aboutPage">
 				<h3>About</h3>
 				<hr/>
@@ -42,6 +42,9 @@
 					<li>"down" : down the volume by 10%</li>
 				</ul>
 			</div>
+			<my-account id="accountPage"></my-account>
 		</div>
 	</div>
+	<!--col-xs-7 col-xs-offset-1-->
+
 </div>

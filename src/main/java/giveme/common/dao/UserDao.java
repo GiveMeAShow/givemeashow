@@ -44,6 +44,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 	public User createObjectFromResultSet(ResultSet rs) throws SQLException
 	{
 		User user = new User();
+		user.setId(rs.getInt("id"));
 		user.setLogin(rs.getString("login"));
 		user.setIsAdmin(rs.getBoolean("is_admin"));
 		user.setInviteCode(rs.getString("invite_code"));
@@ -145,12 +146,12 @@ public class UserDao extends IDao<User> implements UserDetailsService
 				.update("update "
 						+ TABLE_NAME
 						+ " set login = ?, is_admin = ?, confirmed = ?, default_lang = ?, email = ?, invite_code = ?, password = ?, sub_default_lang = ?"
-						+ ", time_spent = ?, use_subtitles = ?, user_roles_id",
+						+ ", time_spent = ?, use_subtitles = ?, user_roles_id where id = ?",
 						new Object[]
 						{ user.getLogin(), user.getIsAdmin(), user.getConfirmed(), user.getDefaultLang().getIso(),
 								user.getEmail(), user.getInviteCode(), user.getPassword(),
 								user.getSubDefaultLang().getIso(), user.getTimeSpent(), user.getUseSubtitles(),
-								user.getId(), user.getUserRole() });
+								user.getUserRole(), user.getId() });
 	}
 
 	public User findByLogin(String userName)
@@ -199,5 +200,13 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		user = new org.springframework.security.core.userdetails.User(myUser.getLogin(), myUser.getPassword(),
 				grantedAuths);
 		return user;
+	}
+
+	public void updatePassword(Integer id, String encryptPassword)
+	{
+		LOGGER.info("Updating user " + id);
+		jdbcTemplate.update("update " + TABLE_NAME + " set password = ? where id = ?", new Object[]
+		{ encryptPassword, id });
+
 	}
 }

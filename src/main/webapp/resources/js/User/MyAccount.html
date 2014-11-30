@@ -1,0 +1,40 @@
+<div>
+	<h3>{{user.login}}</h3>
+	<hr/>
+	<div class="formRow">
+		<div class="formLabel">Email</div>
+		<div class="formInput">{{user.email}}</div>
+	</div>
+	<div class="formRow">
+		<div class="formLabel">Language</div>
+		<div class="formInput">{{user.defaultLang.language}}</div>
+	</div>
+	<div class="formRow">
+		<div class="formLabel">Time spent</div>
+		<div class="formInput">{{user.timeSpent}}</div>
+	</div>
+	<button class="btn btn-primary" ng-hide="!changePassword" ng-click="togglePFields();">Change password</button>
+	<div ng-hide="changePassword">
+		<h4>Change password</h4>
+		<div class="formRow">
+			<div class="formLabel">Password</div>
+			<div class="formInput"><input ng-model="newPassword.old" type="password"></div>
+		</div>
+		<div class="formRow">
+			<div class="formLabel">New password</div>
+			<div class="formInput"><input ng-model="newPassword.new" type="password"></div>
+		</div>
+		<div class="formRow">
+			<div class="formLabel">Confirm</div>
+			<div class="formInput"><input ng-model="newPassword.confirm" type="password"></div>
+		</div>
+		<div class="formRow">
+			<button ng-disabled="!newPassword.match" 
+				class="formLabel btn btn-primary"
+				ng-click="sendNewPassword();">Save</button>
+			<button  
+				class="formLabel btn btn-default" 
+				ng-click="togglePFields(clearPass);">Cancel</button>
+		</div>
+	</div>
+</div>

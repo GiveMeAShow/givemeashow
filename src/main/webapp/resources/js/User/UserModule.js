@@ -1,0 +1,1 @@
+angular.module('givemeashow.user', ['givemeashow.user.service', 'givemeashow.user.myAccount']);

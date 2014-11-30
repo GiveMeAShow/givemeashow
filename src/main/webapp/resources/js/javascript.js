@@ -39,27 +39,6 @@ function processTitle(fullpath)
 }
 
 
-/*function showVideo()
-{
-    aboutShown = "false";
-    controlsShown = "false";
-    $("#aboutMenu").attr("onClick", "moveVideo(aboutClickHandler);");
-    $("#controlsMenu").attr("onClick", "moveVideo(controlsClickHandler);");
-    $("#controlsContent").hide(400);
-    $("#aboutContent").hide(400);
-    
-    $("#videoClip").css("width", "640");
-    $("#videoClip").css("height", "360");
-    $("#videoClip").addClass("col-xs-offset-2");
-    $(".mainContent_side").switchClass("mainContent_side", "mainContent");
-    $(".videoContainer_sided").switchClass("videoContainer_sided", "videoContainer");
-    
-    $(".video_playlist_side").switchClass("video_playlist_side", "video_playlist").show("fade", 400);
-    $("#showChooser").show("fade", 400);
-}*/
-
-
-
 function updVolumeByTen()
 {
     $("#videoClip").volume($("#videoClip").volume() + 0.1);

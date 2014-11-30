@@ -6,13 +6,12 @@
 						<p class="navbar-text pull-right">
 							<a href="logout" class="navbar-link">Log Out</a>
 						</p>
-						<p class="navbar-text pull-right">
-							<a href="/Details">My Account</a>
-						</p>
+
 					<ul class="nav navbar-nav">
 						<li id="videoMenu" ng-class="{active: videoSelected}" ng-click="toggleVideo();"><a>Video</a> </li>
 						<li id="controlsLI" ng-class="{active: ctrlSelected}" ng-click="toggleCtrl();"><a id="controlsMenu">Controls</a></li>
 						<li id="aboutLI" ng-class="{active: aboutSelected}" ng-click="toggleAbout();"><a id="aboutMenu">About</a></li>
+						<li id="accountLi" ng-class="{active: accountSelected}" ng-click="toggleAccount();"><a id="accountMenu">My Account</a></li>
 						
 							<li class="dropdown" id="adminDropDown" ng-if="CREDENTIAL.isAdmin">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>

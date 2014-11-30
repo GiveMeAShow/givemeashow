@@ -6,49 +6,48 @@ angular.module("givemeashow.menu", ['givemeashow.user.service'])
 		scope : {},
 		controller :'menuBarController',
 		link : function (scope, element, attrs) {
-			scope.aboutShown = "false";
+			
 			scope.ctrlSelected = false;
 			scope.aboutSelected = false;
 			scope.videoSelected = true;
+			scope.accountSelected = false;
 			scope.selectedMenus = [];
 			
-
-			scope.toggleCtrl = function()
-			{
-				scope.ctrlSelected = !scope.ctrlSelected;
-				scope.videoSelected = false;
-				scope.sendEvent(EVENTS.menu.toggle, MENUS.controle)
-			}
-			
-			scope.toggleAbout = function()
-			{
-				scope.aboutSelected = !scope.aboutSelected;
-				scope.videoSelected = false;
-				scope.sendEvent(EVENTS.menu.toggle, MENUS.about)
-			}
-			
-			scope.toggleVideo = function()
-			{
-				scope.videoSelected = true;
-				scope.ctrlSelected = false;
-				scope.aboutSelected = false;
-				scope.sendEvent(EVENTS.menu.toggle, MENUS.video)
-			}
-			
-			
-			scope.moveVideo = function()
-			{
-					/*$("#videoTitle").hide();
-					$("#showChooser").hide();
-					$("#videoClip").css("width", "320");
-					$("#videoClip").css("height", "180");
-					$("#videoClip").removeClass("col-xs-offset-2");
-					$("#videoMenu").attr("onClick", "showVideo();");
-					$("#controlsMenu").attr("onClick", "controlsClickHandler();");
-					$("#aboutMenu").attr("onClick", "aboutClickHandler()");*/
-
-			};
-			
+			angular.extend(scope, {
+				toggleCtrl : function()
+				{
+						scope.ctrlSelected = !scope.ctrlSelected;
+						scope.videoSelected = false;
+						scope.accountSelected = false;
+						scope.sendEvent(EVENTS.menu.toggle, MENUS.controle)
+				},
+				
+				toggleAbout : function()
+				{
+					scope.aboutSelected = !scope.aboutSelected;
+					scope.videoSelected = false;
+					scope.accountSelected = false;
+					scope.sendEvent(EVENTS.menu.toggle, MENUS.about)
+				},
+				
+				toggleAccount : function()
+				{
+					scope.accountSelected = !scope.accountSelected;
+					scope.ctrlSelected = false;
+					scope.aboutSelected = false;
+					scope.videoSelected = false;
+					scope.sendEvent(EVENTS.menu.toggle, MENUS.account);
+				},
+				
+				toggleVideo : function()
+				{
+					scope.videoSelected = true;
+					scope.ctrlSelected = false;
+					scope.aboutSelected = false;
+					scope.accountSelected = false;
+					scope.sendEvent(EVENTS.menu.toggle, MENUS.video)
+				}
+			})
 		},
 		templateUrl: 'resources/js/Menu/Menu.html'
 	};

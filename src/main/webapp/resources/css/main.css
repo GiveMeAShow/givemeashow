@@ -44,5 +44,30 @@
     height:360px;
     display:table-cell;
     text-align:center;
+	width: 200px;
+}
+
+.myCenter
+{
+    margin-left:auto;
+	margin-right:auto;
+}
+
+.formRow
+{
+	height: 25px;
+}
+
+.formLabel
+{
+	width: 100px;
+	float:left;
+}
+
+.formInput
+{
+	width:200px;
+	float:left;
+	height: 20px;
 }
     

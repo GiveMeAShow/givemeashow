@@ -1,6 +1,7 @@
 package giveme.services;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,10 @@ public class EncryptionServices
 	{
 		return encoder.matches(rawPassword, encoded);
 	}
+
+	public String getInvideCode()
+	{
+		return KeyGenerators.string().generateKey();
+	}
+
 }

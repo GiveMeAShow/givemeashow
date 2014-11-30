@@ -2,8 +2,8 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize',
-							   'givemeashow.index', 'givemeashow.menu', 'givemeashow.user.service'])
+angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize', 'toaster',
+							   'givemeashow.index', 'givemeashow.menu', 'givemeashow.user'])
 
 .config(['$routeProvider', function($routeProvider){
 	$routeProvider.	
@@ -24,11 +24,13 @@ angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize
 .constant('EVENTS', {
 	'menu' : {
 		'toggle' : 'toggle'
-	}
+	},
+	'toaster' : 'toaster'
 })
 
 .constant('MENUS', {
 	'controle' : 'controle',
 	'about' : 'about',
-	'video' : 'video'
+	'video' : 'video',
+	'account' : 'account'
 });
