@@ -11,7 +11,7 @@
    <!--  <bean id="corporateEventDao" class="com.example.JdbcCorporateEventDao">
         <property name="dataSource" ref="dataSource"/>
     </bean> -->
-    
+  
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbcURL}"/>
@@ -22,8 +22,6 @@
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
-    <context:property-placeholder location="gmas-database.properties"/>
   
  
 

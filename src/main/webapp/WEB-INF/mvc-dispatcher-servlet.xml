@@ -1,7 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -10,10 +9,11 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-    <!-- Tell to Spring that we will use annotations such as @Controller or @RequestMapping -->
-    <mvc:annotation-driven/>
+	<!-- Tell to Spring that we will use annotations such as @Controller or 
+		@RequestMapping -->
+	<mvc:annotation-driven />
 
-    <!-- Tell to Spring where he will find ou @Controller -->
+	<!-- Tell to Spring where he will find ou @Controller -->
 	<context:component-scan base-package="giveme" />
 
 	<bean
@@ -22,32 +22,50 @@
 			<value>/WEB-INF/pages/</value>
 		</property>
 	</bean>
-	  <mvc:default-servlet-handler/>
+	<mvc:default-servlet-handler />
 	
+    <context:property-placeholder location="classpath:/gmas-database.properties" order="1"/>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="25" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+
 	<bean id="contentManager"
-	                class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-	                <property name="favorPathExtension" value="true"/>
-	                <property name="ignoreAcceptHeader" value="true" />
-	                <property name="defaultContentType" value="text/html" />
-	                <property name="useJaf" value="false"/>
-	                <property name="mediaTypes">
-	                    <map>
-	                        <entry key="html" value="text/html" />
-	                        <entry key="js" value="text/javascript" />
-	                        <entry key="json" value="application/json" />
-	                        <entry key="xml" value="application/xml" />
-	                        <entry key="webm" value="video/webm" />
-	                    </map>
-	                </property>
-	        </bean>
-	
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="true" />
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="defaultContentType" value="text/html" />
+		<property name="useJaf" value="false" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="js" value="text/javascript" />
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+				<entry key="webm" value="video/webm" />
+			</map>
+		</property>
+	</bean>
+
 	<!-- <bean id="authService" class="com.cap.theater.common.services.AuthorizationService"/> -->
-	
-	<!-- Every file inclusion begenning by /resources/** will point to the /resources directory -->
-	<!-- Without this, Spring MVC will handle inclusion like a Get request, but you have no controller to handle a css file for example. -->
+
+	<!-- Every file inclusion begenning by /resources/** will point to the /resources 
+		directory -->
+	<!-- Without this, Spring MVC will handle inclusion like a Get request, 
+		but you have no controller to handle a css file for example. -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:resources mapping="/showsDB/**" location="/showsDB/" />
-	  
-    <bean id="userDAO" class="giveme.common.dao.UserDao"></bean>
-    
+
+	<bean id="userDAO" class="giveme.common.dao.UserDao"></bean>
+
 </beans>

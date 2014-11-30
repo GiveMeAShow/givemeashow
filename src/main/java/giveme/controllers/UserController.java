@@ -3,6 +3,7 @@ package giveme.controllers;
 import giveme.common.beans.User;
 import giveme.common.dao.UserDao;
 import giveme.services.EncryptionServices;
+import giveme.services.MailServices;
 
 import java.io.IOException;
 
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +34,22 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController
 {
-	public static final Logger	LOGGER	= Logger.getLogger(UserController.class.getName());
+	public static final Logger		LOGGER	= Logger.getLogger(UserController.class.getName());
 
 	@Autowired
-	UserDao						userDao;
+	UserDao							userDao;
 
 	@Autowired
-	EncryptionServices			encryptionServices;
+	EncryptionServices				encryptionServices;
+
+	@Autowired
+	MailServices					mailServices;
+
+	private final EmailValidator	emailValidator;
 
 	public UserController()
 	{
-		// TODO Auto-generated constructor stub
+		emailValidator = EmailValidator.getInstance();
 	}
 
 	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
@@ -95,8 +103,7 @@ public class UserController
 	@ResponseBody
 	public User changePw(@RequestBody String newPassword) throws JSONException
 	{
-		JSONObject datas = new JSONObject(newPassword);
-		JSONObject newPasswordDatas = datas.getJSONObject("newPassword");
+		JSONObject newPasswordDatas = new JSONObject(newPassword);
 		String login = newPasswordDatas.getString("login");
 		String oldPassword = newPasswordDatas.getString("old");
 		User user = userDao.findByLogin(login);
@@ -113,13 +120,35 @@ public class UserController
 		}
 	}
 
+	@RequestMapping(value = "/webservices/user/invite", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public String invite(@RequestBody String emails) throws JSONException
+	{
+		LOGGER.info(emails);
+		JSONArray jsonEmails = new JSONArray(emails);
+		for (int i = 0; i < jsonEmails.length(); i++)
+		{
+			String email = jsonEmails.getString(i);
+			if (emailValidator.isValid(email))
+			{
+				LOGGER.info("Sending email :D");
+				mailServices.sendInvite(email);
+				// if not admin, decrease number of available invites
+			}
+			else
+			{
+				LOGGER.info("email " + email + " is invalid");
+			}
+		}
+		return "";
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
 		ModelAndView model = new ModelAndView("/login.html");
 		User user = new User();
 		model.addObject("user", user);
-
 		return model;
 	}
 
@@ -132,7 +161,6 @@ public class UserController
 			if (auth != null)
 			{
 				new SecurityContextLogoutHandler().logout(request, response, auth);
-
 			}
 			HttpSession session = request.getSession();
 			if (session != null)
@@ -164,14 +192,6 @@ public class UserController
 			}
 			else if (user != null && encryptionServices.match(password, user.getPassword()))
 			{
-				// // invite code generation
-				// if (user.getInviteCode() == null || user.getInviteCode() ==
-				// "")
-				// {
-				// user.setInviteCode(encryptionServices.getInvideCode());
-				// }
-
-				// authentification with spring security
 				UserDetails userDetails = userDao.loadUserByUsername(user.getLogin());
 				Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
 						userDetails.getAuthorities());

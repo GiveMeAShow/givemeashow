@@ -45,6 +45,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 	{
 		User user = new User();
 		user.setId(rs.getInt("id"));
+		user.setInvited(rs.getInt("invited"));
 		user.setLogin(rs.getString("login"));
 		user.setIsAdmin(rs.getBoolean("is_admin"));
 		user.setInviteCode(rs.getString("invite_code"));
@@ -81,7 +82,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 				{
 					PreparedStatement ps = con.prepareStatement(query, new String[]
 					{ "login", "isAdmin", "invite_code", "password", "time_spent", "default_lang", "use_subtitles",
-							"sub_default_lang", "confirmed", "email ", "user_role" });
+							"sub_default_lang", "confirmed", "email ", "user_role", "invited" });
 					ps.setString(1, toSave.getLogin());
 					ps.setBoolean(2, toSave.getIsAdmin());
 					ps.setString(3, toSave.getInviteCode());
@@ -93,6 +94,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 					ps.setBoolean(9, toSave.getConfirmed());
 					ps.setString(10, toSave.getEmail());
 					ps.setString(11, toSave.getUserRole());
+					ps.setInt(12, toSave.getInvited());
 					return ps;
 				}
 			}, keyHolder);
@@ -136,6 +138,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		user.setTimeSpent(Long.parseLong((String) row.get("TIME_SPENT")));
 		user.setUseSubtitles(Boolean.parseBoolean(String.valueOf(row.get("USE_SUBTITLES"))));
 		user.setUserRole((String) row.get("USER_ROLE"));
+		user.setInvited(Integer.parseInt(String.valueOf(row.get("INVITED"))));
 		return user;
 	}
 
@@ -146,12 +149,12 @@ public class UserDao extends IDao<User> implements UserDetailsService
 				.update("update "
 						+ TABLE_NAME
 						+ " set login = ?, is_admin = ?, confirmed = ?, default_lang = ?, email = ?, invite_code = ?, password = ?, sub_default_lang = ?"
-						+ ", time_spent = ?, use_subtitles = ?, user_roles_id where id = ?",
+						+ ", time_spent = ?, use_subtitles = ?, user_roles_id, invited = ?, where id = ?",
 						new Object[]
 						{ user.getLogin(), user.getIsAdmin(), user.getConfirmed(), user.getDefaultLang().getIso(),
 								user.getEmail(), user.getInviteCode(), user.getPassword(),
 								user.getSubDefaultLang().getIso(), user.getTimeSpent(), user.getUseSubtitles(),
-								user.getUserRole(), user.getId() });
+								user.getUserRole(), user.getInviteCode(), user.getId() });
 	}
 
 	public User findByLogin(String userName)

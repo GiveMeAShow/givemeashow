@@ -23,6 +23,17 @@ public class User implements Serializable
 	private ISOLang				subDefaultLang;
 	private ISOLang				defaultLang;
 	private String				userRole;
+	private Integer				invited;
+
+	public Integer getInvited()
+	{
+		return invited;
+	}
+
+	public void setInvited(Integer invited)
+	{
+		this.invited = invited;
+	}
 
 	public String getUserRole()
 	{

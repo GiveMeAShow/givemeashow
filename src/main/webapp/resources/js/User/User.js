@@ -4,9 +4,10 @@ angular.module('givemeashow.user.service', [])
 						 function($resource, $q, $http, CREDENTIAL){
 	var User = $resource('webservices/user/:dest/:id', {id: '@id'},
 	{
-		getAuth      : {method : 'GET', params: {dest:''}},
-		getMyInfos   : {method : 'GET', params: {dest:'me'}},
-		changePW	 : {method: 'POST', params: {dest: 'changePassword'}}
+		getAuth      : {method: 'GET', params: {dest:''}},
+		getMyInfos   : {method: 'GET', params: {dest:'me'}},
+		changePW	 : {method: 'POST', params: {dest: 'changePassword'}},
+		invite		 : {method: 'POST', params: {dest: 'invite'}}
 	});
 							 
 	var _me = User.getMyInfos();

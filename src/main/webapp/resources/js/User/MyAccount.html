@@ -13,20 +13,39 @@
 		<div class="formLabel">Time spent</div>
 		<div class="formInput">{{user.timeSpent}}</div>
 	</div>
-	<button class="btn btn-primary" ng-hide="!changePassword" ng-click="togglePFields();">Change password</button>
+	<button ng-hide="!inviteFriendsHidden" class="btn btn-primary" ng-click="toggleIFields();">Give acces to a friend</button>
+	<div ng-hide="inviteFriendsHidden">
+		<h4>Send invites to your friends (max X)</h4>
+		<div class="formRow">
+			<div class="formLabel">Email(s)</div>
+			<div class="formInput"><input ng-list=", " ng-model="friendsEmail" placeholder="Emails, coma separated" style="width: 250px;"></div>
+		</div>
+		<div class="formRow">
+			<button ng-disabled="friendsEmail.length <= 0" class="formLabel btn btn-primary"
+				ng-click="inviteFriends();">Send</button>
+				<button  
+				class="formLabel btn btn-default" 
+				ng-click="toggleIFields();">Cancel</button>
+		</div>
+		<div class="formRow">
+		</div>
+	</div>
+	<div class="formRow">
+		<button class="btn btn-primary" ng-hide="!changePassword" ng-click="togglePFields();">Change password</button>
+	</div>
 	<div ng-hide="changePassword">
 		<h4>Change password</h4>
 		<div class="formRow">
 			<div class="formLabel">Password</div>
-			<div class="formInput"><input ng-model="newPassword.old" type="password"></div>
+			<div class="formInput"><input ng-model="newPassword.old" type="password" placeholder="Current password"></div>
 		</div>
 		<div class="formRow">
 			<div class="formLabel">New password</div>
-			<div class="formInput"><input ng-model="newPassword.new" type="password"></div>
+			<div class="formInput"><input ng-model="newPassword.new" type="password" placeholder="New password"></div>
 		</div>
 		<div class="formRow">
 			<div class="formLabel">Confirm</div>
-			<div class="formInput"><input ng-model="newPassword.confirm" type="password"></div>
+			<div class="formInput"><input ng-model="newPassword.confirm" type="password" placeholder="Confirm password"></div>
 		</div>
 		<div class="formRow">
 			<button ng-disabled="!newPassword.match" 

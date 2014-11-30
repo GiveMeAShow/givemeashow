@@ -7,11 +7,16 @@ angular.module('givemeashow.user.myAccount', [ 'givemeashow.user.service'])
 		controller: 'MyAccountController',
 		link : function (scope, element, attrs) {
 			scope.changePassword = true;
+			scope.inviteFriendsHidden = true;
 			angular.extend(scope, {
 				togglePFields : function(callBack)
 				{
 					scope.changePassword = !scope.changePassword;
 					if(callBack) callBack();
+				},
+				toggleIFields : function()
+				{
+					scope.inviteFriendsHidden = !scope.inviteFriendsHidden;
 				}
 			});
 		},
@@ -21,7 +26,9 @@ angular.module('givemeashow.user.myAccount', [ 'givemeashow.user.service'])
 
 .controller('MyAccountController', ['$scope', 'EVENTS', 'UserService', function($scope, EVENTS, UserService){
 	$scope.user = UserService.getMe();
-
+	$scope.friendsEmail = [];
+	
+	
 	$scope.$watch('newPassword', function(){
 		if ($scope.newPassword.new != "" && $scope.newPassword.new === $scope.newPassword.confirm)
 		{
@@ -42,10 +49,19 @@ angular.module('givemeashow.user.myAccount', [ 'givemeashow.user.service'])
 	$scope.sendNewPassword = function()
 	{
 		$scope.newPassword.login = $scope.user.login;
-		UserService.changePW({"newPassword" : $scope.newPassword}, function(datas) {
+		UserService.changePW($scope.newPassword, function(datas) {
 			$scope.clearPass();
 			$scope.changePassword = true;
-			$scope.$emit(EVENTS.toaster, {"status" : "success", "title" : "Sucess", "message" : "Password changed !"});
+			$scope.$emit(EVENTS.toaster, {"status" : "success", "title" : "Password changed!", "message" : "AwwwWwwWW YeeAaaAaaAh !"});
+		}, function(error) {
+			
+		});
+	}
+	
+	$scope.inviteFriends = function()
+	{
+		UserService.invite($scope.friendsEmail, function(datas) {
+			$scope.$emit(EVENTS.toaster, {"status" : "success", "title" : "Invites sent", "message" : "MORE FRIENDS §§"});
 		}, function(error) {
 			
 		});

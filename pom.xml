@@ -14,6 +14,7 @@
 
 
 	<dependencies>
+		<!-- APACHE COMMMONS -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -25,6 +26,14 @@
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+
 
 		<!-- Junit -->
 		<dependency>
@@ -61,13 +70,31 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
+
+		<!-- JAVAX -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
 
+		<!-- JASYPT -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
 
 
 
@@ -113,7 +140,7 @@
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
-		
+
 		<!-- security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
