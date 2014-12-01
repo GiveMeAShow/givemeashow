@@ -75,8 +75,9 @@ module.exports = function (grunt) {
 			},
 			myTarget: {
 				files: {
-					'src/main/webapp/WEB-INF/pages/index.html' : 'Templates/index.tlp.html',
-					'src/main/webapp/WEB-INF/pages/login.html' : 'Templates/login.tlp.html'
+					'src/main/webapp/WEB-INF/pages/index.html'    : 'Templates/index.tlp.html',
+					'src/main/webapp/WEB-INF/pages/login.html'    : 'Templates/login.tlp.html',
+					'src/main/webapp/WEB-INF/pages/register.html' : 'Templates/register.tlp.html'
 				}
 			}
 		}
