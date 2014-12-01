@@ -33,8 +33,6 @@
 			<version>1.4.0</version>
 		</dependency>
 
-
-
 		<!-- Junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -200,9 +198,38 @@
 			<artifactId>persistence-api</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-
 	</dependencies>
+
 	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>src/main/resources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/Resources</directory>
+									<includes>
+										<include>gmas-database.properties</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<finalName>GiveMeAShow</finalName>
 	</build>
+
 </project>
