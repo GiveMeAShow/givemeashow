@@ -77,7 +77,6 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		changeToNextVideo: function ()
 		{
 			var url = $scope.playList[index].url;
-			console.log(url);
 			$scope.setVideo(url);
 			$scope.index = $scope.index + 1;
 		},
@@ -118,10 +117,6 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		}
 		
 	})
-	
-	
-	
-		console.log("mdaire");
 }]);
 
 

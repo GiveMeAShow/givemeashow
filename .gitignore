@@ -13,4 +13,5 @@ src/main/webapp/showsDB/*
 bower_components/*
 node_modules/*
 src/main/webapp/resources/jsLibs/*
+src/main/webapp/WEB-INF/pages/*.html
 /Resources/gmas-database.properties

@@ -16,17 +16,24 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'bower_components/videojs/dist/',
-                    src: ['video-js/video.js', 'video-js/video-js.css'],
-                    dest: '<%= config.dist %>'
+                    cwd: 'bower_components/videojs/dist/video-js/',
+                    src: ['video.js', 'video-js.css'],
+                    dest: '<%= config.dist %>',
+					flatten: true
                 },{
                     expand: true,
-                    cwd: 'bower_components/videojs/dist/',
-                    src: ['video-js/font/**'],
-                    dest: '<%= config.dist %>'
-                }, {
+                    cwd: 'bower_components/videojs/dist/video-js/font/',
+                    src: ['*'],
+                    dest: '<%= config.dist %>/font',
+					flatten: true
+                },{
                     expand: true,
-                    src: 'bower_components/angular*/*.min.js',
+                    src: 'bower_components/angular/angular.min.js',
+                    dest: '<%= config.dist %>/includeFirst',
+					flatten: true
+                },{
+                    expand: true,
+                    src: 'bower_components/angular*/angular-*.min.js',
                     dest: '<%= config.dist %>',
 					flatten: true
                 },{
@@ -34,26 +41,30 @@ module.exports = function (grunt) {
                     src: 'bower_components/angularjs-toaster/toaster*',
                     dest: '<%= config.dist %>',
 					flatten: true
-                }, {
+                },{
                     expand: true,
                     cwd: 'bower_components/bootstrap/dist/',
 					src: ['js/bootstrap.js', 'css/bootstrap.css'],
-                    dest: '<%= config.dist %>/bootstrap'
-                }, {
+                    dest: '<%= config.dist %>',
+					flatten: true
+                },{
                     expand: true,
                     cwd: 'bower_components/jquery/dist/',
 					src: ['jquery.min.js'],
-                    dest: '<%= config.dist %>/jquery'
-                }, {
+                    dest: '<%= config.dist %>/includeFirst',
+					flatten: true
+                },{
                     expand: true,
                     cwd: 'bower_components/jquery-ui/',
 					src: ['jquery-ui.min.js', 'themes/ui-lightness/jquery-ui.css'],
-                    dest: '<%= config.dist %>/jquery-ui'
-                }, {
+                    dest: '<%= config.dist %>/includeFirst',
+					flatten: true
+                },{
                     expand: true,
                     cwd: 'bower_components/gsap/src/minified',
 					src: ['tweenmax.min.js'],
-                    dest: '<%= config.dist %>/gsap'
+                    dest: '<%= config.dist %>',
+					flatten: true
                 }]
             }
         },
@@ -64,8 +75,8 @@ module.exports = function (grunt) {
 			},
 			myTarget: {
 				files: {
-					'src/main/webapp/WEB-INF/pages/index.html' : 'src/main/webapp/WEB-INF/pages/index.tlp.html',
-					'src/main/webapp/WEB-INF/pages/login.html' : 'src/main/webapp/WEB-INF/pages/login.tlp.html'
+					'src/main/webapp/WEB-INF/pages/index.html' : 'Templates/index.tlp.html',
+					'src/main/webapp/WEB-INF/pages/login.html' : 'Templates/login.tlp.html'
 				}
 			}
 		}

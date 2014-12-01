@@ -6,7 +6,7 @@ angular.module("givemeashow.show.showChooser", ['givemeashow.show.service'])
 		scope : {},
 		controller:'ShowChooserController',
 		link : function (scope, element, attrs) {
-			console.log("showChooser");
+			
 		},
 		templateUrl : 'resources/js/Show/Show.html'
 	}

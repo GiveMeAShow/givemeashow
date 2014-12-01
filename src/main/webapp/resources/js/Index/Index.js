@@ -8,7 +8,6 @@ angular.module('givemeashow.index', [ 'givemeashow.show', 'givemeashow.video', '
 			scope.controlHidden = true;
 			scope.aboutHidden = true;
 			scope.accountHidden = true;
-			console.log("xd");
 			$(".tab_content").hide();
             $(".file_content").hide();
             scope.playList = [];
