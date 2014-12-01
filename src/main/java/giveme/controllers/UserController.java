@@ -1,9 +1,12 @@
 package giveme.controllers;
 
+import giveme.common.beans.InviteCode;
 import giveme.common.beans.User;
+import giveme.common.dao.InviteCodeDao;
 import giveme.common.dao.UserDao;
 import giveme.services.EncryptionServices;
 import giveme.services.MailServices;
+import giveme.shared.GiveMeProperties;
 
 import java.io.IOException;
 
@@ -18,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,6 +48,9 @@ public class UserController
 
 	@Autowired
 	MailServices					mailServices;
+
+	@Autowired
+	InviteCodeDao					inviteCodeDao;
 
 	private final EmailValidator	emailValidator;
 
@@ -124,16 +131,45 @@ public class UserController
 	@ResponseBody
 	public String invite(@RequestBody String emails) throws JSONException
 	{
+		org.springframework.security.core.userdetails.User springSecuritySessionUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+				.getContext().getAuthentication().getPrincipal();
+		String userName = springSecuritySessionUser.getUsername();
+		User user = userDao.findByLogin(userName);
+
 		LOGGER.info(emails);
 		JSONArray jsonEmails = new JSONArray(emails);
+		int invited = user.getInvited();
+		if (invited < GiveMeProperties.MAX_INVITE && !user.getIsAdmin())
+		{
+			// TODO ERRH
+			return "YOU CAN'T";
+		}
+
 		for (int i = 0; i < jsonEmails.length(); i++)
 		{
 			String email = jsonEmails.getString(i);
 			if (emailValidator.isValid(email))
 			{
 				LOGGER.info("Sending email :D");
-				mailServices.sendInvite(email);
-				// if not admin, decrease number of available invites
+				try
+				{
+					if (user.getIsAdmin() || (!user.getIsAdmin() && invited < GiveMeProperties.MAX_INVITE))
+					{
+						String inviteCodeStr = mailServices.sendInvite(userName, email);
+						invited += 1;
+						InviteCode inviteCode = new InviteCode(inviteCodeStr, user.getId());
+						inviteCodeDao.save(inviteCode);
+						userDao.updateInvited(user.getId(), invited);
+					}
+					else
+					{
+						// TODO ERRH
+						return "YOU CAN'T";
+					}
+				} catch (MailException e)
+				{
+					LOGGER.error("Couldnt send email for " + email);
+				}
 			}
 			else
 			{

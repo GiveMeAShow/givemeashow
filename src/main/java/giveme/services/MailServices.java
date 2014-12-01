@@ -18,15 +18,20 @@ public class MailServices
 	@Autowired
 	EncryptionServices	encryptionServices;
 
-	public void sendInvite(String email)
+	public String sendInvite(String userName, String email)
 	{
+		String inviteCode = encryptionServices.getInvideCode();
+		String message = "Hey,\r\rGiveMeAShow is a streaming website. It is only available by receiving an invitations, and "
+				+ userName
+				+ " sent you one !\r\rClick on the link below : \r"
+				+ "http://givemeashow.net/register?invite=" + inviteCode;
+
 		SimpleMailMessage simpleMail = new SimpleMailMessage();
 		simpleMail.setTo(email);
-		simpleMail.setSubject("Ogdabou sent you a GiveMeAShow invite url.");
-		String message = "Hey,\r GiveMeAShow is only available thourgh invitations, here is the link : "
-				+ encryptionServices.getInvideCode() + ".";
+		simpleMail.setSubject(userName + " sent you a GiveMeAShow invite url.");
 		simpleMail.setText(message);
-		simpleMail.setSentDate(new Date(11, 11, 11));
+		simpleMail.setSentDate(new Date());
 		mailSender.send(simpleMail);
+		return inviteCode;
 	}
 }

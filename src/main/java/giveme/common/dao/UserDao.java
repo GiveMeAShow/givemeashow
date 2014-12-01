@@ -40,6 +40,9 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		LOGGER = Logger.getLogger(UserDao.class.getName());
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public User createObjectFromResultSet(ResultSet rs) throws SQLException
 	{
@@ -106,6 +109,11 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		}
 	}
 
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	public User findById(final Integer userId)
 	{
 		User user = null;
@@ -121,6 +129,9 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		return user;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public User createObjectFromRows(Map<String, Object> row)
 	{
@@ -142,6 +153,10 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		return user;
 	}
 
+	/**
+	 * 
+	 * @param user
+	 */
 	public void update(User user)
 	{
 		LOGGER.info("Updating user " + user.getLogin());
@@ -157,6 +172,11 @@ public class UserDao extends IDao<User> implements UserDetailsService
 								user.getUserRole(), user.getInviteCode(), user.getId() });
 	}
 
+	/**
+	 * 
+	 * @param userName
+	 * @return
+	 */
 	public User findByLogin(String userName)
 	{
 		User user = null;
@@ -172,6 +192,12 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		return user;
 	}
 
+	/**
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
 	public User findByLoginAndPassword(String userName, String password)
 	{
 		User user = null;
@@ -188,6 +214,9 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		return user;
 	}
 
+	/**
+	 * 
+	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		User myUser = findByLogin(username);
@@ -205,11 +234,28 @@ public class UserDao extends IDao<User> implements UserDetailsService
 		return user;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param encryptPassword
+	 */
 	public void updatePassword(Integer id, String encryptPassword)
 	{
 		LOGGER.info("Updating user " + id);
 		jdbcTemplate.update("update " + TABLE_NAME + " set password = ? where id = ?", new Object[]
 		{ encryptPassword, id });
 
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param invited
+	 */
+	public void updateInvited(Integer id, int invited)
+	{
+		LOGGER.info("Updating user " + id);
+		jdbcTemplate.update("update " + TABLE_NAME + " set invited = ? where id = ?", new Object[]
+		{ invited, id });
 	}
 }

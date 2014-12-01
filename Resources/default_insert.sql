@@ -8,11 +8,6 @@ VALUES
 INSERT INTO `givemeashow`.`user_roles`
 (`user_role`)
 VALUES
-('ROLE_VISITOR');
-
-INSERT INTO `givemeashow`.`user_roles`
-(`user_role`)
-VALUES
 ('ROLE_USER');
 
 
@@ -28,6 +23,7 @@ INSERT INTO `givemeashow`.`user`
 `sub_default_lang`,
 `confirmed`,
 `email`,
+`invited`,
 `user_role`)
 VALUES
 (0,
@@ -41,4 +37,5 @@ false,
 'fr',
 true,
 'ogdabou@gmail.com',
+0,
 'ROLE_ADMIN');

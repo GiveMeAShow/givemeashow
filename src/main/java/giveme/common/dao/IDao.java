@@ -40,7 +40,7 @@ public abstract class IDao<T>
 
 	public abstract T createObjectFromRows(Map<String, Object> row);
 
-	public abstract void save(T toSave);
+	public abstract void save(final T toSave);
 
 	public abstract T createObjectFromResultSet(ResultSet rs) throws SQLException;
 
