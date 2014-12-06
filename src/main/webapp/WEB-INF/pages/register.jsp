@@ -68,6 +68,9 @@
 		<div id="boxTitleBand">
 			<h3 id="boxtitle">Givemeashow - Register</h3>
 		</div>
+		<c:if test="${not empty error}">
+		    ${error}
+		</c:if>
 
 		<div id="boxContent">
 			<form:form method="POST" action="/register/${inviteCode.inviteCode}" modelAttribute="user">
