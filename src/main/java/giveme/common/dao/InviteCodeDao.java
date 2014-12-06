@@ -68,4 +68,29 @@ public class InviteCodeDao extends IDao<InviteCode>
 		inviteCode.setUserId(rs.getInt("user_id"));
 		return inviteCode;
 	}
+
+	public InviteCode find(String inviteCode)
+	{
+		InviteCode code = null;
+		try
+		{
+			final String query = "select * from " + TABLE_NAME + " WHERE invite_code = ?";
+			code = jdbcTemplate.queryForObject(query, new Object[]
+			{ inviteCode }, new MyObjectMapper());
+		} catch (final Exception e)
+		{
+			return null;
+		}
+		return code;
+	}
+
+	public void delete(InviteCode inviteCode)
+	{
+		String query = "delete from " + TABLE_NAME + " WHERE invite_code = ?";
+		int rows = jdbcTemplate.update(query, new Object[]
+		{ inviteCode.getInviteCode() });
+
+		LOGGER.info(rows + " rows deleted");
+
+	}
 }

@@ -1,7 +1,9 @@
 package giveme.controllers;
 
+import giveme.common.beans.ISOLang;
 import giveme.common.beans.InviteCode;
 import giveme.common.beans.User;
+import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.InviteCodeDao;
 import giveme.common.dao.UserDao;
 import giveme.services.EncryptionServices;
@@ -29,6 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,11 +57,18 @@ public class UserController
 
 	private final EmailValidator	emailValidator;
 
+	@Autowired
+	ISOLangDao						isoLangDao;
+
 	public UserController()
 	{
 		emailValidator = EmailValidator.getInstance();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
 	public ModelAndView adminPage()
 	{
@@ -71,6 +81,12 @@ public class UserController
 		return model;
 	}
 
+	/**
+	 * 
+	 * @param resonse
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/webservices/user", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public User getUser(HttpServletResponse resonse, HttpServletRequest request)
@@ -89,6 +105,12 @@ public class UserController
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param resonse
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/webservices/user/me", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public User getMe(HttpServletResponse resonse, HttpServletRequest request)
@@ -106,6 +128,12 @@ public class UserController
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param newPassword
+	 * @return
+	 * @throws JSONException
+	 */
 	@RequestMapping(value = "/webservices/user/changePassword", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public User changePw(@RequestBody String newPassword) throws JSONException
@@ -127,6 +155,12 @@ public class UserController
 		}
 	}
 
+	/**
+	 * 
+	 * @param emails
+	 * @return
+	 * @throws JSONException
+	 */
 	@RequestMapping(value = "/webservices/user/invite", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public String invite(@RequestBody String emails) throws JSONException
@@ -179,6 +213,10 @@ public class UserController
 		return "";
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login()
 	{
@@ -188,6 +226,88 @@ public class UserController
 		return model;
 	}
 
+	/**
+	 * 
+	 * @param inviteCode
+	 * @return
+	 */
+	@RequestMapping(value = "/register/{inviteCode}", method = RequestMethod.GET)
+	public ModelAndView registerWithInviteCode(@PathVariable("inviteCode") String inviteCode)
+	{
+		InviteCode inviteCodeDB = inviteCodeDao.find(inviteCode);
+		if (inviteCodeDB != null)
+		{
+			User user = userDao.findById(inviteCodeDB.getUserId());
+			user.setPassword("");
+			ModelAndView mdv = new ModelAndView("/register.jsp");
+			mdv.addObject("host", user);
+			mdv.addObject("user", new User());
+			mdv.addObject("inviteCode", inviteCodeDB);
+			return mdv;
+		}
+		else
+		{
+			return new ModelAndView("redirect:/login");
+		}
+	}
+
+	/**
+	 * 
+	 * @param inviteCode
+	 * @return
+	 */
+	@RequestMapping(value = "/register/{inviteCode}", method = RequestMethod.POST)
+	public ModelAndView register(@ModelAttribute("user") User user, @PathVariable("inviteCode") String inviteCode)
+	{
+		// TODO use confirmation mail ? don't think so.
+		ModelAndView redirectView = new ModelAndView("redirect:/");
+		InviteCode invite = new InviteCode(inviteCode);
+		if (user.getLogin() == null || user.getEmail() == null || user.getPassword() == null)
+		{
+			redirectView.addObject("error", "Please fill all the fields");
+			return new ModelAndView("redirect:/");
+		}
+		if (userDao.findByLogin(user.getLogin()) == null)
+		{
+			if (userDao.findByEmail(user.getEmail()) == null)
+			{
+				ISOLang defaultLang = isoLangDao.findByISO("fr");
+				user.setDefaultLang(defaultLang);
+				user.setInvited(0);
+				user.setSubDefaultLang(defaultLang);
+				user.setTimeSpent(0);
+				user.setUserRole("ROLE_USER");
+				user.setPassword(encryptionServices.encryptPassword(user.getPassword()));
+				userDao.save(user);
+				try
+				{
+					mailServices.sendWelcome(user);
+				} catch (MailException e)
+				{
+					userDao.delete(user);
+					redirectView.addObject("error", "Error while trying to send confirmation mail.");
+					return new ModelAndView("redirect:/");
+				}
+				inviteCodeDao.delete(invite);
+				logUser(user);
+				return redirectView;
+			}
+			else
+			{
+				redirectView.addObject("error", "This email is already in use");
+				return redirectView;
+			}
+		}
+		redirectView.addObject("error", "This login is already in use");
+		return redirectView;
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logOut(HttpServletRequest request, HttpServletResponse response)
 	{
@@ -211,6 +331,14 @@ public class UserController
 		return new ModelAndView("redirect:/login");
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView validLogin(@ModelAttribute("user") User user, HttpServletRequest request,
 			HttpServletResponse response) throws IOException
@@ -228,14 +356,19 @@ public class UserController
 			}
 			else if (user != null && encryptionServices.match(password, user.getPassword()))
 			{
-				UserDetails userDetails = userDao.loadUserByUsername(user.getLogin());
-				Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
-						userDetails.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(auth);
-				LOGGER.info("user " + user.getLogin() + " logged in.");
+				logUser(user);
 				return new ModelAndView("redirect:/");
 			}
 		}
 		return model;
+	}
+
+	private void logUser(User user)
+	{
+		UserDetails userDetails = userDao.loadUserByUsername(user.getLogin());
+		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+				userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		LOGGER.info("user " + user.getLogin() + " logged in.");
 	}
 }

@@ -16,6 +16,11 @@ public class InviteCode
 
 	}
 
+	public InviteCode(String inviteCode2)
+	{
+		inviteCode = inviteCode2;
+	}
+
 	public String getInviteCode()
 	{
 		return inviteCode;
