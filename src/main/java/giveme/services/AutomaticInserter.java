@@ -1,5 +1,6 @@
 package giveme.services;
 
+import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
 import giveme.common.beans.Video;
@@ -54,7 +55,7 @@ public class AutomaticInserter
 			e.printStackTrace();
 		}
 
-		BASE_FOLDER_PATH = System.getProperty("catalina.base") + props.getProperty("baseFolder");
+		BASE_FOLDER_PATH = props.getProperty("baseFolder");
 		LOGGER.info("Base folder " + BASE_FOLDER_PATH);
 		videoFormatFilter = new FileNameExtensionFilter("video extension filter", props.getProperty("extensions"));
 		bannerSuffix = props.getProperty("bannerSuffixe");
@@ -159,33 +160,43 @@ public class AutomaticInserter
 	{
 		if (seasonFolder.listFiles() != null && seasonFolder.listFiles().length != 0)
 		{
-			for (final File videoFile : seasonFolder.listFiles())
+			for (final File videoFolersByLang : seasonFolder.listFiles())
 			{
-				final String videoFileName = videoFile.getName();
-
-				// if it is a video
-				if (videoFormatFilter.accept(videoFile))
+				final String langIso = videoFolersByLang.getName();
+				ISOLang lang = languageDao.findByISO(langIso);
+				if (lang == null)
 				{
-					Video video = new Video();
-					createUrlAndRelativePath(videoFile.getAbsolutePath(), video);
-					createVideo(show, season, videoFileName, video);
-					if (videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(), video.getSeasonId(),
-							video.getTitle()) == null)
+					LOGGER.error("LANG NOT FOUND");
+					return;
+				}
+
+				for (File videoFile : videoFolersByLang.listFiles())
+				{
+					if (videoFormatFilter.accept(videoFile))
 					{
-						videoDao.save(video);
+						final String videoFileName = videoFile.getName();
+						Video video = new Video();
+						video.setLanguageIso(lang);
+						createUrlAndRelativePath(videoFile.getAbsolutePath(), video);
+						createVideo(show, season, videoFileName, video);
+						if (videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(), video.getSeasonId(),
+								video.getTitle()) == null)
+						{
+							videoDao.save(video);
+						}
 					}
 				}
+
 			}
 		}
 	}
 
 	private void createUrlAndRelativePath(String absolutePath, Video video)
 	{
-		int indexResources = absolutePath.indexOf("resources");
-		String relativePath = absolutePath.substring(indexResources);
-		video.setRelativePath(relativePath);
-		String url = relativePath.replace(File.separatorChar, '/');
+		String relativePath = absolutePath.replace(BASE_FOLDER_PATH, "");
+		String url = "/showsDB" + relativePath.replace(File.separatorChar, '/');
 		video.setUrl(url);
+		video.setRelativePath(absolutePath);
 		LOGGER.info("video relative path : " + relativePath);
 	}
 
@@ -198,21 +209,13 @@ public class AutomaticInserter
 	private Video createVideo(final Show show, final Season season, final String videoFileName, Video video)
 	{
 		LOGGER.info("Creating video");
+		video.setPosition(extractPositionFromVideoFolder(videoFileName));
 		video.setSeasonId(season.getId());
 		video.setShowId(show.getId());
-		String tempName = videoFileName;
-		if ((videoFileName.lastIndexOf("-") - 1) > 0)
-		{
-			tempName = videoFileName.substring(0, (videoFileName.lastIndexOf("-")));
-		}
+		String tempName = "" + videoFileName.substring(videoFileName.lastIndexOf('-'));
+		tempName = "" + tempName.subSequence(0, (videoFileName.lastIndexOf('.') - 1));
 		video.setTitle(tempName.replaceAll("_", " "));
-		video.setPosition(extractPositionFromVideoFileName(videoFileName));
-		final String languageISO = videoFileName.substring(videoFileName.lastIndexOf("_") + 1,
-				videoFileName.lastIndexOf("."));
-		if (languageDao.findByISO(languageISO) != null)
-		{
-			video.setLanguageIso(languageDao.findByISO(languageISO));
-		}
+
 		// TODO Compute relative path
 		// video.setRelativePath(relativePath);
 		// TODO Compute URL ?
@@ -251,10 +254,9 @@ public class AutomaticInserter
 	 * @param videoFileName
 	 * @return
 	 */
-	private int extractPositionFromVideoFileName(final String videoFileName)
+	private int extractPositionFromVideoFolder(final String videoFileName)
 	{
-		final int index = videoFileName.lastIndexOf("-");
-		final int position = Integer.parseInt("" + videoFileName.charAt(index + 1));
+		final int position = Integer.parseInt("" + videoFileName.subSequence(0, videoFileName.lastIndexOf('-')));
 		return position;
 	}
 
