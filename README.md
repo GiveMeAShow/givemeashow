@@ -5,3 +5,4 @@ V2 with database/tomcat/angularJS/bower etc...
 [Docker](https://www.docker.com/)
 [CoralCache](http://www.coralcdn.org/)  
 [Timeline](http://visjs.org/#example)
+[Coveralls](https://coveralls.io)
