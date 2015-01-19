@@ -3,15 +3,9 @@ package giveme.inserters;
 import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
-import giveme.common.dao.ISOLangDao;
-import giveme.common.dao.SeasonDao;
-import giveme.common.dao.ShowDao;
-import giveme.common.dao.VideoDao;
 import giveme.shared.GiveMeProperties;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -34,18 +28,6 @@ public class LocalFilesAutoInserter implements IAutomaticInserter
 	private final FileNameExtensionFilter	videoFormatFilter;
 
 	@Autowired
-	public ShowDao							showDao;
-
-	@Autowired
-	public SeasonDao						seasonDao;
-
-	@Autowired
-	public ISOLangDao						languageDao;
-
-	@Autowired
-	public VideoDao							videoDao;
-
-	@Autowired
 	public Inserter							inserter;
 
 	/**
@@ -53,15 +35,6 @@ public class LocalFilesAutoInserter implements IAutomaticInserter
 	 */
 	public LocalFilesAutoInserter()
 	{
-		final Properties props = new Properties();
-		try
-		{
-			props.load(LocalFilesAutoInserter.class.getClassLoader().getResourceAsStream("givemeashow.properties"));
-		} catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-
 		videoFormatFilter = new FileNameExtensionFilter("video extension filter", GiveMeProperties.VIDEO_EXT);
 	}
 

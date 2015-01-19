@@ -18,6 +18,8 @@ public class GiveMeProperties
 	public static int			MAX_INVITE;
 	public static String		VIDEO_EXT;
 	public static String		BANNER_SUFFIX;
+	public static String		AWKEY;
+	public static String		AWSECRET;
 
 	public GiveMeProperties()
 	{
@@ -39,5 +41,7 @@ public class GiveMeProperties
 		MAX_INVITE = Integer.parseInt(props.getProperty("max_invite"));
 		BANNER_SUFFIX = props.getProperty("bannerSuffixe");
 		VIDEO_EXT = props.getProperty("extensions");
+		AWKEY = props.getProperty("accessKey");
+		AWSECRET = props.getProperty("accessSecret");
 	}
 }
