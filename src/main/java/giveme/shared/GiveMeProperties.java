@@ -16,6 +16,8 @@ public class GiveMeProperties
 	public static String		BASE_FOLDER;
 	private final Properties	props;
 	public static int			MAX_INVITE;
+	public static String		VIDEO_EXT;
+	public static String		BANNER_SUFFIX;
 
 	public GiveMeProperties()
 	{
@@ -35,5 +37,7 @@ public class GiveMeProperties
 		props.load(GiveMeProperties.class.getClassLoader().getResourceAsStream("givemeashow.properties"));
 		BASE_FOLDER = props.getProperty("baseFolder");
 		MAX_INVITE = Integer.parseInt(props.getProperty("max_invite"));
+		BANNER_SUFFIX = props.getProperty("bannerSuffixe");
+		VIDEO_EXT = props.getProperty("extensions");
 	}
 }

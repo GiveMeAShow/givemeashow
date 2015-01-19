@@ -10,7 +10,7 @@ import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.common.dao.VideoDao;
 import giveme.controllers.bindings.SelectedVideoFromFile;
-import giveme.services.AutomaticInserter;
+import giveme.inserters.LocalFilesAutoInserter;
 import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
 import giveme.services.models.VideoFile;
@@ -54,7 +54,7 @@ public class VideoController
 	VideoDao					videoDao;
 
 	@Autowired
-	AutomaticInserter			autoInsert;
+	LocalFilesAutoInserter			autoInsert;
 
 	public VideoController()
 	{
