@@ -9,7 +9,6 @@ import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.common.dao.VideoDao;
-import giveme.shared.GiveMeProperties;
 
 import java.io.File;
 
@@ -20,10 +19,14 @@ import org.springframework.stereotype.Repository;
 
 @Component
 @Repository
-public class Inserter {
+public class Inserter
+{
+	public Inserter()
+	{
+		// TODO Auto-generated constructor stub
+	}
 
-	private static final Logger	LOGGER	= Logger.getLogger(Inserter.class
-												.getName());
+	private static final Logger	LOGGER	= Logger.getLogger(Inserter.class.getName());
 
 	@Autowired
 	public ShowDao				showDao;
@@ -37,44 +40,47 @@ public class Inserter {
 	@Autowired
 	public ISOLangDao			languageDao;
 
-	public Show insertShow(String showFolderName) {
+	public Show insertShow(String rawShowName)
+	{
 		final Show show = new Show();
 
-		show.setName(showFolderName.replaceAll("_", " "));
-		final String showPath = showFolderName + File.separator
-				+ showFolderName.toLowerCase() + BANNER_SUFFIX;
+		show.setName(rawShowName.replaceAll("_", " "));
+		final String showPath = rawShowName + File.separator + rawShowName.toLowerCase() + BANNER_SUFFIX;
+		// TODO maybe a mistake there, replacing with \\.
 		show.setIconUrl(showPath.replace(File.separatorChar, '\\'));
 		final Show showInDb = showDao.findByName(show.getName());
-		if (showInDb == null) {
+		if (showInDb == null)
+		{
 			showDao.save(show);
-			LOGGER.info("Show " + show.getName() + " with icon "
-					+ show.getIconUrl() + " and id " + show.getId()
+			LOGGER.info("Show " + show.getName() + " with icon " + show.getIconUrl() + " and id " + show.getId()
 					+ " has been saved");
-		} else {
+		}
+		else
+		{
 			show.setId(showInDb.getId());
 			showDao.update(show);
-			LOGGER.info("Show " + show.getName() + " with icon "
-					+ show.getIconUrl() + " and id " + show.getId()
+			LOGGER.info("Show " + show.getName() + " with icon " + show.getIconUrl() + " and id " + show.getId()
 					+ " has been updated");
 		}
 		return show;
 	}
 
-	public Season insertSeason(final Show show, String seasonFolderName) {
+	public Season insertSeason(final Show show, String seasonFolderName)
+	{
 
 		final Season season = createSeason(show, seasonFolderName);
 
 		season.setShowId(show.getId());
-		final Season seasonInDb = seasonDao.findBy(
-				season.getName(), season.getShowId());
-		if (seasonInDb == null) {
+		final Season seasonInDb = seasonDao.findBy(season.getName(), season.getShowId());
+		if (seasonInDb == null)
+		{
 			seasonDao.save(season);
-			LOGGER.info("Saved season " + season.getName() + " and id "
-					+ season.getId());
-		} else {
+			LOGGER.info("Saved season " + season.getName() + " and id " + season.getId());
+		}
+		else
+		{
 			season.setId(seasonInDb.getId());
-			LOGGER.info("Updated season " + season.getName() + " and id "
-					+ season.getId());
+			LOGGER.info("Updated season " + season.getName() + " and id " + season.getId());
 		}
 		return season;
 	}
@@ -84,15 +90,16 @@ public class Inserter {
 	 * @param show
 	 * @param season
 	 * @param videoFileName
-	 * @param lang 
-	 * @param relativePath 
+	 * @param lang
+	 * @param relativePath
+	 * @param video
 	 */
-	public Video insertVideo(final Show show, final Season season,
-			final String videoFileName, ISOLang lang, String relativePath) {
-		Video video = createVideo(show, season, videoFileName, lang,
-				relativePath);
-		if (videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(),
-				video.getSeasonId(), video.getTitle()) == null) {
+	public Video insertVideo(final Show show, final Season season, final String videoFileName, ISOLang lang,
+			String relativePath, Video video)
+	{
+		video = createVideo(show, season, videoFileName, lang, relativePath, video);
+		if (videoDao.findByShowAndSeasonIdsAndTitle(video.getShowId(), video.getSeasonId(), video.getTitle()) == null)
+		{
 			videoDao.save(video);
 		}
 		return video;
@@ -103,9 +110,11 @@ public class Inserter {
 	 * @param langIsoString
 	 * @return
 	 */
-	public ISOLang insertLang(String langIsoString) {
+	public ISOLang insertLang(String langIsoString)
+	{
 		ISOLang isoLang = languageDao.findByISO(langIsoString);
-		if (isoLang == null) {
+		if (isoLang == null)
+		{
 			isoLang = new ISOLang();
 			isoLang.setLanguage(langIsoString);
 			languageDao.save(isoLang);
@@ -120,36 +129,33 @@ public class Inserter {
 	 * @param seasonFolderName
 	 * @return
 	 */
-	private Season createSeason(final Show show, final String seasonFolderName) {
+	private Season createSeason(final Show show, final String seasonFolderName)
+	{
 		final Season season = new Season();
 		season.setName(seasonFolderName.replaceAll("_", " "));
-		season.setIconUrl(seasonFolderName + File.separator
-				+ seasonFolderName.toLowerCase() + BANNER_SUFFIX);
+		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase() + BANNER_SUFFIX);
 		season.setShowId(show.getId());
 		extractPosition(seasonFolderName, season);
-		if (seasonDao.findBy(season.getName(), season.getShowId()) != null) {
+		if (seasonDao.findBy(season.getName(), season.getShowId()) != null)
+		{
 			seasonDao.update(season);
 		}
-		LOGGER.info("Season \"" + season.getName() + "\" from show "
-				+ season.getShowId() + " at pos " + season.getPosition()
-				+ " with icon " + season.getIconUrl() + " has been updated");
+		LOGGER.info("Season \"" + season.getName() + "\" from show " + season.getShowId() + " at pos "
+				+ season.getPosition() + " with icon " + season.getIconUrl() + " has been updated");
 
 		return season;
 	}
 
-	private Video createVideo(final Show show, final Season season,
-			final String videoFileName, ISOLang lang, String relativePath) {
-		Video video = new Video();
-		createUrlAndRelativePath(relativePath, video);
+	private Video createVideo(final Show show, final Season season, final String videoFileName, ISOLang lang,
+			String relativePath, Video video)
+	{
 		LOGGER.info("Creating video");
 		video.setLanguageIso(lang);
 		extractPosition(videoFileName, video);
 		video.setSeasonId(season.getId());
 		video.setShowId(show.getId());
-		String tempName = ""
-				+ videoFileName.substring(videoFileName.lastIndexOf('-'));
-		tempName = ""
-				+ tempName.subSequence(0, (videoFileName.lastIndexOf('.') - 1));
+		String tempName = "" + videoFileName.substring(videoFileName.indexOf('-') + 1);
+		tempName = "" + tempName.subSequence(0, (tempName.lastIndexOf('.')));
 		video.setTitle(tempName.replaceAll("_", " "));
 
 		// TODO Compute relative path
@@ -161,24 +167,15 @@ public class Inserter {
 		return video;
 	}
 
-	private void createUrlAndRelativePath(String absolutePath, Video video) {
-		String relativePath = absolutePath.replace(
-				GiveMeProperties.BASE_FOLDER, "");
-		String url = "/showsDB" + relativePath.replace(File.separatorChar, '/');
-		video.setUrl(url);
-		video.setRelativePath(absolutePath);
-		LOGGER.info("video relative path : " + relativePath);
-	}
-
 	/**
 	 * 
-	 * @param season 
+	 * @param season
 	 * @param seasonFolderName
 	 * @return
 	 */
-	private void extractPosition(final String seasonFolderName, Season season) {
-		final int position = Integer.parseInt(seasonFolderName
-				.substring(seasonFolderName.lastIndexOf("_") + 1));
+	private void extractPosition(final String seasonFolderName, Season season)
+	{
+		final int position = Integer.parseInt(seasonFolderName.substring(seasonFolderName.lastIndexOf("_") + 1));
 		season.setPosition(position);
 		LOGGER.debug("Position is " + position);
 	}
@@ -188,11 +185,10 @@ public class Inserter {
 	 * @param videoFileName
 	 * @return
 	 */
-	private void extractPosition(final String videoFileName, Video video) {
-		final int position = Integer.parseInt(""
-				+ videoFileName.subSequence(0, videoFileName.lastIndexOf('-')));
+	private void extractPosition(final String videoFileName, Video video)
+	{
+		final int position = Integer.parseInt("" + videoFileName.subSequence(0, videoFileName.indexOf('-')));
 		video.setPosition(position);
 	}
-
 
 }

@@ -3,6 +3,7 @@ package giveme.inserters;
 import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
+import giveme.common.beans.Video;
 import giveme.shared.GiveMeProperties;
 
 import java.io.File;
@@ -17,25 +18,36 @@ import org.springframework.stereotype.Repository;
 /**
  * This class is used to automatically update/insert shows, seasons and videos
  * in DB from a LOCAL DIRECTORY.
+ * 
  * @author Axel
- *
+ * 
  */
 @Component
 @Repository
-public class LocalFilesAutoInserter implements IAutomaticInserter
+public class LocalFilesAutoInserter
 {
-	private static final Logger				LOGGER	= Logger.getLogger(LocalFilesAutoInserter.class.getName());
-	private final FileNameExtensionFilter	videoFormatFilter;
+	private static final Logger		LOGGER	= Logger.getLogger(LocalFilesAutoInserter.class.getName());
+	private FileNameExtensionFilter	videoFormatFilter;
 
 	@Autowired
-	public Inserter							inserter;
+	public Inserter					inserter;
 
 	/**
 	 *
 	 */
 	public LocalFilesAutoInserter()
 	{
-		videoFormatFilter = new FileNameExtensionFilter("video extension filter", GiveMeProperties.VIDEO_EXT);
+
+		try
+
+		{
+			videoFormatFilter = new FileNameExtensionFilter("video extension filter", GiveMeProperties.VIDEO_EXT);
+		} catch (Exception e)
+		{
+		} finally
+		{
+			videoFormatFilter = new FileNameExtensionFilter("video extension filter", "mp4");
+		}
 	}
 
 	/**
@@ -44,7 +56,7 @@ public class LocalFilesAutoInserter implements IAutomaticInserter
 	 * |-video-1_en.webm | | |-video-1_fr.webm | | |-video-1_poster.png | |
 	 * |-video-2_fr.webm | | |-video-2_poster.png | |-season_2 |-Show_Name_2 ...
 	 */
-	public void runAndFillDatabase()
+	public void visitAll()
 	{
 		// Get shows names from the first folder level
 		final File baseFolder = new File(GiveMeProperties.BASE_FOLDER);
@@ -85,8 +97,7 @@ public class LocalFilesAutoInserter implements IAutomaticInserter
 				{
 					String seasonFolderName = seasonFolder.getName();
 
-					final Season season = inserter.insertSeason(show,
-							seasonFolderName);
+					final Season season = inserter.insertSeason(show, seasonFolderName);
 
 					// Add all the files in a season folder. It can be a video,
 					// a subtitle or a poster
@@ -117,13 +128,22 @@ public class LocalFilesAutoInserter implements IAutomaticInserter
 					{
 						final String videoFileName = videoFile.getName();
 						final String relativePath = videoFile.getAbsolutePath();
-
-						inserter.insertVideo(show, season, videoFileName, lang,
-								relativePath);
+						Video video = new Video();
+						createUrlAndRelativePath(relativePath, video);
+						inserter.insertVideo(show, season, videoFileName, lang, relativePath, video);
 					}
 				}
 			}
 		}
+	}
+
+	private void createUrlAndRelativePath(String relativePath, Video video)
+	{
+		String path = relativePath.replace(GiveMeProperties.BASE_FOLDER, "");
+		String url = "/showsDB" + relativePath.replace(File.separatorChar, '/');
+		video.setUrl(url);
+		video.setRelativePath(path);
+		LOGGER.info("video relative path : " + relativePath);
 	}
 
 }

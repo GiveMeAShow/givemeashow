@@ -20,6 +20,7 @@ public class GiveMeProperties
 	public static String		BANNER_SUFFIX;
 	public static String		AWKEY;
 	public static String		AWSECRET;
+	public static boolean		AWS;
 
 	public GiveMeProperties()
 	{
@@ -43,5 +44,6 @@ public class GiveMeProperties
 		VIDEO_EXT = props.getProperty("extensions");
 		AWKEY = props.getProperty("accessKey");
 		AWSECRET = props.getProperty("accessSecret");
+		AWS = Boolean.parseBoolean(props.getProperty("aws"));
 	}
 }
