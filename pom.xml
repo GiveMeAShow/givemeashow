@@ -10,6 +10,7 @@
 
 	<properties>
 		<spring.version>3.2.4.RELEASE</spring.version>
+		<aws.sdk.version>1.9.15</aws.sdk.version>
 	</properties>
 
 
@@ -19,6 +20,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>${aws.sdk.version}</version>
 		</dependency>
 
 		<dependency>

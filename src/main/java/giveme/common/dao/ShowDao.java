@@ -69,6 +69,7 @@ public class ShowDao extends IDao<Show>
 					return ps;
 				}
 			}, keyHolder);
+			show.setId(keyHolder.getKey().intValue());
 
 		} catch (final Exception e)
 		{

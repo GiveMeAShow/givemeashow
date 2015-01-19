@@ -141,7 +141,7 @@ public class SeasonDao extends IDao<Season>
 
 	}
 
-	public Season findByNameAndShowID(String name, int showId)
+	public Season findBy(String name, int showId)
 	{
 		Season season = null;
 		LOGGER.info("finding season " + " name " + name + " title " + showId);

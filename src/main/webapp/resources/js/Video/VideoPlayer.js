@@ -6,11 +6,12 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		scope : {},
 		controller :'VideoPlayerController',
 		link : function (scope, element, attrs) {
+			
 			angular.extend(scope, {
 				
 				setVideo: function (url)
 				{
-					scope.videoPlayer.src({type: "video/webm", src: url});
+					scope.videoPlayer.src({type: "video/mp4", src: url});
 					scope.videoPlayer.currentTime(0);
 					scope.videoPlayer.ready(function(){
 						var vp = this;

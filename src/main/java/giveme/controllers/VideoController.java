@@ -10,10 +10,12 @@ import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.common.dao.VideoDao;
 import giveme.controllers.bindings.SelectedVideoFromFile;
-import giveme.services.AutomaticInserter;
+import giveme.inserters.AwsFilesAutoInserter;
+import giveme.inserters.LocalFilesAutoInserter;
 import giveme.services.FileExplorer;
 import giveme.services.VideoServices;
 import giveme.services.models.VideoFile;
+import giveme.shared.GiveMeProperties;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,11 +56,13 @@ public class VideoController
 	VideoDao					videoDao;
 
 	@Autowired
-	AutomaticInserter			autoInsert;
+	LocalFilesAutoInserter		localAutoInsert;
+
+	@Autowired
+	AwsFilesAutoInserter		awsAutoInsert;
 
 	public VideoController()
 	{
-		LOGGER.info("lol");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -74,7 +78,16 @@ public class VideoController
 	public ModelAndView autoInsert()
 	{
 		final ModelAndView mdv = new ModelAndView();
-		autoInsert.runAndFillDatabase();
+		if (GiveMeProperties.AWS)
+		{
+			LOGGER.info("AWS auto");
+			awsAutoInsert.visitAll();
+		}
+		else
+		{
+			LOGGER.info("Local auto");
+			localAutoInsert.visitAll();
+		}
 		return mdv;
 	}
 

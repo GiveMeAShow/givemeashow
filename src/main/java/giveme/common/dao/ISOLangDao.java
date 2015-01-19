@@ -3,11 +3,14 @@ package giveme.common.dao;
 import static giveme.common.dao.SharedConstants.DB_NAME;
 import giveme.common.beans.ISOLang;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -28,12 +31,26 @@ public class ISOLangDao extends IDao<ISOLang>
 	@Override
 	public void save(final ISOLang toSave)
 	{
-		LOGGER.info("Saving a new Show");
+		LOGGER.info("Saving a new lang");
 		try
 		{
 			final String query = "insert into " + TABLE_NAME + " (lang_iso, lang_name, lang_flag_url) "
 					+ "VALUES (?, ?, ?)";
-			jdbcTemplate.update(query, toSave.getIso(), toSave.getLanguage(), toSave.getFlagUrl());
+
+			jdbcTemplate.update(new PreparedStatementCreator() {
+
+				public PreparedStatement createPreparedStatement(Connection con)
+						throws SQLException {
+					PreparedStatement ps = con.prepareStatement(query,
+							new String[] { "lang_iso", "lang_name",
+									"lang_flag_url" });
+					ps.setString(1, toSave.getIso());
+					ps.setString(2, toSave.getLanguage());
+					ps.setString(3, toSave.getFlagUrl());
+					return ps;
+				}
+			});
+
 		} catch (final Exception e)
 		{
 			e.printStackTrace();
