@@ -12,6 +12,7 @@
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
 	<fieldset>
+	<div class="mainContent">
 		<form:form method="post" modelAttribute="seasonAndShowName"
 			action="${pageContext.request.contextPath}/admin/season/addSeason"
 			id="standardForm">
@@ -58,6 +59,7 @@
 				<form:button>Add</form:button>
 			</div>
 		</form:form>
+		</div>
 	</fieldset>
 
 	<script type="text/javascript">

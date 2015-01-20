@@ -15,7 +15,7 @@
 				<div class="row">
 				<div class="col-md-1">${season.id}</div>
 					<div class="col-md-2">${season.name}</div>
-					<div class="col-md-2"><img src="${show.position}"/></div>
+					<div class="col-md-2"><img src="${season.position}"/></div>
 					<div class="col-md-2">
 						<a href="${pageContext.request.contextPath}/admin/season/${season.id}">
 							<div class="btn btn-default">

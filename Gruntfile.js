@@ -104,12 +104,7 @@ module.exports = function(grunt) {
 								'cssresources' : '/resources/css/'
 							}
 						},
-						files : [ {
-							src : "*.jsp",
-							dest : "src/main/webapp/WEB-INF/pages/admin/show/",
-							expand : true,
-							cwd : "Templates/jsp/admin/show/"
-						}, {
+						files : [{
 							src : "*.jsp",
 							dest : "src/main/webapp/WEB-INF/pages/shared/",
 							expand : true,
