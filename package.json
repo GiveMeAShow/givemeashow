@@ -7,6 +7,7 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "~0.5.2",
     "grunt-contrib-uglify": "~0.2.0",
-    "grunt-include-source": "^0.4.4"
+    "grunt-include-source": "^0.4.4",
+    "grunt-include-replace": "^2.0.0"
   }
 }

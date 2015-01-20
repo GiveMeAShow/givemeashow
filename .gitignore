@@ -16,3 +16,4 @@ src/main/webapp/resources/jsLibs/*
 src/main/webapp/WEB-INF/pages/*.html
 /Resources/gmas-database.properties
 src/main/resources/*.properties
+target-grunt/

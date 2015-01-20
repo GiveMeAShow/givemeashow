@@ -73,11 +73,21 @@ module.exports = function (grunt) {
 				basePath: 'src/main/webapp/resources/js/angular',
 				baseUrl: 'resources/'
 			},
-			myTarget: {
+			includeAngular: {
 				files: {
 					'src/main/webapp/WEB-INF/pages/index.html'    : 'Templates/index.tlp.html',
 					'src/main/webapp/WEB-INF/pages/login.html'    : 'Templates/login.tlp.html'
 				}
+			}
+		},
+		includereplace : {
+			dist : {
+				options : {
+					prefix: "<!-- @@",
+					suffix: "-->"
+				},
+				src: ["src/main/webapp/WEB-INF/pages/admin/show/showList.jsp"],
+				dest: "src/main/webapp/WEB-INF/pages/admin/show/"
 			}
 		}
     });
@@ -85,9 +95,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-include-source');
+	grunt.loadNpmTasks('grunt-include-replace');
 
     grunt.registerTask('default', [
         'copy',
-		'includeSource'
+		'includeSource',
+		'includereplace'
     ]);
 };

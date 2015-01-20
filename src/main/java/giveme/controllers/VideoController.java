@@ -137,6 +137,7 @@ public class VideoController
 	public List<VideoFile> listVideos(@ModelAttribute("directoryId") final int directoryId)
 	{
 		LOGGER.info("received directory " + directoryId);
+		fileExplorer.listFolders();
 		return fileExplorer.listVideos(directoryId);
 	}
 

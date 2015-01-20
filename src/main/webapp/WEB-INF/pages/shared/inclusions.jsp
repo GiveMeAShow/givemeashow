@@ -10,9 +10,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="" rel="shortcut icon">
-<title>Regarder des vidéo en toute sécurite</title>
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/resources/css/offcanvas.css'/>" />
+<title>GiveMeAShow - Show List</title>
+
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/resources/css/bootstrap.css'/>" />
 <link rel="stylesheet" type="text/css"
@@ -41,8 +40,5 @@
 <link rel="stylesheet" type="text/css"
 	href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="<c:url value='/resources/js/jquery.jcarousel.min.js'/>"></script>
-<!--<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.1/video.js"></script>-->
-
 </head>
 </html>
