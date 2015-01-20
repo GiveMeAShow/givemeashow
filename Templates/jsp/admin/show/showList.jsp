@@ -9,7 +9,7 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
-	<div class="mainContent">
+	<div class="adminContent">
 	<div class="row">
 		<div class="col-md-8">
 			<c:forEach items="${showList}" var="show">

@@ -1,0 +1,10 @@
+{
+    "filesToWatch": "D:/GIT/givemeashow/src/main/webapp/D:/GIT/givemeashow/**",
+    "directoryToWatch": "D:/GIT/givemeashow/src/main/webapp/D:/GIT/givemeashow",
+    "projectRootPath": "D:/GIT/givemeashow",
+    "targetPath": "D:/GIT/givemeashow/target",
+    "sourceDirectory": "src/main/webapp",
+    "jsSourceDirectory": "D:/GIT/givemeashow",
+    "warTargetDirectory": "D:/GIT/givemeashow",
+    "filteredFiles": ["**/node_modules.tar"]
+}
