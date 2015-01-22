@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Component
-@Repository
+@Service
 public class FileExplorer
 {
 	private String							BASE_FOLDER;

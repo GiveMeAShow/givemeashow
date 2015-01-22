@@ -6,14 +6,12 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by couty on 21/03/14.
  */
-@Component
-@Repository
+@Service
 public class VideoServices
 {
 
