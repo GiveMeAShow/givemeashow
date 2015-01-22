@@ -9,7 +9,8 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
-	<div class="adminContent">
+	
+	<div class="mainContent">
 		<fieldset>
 			<div class="row">
 				<div class="col-md-12">

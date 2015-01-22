@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -27,7 +26,6 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
  * 
  */
 @Component
-@Repository
 public class AwsFilesAutoInserter
 {
 	private static final Logger	LOGGER	= Logger.getLogger(AwsFilesAutoInserter.class.getName());

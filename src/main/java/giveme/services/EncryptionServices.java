@@ -2,11 +2,9 @@ package giveme.services;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Component
-@Repository
+@Service
 public class EncryptionServices
 {
 	private final BCryptPasswordEncoder	encoder;

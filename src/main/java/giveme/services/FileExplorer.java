@@ -1,28 +1,22 @@
 package giveme.services;
 
 import giveme.services.models.VideoFile;
+import giveme.shared.GiveMeProperties;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Component
-@Repository
+@Service
 public class FileExplorer
 {
-	private static final String				SEPARATOR		= "-";
-	private final String					BASE_FOLDER;
-	private final FileNameExtensionFilter	videoFormatFilter;
+	private String							BASE_FOLDER;
 	private static final Logger				LOGGER			= Logger.getLogger(FileExplorer.class.getName());
 
 	private final Map<Integer, String>		folderIdToPath	= new HashMap<Integer, String>();
@@ -30,39 +24,28 @@ public class FileExplorer
 	private final Map<Integer, VideoFile>	foldersMap		= new HashMap<Integer, VideoFile>();
 
 	private Integer							folderCounter	= 0;
-
-	public FileExplorer()
-	{
-		Properties props = new Properties();
-		try
-		{
-			props.load(FileExplorer.class.getClassLoader().getResourceAsStream("givemeashow.properties"));
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		BASE_FOLDER = System.getProperty("catalina.base") + props.getProperty("baseFolder");
-		LOGGER.info("Base folder " + BASE_FOLDER);
-		videoFormatFilter = new FileNameExtensionFilter("video extension filter", props.getProperty("extensions"));
-		listFolders();
-	}
+	@Autowired
+	GiveMeProperties						giveMeProperties;
 
 	/**
 	 * Used at INIT to list all folders
 	 */
-	private void listFolders()
+	public void listFolders()
 	{
-		LOGGER.info("Initilazing folder list");
-		File baseFolder = new File(BASE_FOLDER);
+		if (folderIdToPath.isEmpty())
+		{
+			BASE_FOLDER = giveMeProperties.getBASE_FOLDER();
+			LOGGER.info("Initilazing folder list");
+			File baseFolder = new File(BASE_FOLDER);
 
-		if (baseFolder != null && baseFolder.listFiles() != null && baseFolder.listFiles().length != 0)
-		{
-			fillFolderList(baseFolder, folderCounter);
-		}
-		else
-		{
-			LOGGER.error("Base folder is empty");
+			if (baseFolder != null && baseFolder.listFiles() != null && baseFolder.listFiles().length != 0)
+			{
+				fillFolderList(baseFolder, folderCounter);
+			}
+			else
+			{
+				LOGGER.error("Base folder is empty");
+			}
 		}
 	}
 

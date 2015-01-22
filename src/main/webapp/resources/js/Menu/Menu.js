@@ -12,7 +12,7 @@ angular.module("givemeashow.menu", ['givemeashow.user.service'])
 			scope.videoSelected = true;
 			scope.accountSelected = false;
 			scope.selectedMenus = [];
-			
+			scope.isAdmin = CREDENTIAL.isAdmin;
 			angular.extend(scope, {
 				toggleCtrl : function()
 				{
@@ -59,6 +59,12 @@ angular.module("givemeashow.menu", ['givemeashow.user.service'])
 		sendEvent : function(event, menu) {
 			$rootScope.$broadcast(event, menu);
 		}
+	})
+	
+	$scope.$on(EVENTS.credentials, function(event, CREDENTIALS) {
+		$scope.isAdmin = CREDENTIALS.isAdmin;
+		console.log("set to ", $scope.isAdmin);
+		event.preventDefault();
 	})
 }]);
 

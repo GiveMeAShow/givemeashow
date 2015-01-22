@@ -16,10 +16,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Component
 @Repository
 public class SeasonDao extends IDao<Season>
 {
@@ -160,7 +158,12 @@ public class SeasonDao extends IDao<Season>
 	@Override
 	public Season createObjectFromRows(Map<String, Object> row)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Season season = new Season();
+		season.setIconUrl((String) row.get("ICON_URL"));
+		season.setId(Integer.parseInt(String.valueOf(row.get("ID"))));
+		season.setShowId(Integer.parseInt(String.valueOf(row.get("SHOW_ID"))));
+		season.setPosition(Integer.parseInt(String.valueOf(row.get("POSITION"))));
+		season.setName((String) row.get("NAME"));
+		return season;
 	}
 }

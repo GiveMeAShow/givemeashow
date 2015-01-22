@@ -80,7 +80,7 @@ public class ShowController
 	@RequestMapping(value = "/admin/show/new", method = RequestMethod.GET)
 	public ModelAndView adminNewShowPage()
 	{
-		ModelAndView mdv = new ModelAndView("/admin/show/createNew");
+		ModelAndView mdv = new ModelAndView("/admin/show/createNew.jsp");
 		mdv.addObject("command", new Show());
 		return mdv;
 	}

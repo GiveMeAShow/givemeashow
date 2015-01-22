@@ -12,20 +12,20 @@
 <link href="" rel="shortcut icon">
 
 <link rel="stylesheet" type="text/css"
-	href="<c:url value='/resources/jsLibs/bootstrap.css'/>" />
+	href="<c:url value='<!-- @@libresources-->bootstrap.css'/>" />
 <link rel="stylesheet" type="text/css"
-	href="<c:url value='/resources/jsLibs/includeFirst/jquery-ui.css'/>" />
+	href="<c:url value='<!-- @@includeFirst-->jquery-ui.css'/>" />
 <link rel="stylesheet" type="text/css"
-	href="<c:url value='/resources/css/style.css'/>" />
+	href="<c:url value='<!-- @@cssresources-->style.css'/>" />
 <link rel="stylesheet" type="text/css"
-	href="<c:url value='/resources/css/main.css'/>" />
+	href="<c:url value='<!-- @@cssresources-->main.css'/>" />
 	
 
     
-<script src="<c:url value='/resources/jsLibs/includeFirst/jquery.min.js'/>"></script>  
-<script src="<c:url value='/resources/jsLibs/includeFirst/jquery-ui.min.js'/>"></script>  
- <script src="<c:url value='/resources/jsLibs/bootstrap.js'/>"></script>
-<script src="<c:url value='/resources/js/javascript.js'/>"></script>  
+<script src="<c:url value='<!-- @@includeFirst-->jquery.min.js'/>"></script>  
+<script src="<c:url value='<!-- @@includeFirst-->jquery-ui.min.js'/>"></script>  
+ <script src="<c:url value='<!-- @@libresources-->bootstrap.js'/>"></script>
+<script src="<c:url value='<!-- @@jsresources-->javascript.js'/>"></script>  
 
 </head>
 </html>

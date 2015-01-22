@@ -61,6 +61,9 @@ public class VideoController
 	@Autowired
 	AwsFilesAutoInserter		awsAutoInsert;
 
+	@Autowired
+	public GiveMeProperties		giveMeAShowProperties;
+
 	public VideoController()
 	{
 		// TODO Auto-generated constructor stub
@@ -78,7 +81,7 @@ public class VideoController
 	public ModelAndView autoInsert()
 	{
 		final ModelAndView mdv = new ModelAndView();
-		if (GiveMeProperties.AWS)
+		if (giveMeAShowProperties.isAWS())
 		{
 			LOGGER.info("AWS auto");
 			awsAutoInsert.visitAll();
@@ -137,6 +140,7 @@ public class VideoController
 	public List<VideoFile> listVideos(@ModelAttribute("directoryId") final int directoryId)
 	{
 		LOGGER.info("received directory " + directoryId);
+		fileExplorer.listFolders();
 		return fileExplorer.listVideos(directoryId);
 	}
 

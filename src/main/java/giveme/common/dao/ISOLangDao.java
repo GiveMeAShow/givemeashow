@@ -11,10 +11,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Component
 @Repository
 public class ISOLangDao extends IDao<ISOLang>
 {
@@ -37,13 +35,13 @@ public class ISOLangDao extends IDao<ISOLang>
 			final String query = "insert into " + TABLE_NAME + " (lang_iso, lang_name, lang_flag_url) "
 					+ "VALUES (?, ?, ?)";
 
-			jdbcTemplate.update(new PreparedStatementCreator() {
+			jdbcTemplate.update(new PreparedStatementCreator()
+			{
 
-				public PreparedStatement createPreparedStatement(Connection con)
-						throws SQLException {
-					PreparedStatement ps = con.prepareStatement(query,
-							new String[] { "lang_iso", "lang_name",
-									"lang_flag_url" });
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException
+				{
+					PreparedStatement ps = con.prepareStatement(query, new String[]
+					{ "lang_iso", "lang_name", "lang_flag_url" });
 					ps.setString(1, toSave.getIso());
 					ps.setString(2, toSave.getLanguage());
 					ps.setString(3, toSave.getFlagUrl());

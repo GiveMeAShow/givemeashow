@@ -16,10 +16,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Component
 @Repository
 public class ShowDao extends IDao<Show>
 {
@@ -188,7 +186,10 @@ public class ShowDao extends IDao<Show>
 	@Override
 	public Show createObjectFromRows(Map<String, Object> row)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Show show = new Show();
+		show.setId(Integer.parseInt(String.valueOf(row.get("ID"))));
+		show.setIconUrl((String) row.get("ICON_URL"));
+		show.setName((String) row.get("NAME"));
+		return show;
 	}
 }

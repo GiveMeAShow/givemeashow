@@ -26,6 +26,7 @@ angular.module('givemeashow.user.myAccount', [ 'givemeashow.user.service'])
 
 .controller('MyAccountController', ['$scope', 'EVENTS', 'UserService', function($scope, EVENTS, UserService){
 	$scope.user = UserService.getMe();
+	console.log($scope.user);
 	$scope.friendsEmail = [];
 	
 	
