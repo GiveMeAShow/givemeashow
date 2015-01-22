@@ -25,7 +25,8 @@ angular.module('givemeashow', ['ngResource', 'ngRoute', 'ngAnimate', 'ngSanitize
 	'menu' : {
 		'toggle' : 'toggle'
 	},
-	'toaster' : 'toaster'
+	'toaster' : 'toaster',
+	'credentials' : 'credentials.loaded'
 })
 
 .constant('MENUS', {

@@ -13,16 +13,18 @@
 						<li id="aboutLI" ng-class="{active: aboutSelected}" ng-click="toggleAbout();"><a id="aboutMenu">About</a></li>
 						<li id="accountLi" ng-class="{active: accountSelected}" ng-click="toggleAccount();"><a id="accountMenu">My Account</a></li>
 						
-							<li class="dropdown" id="adminDropDown" ng-if="CREDENTIAL.isAdmin">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin</a>
+							<li class="dropdown" id="adminDropDown">
+								<a class="dropdown-toggle" data-toggle="dropdown">
+									Admin
+								</a>
 								<ul class="dropdown-menu">
-									<li id="adminShowListMenu"><a href="admin/show/list">Show List</li>
-									<li id="adminShowNewMenu"><a href="admin/show/new">New Show</a></li>
-									<li id="adminSeasonListMenu"><a href="admin/season/list"/>Season List</a></li>
-									<li id="adminSeasonNewMenu"><a href="admin/season/new">New Season</a></li>
-									<li id="adminVideoNewMenu"><a href="admin/video/new">New Video</a></li>
-									<li id="adminLangNewMenu"><a href="admin/lang/new">New Language</a></li>
-									<li id="adminPendingMenu"><a href="admin/video/pending">Pending</a></li>
+									<li id="adminShowListMenu"><a href="/admin/show/list">Show List</li>
+									<li id="adminShowNewMenu"><a href="/admin/show/new">New Show</a></li>
+									<li id="adminSeasonListMenu"><a href="/admin/season/list">Season List</a></li>
+									<li id="adminSeasonNewMenu"><a href="/admin/season/new">New Season</a></li>
+									<li id="adminVideoNewMenu"><a href="/admin/video/new">New Video</a></li>
+									<li id="adminLangNewMenu"><a href="/admin/lang/new">New Language</a></li>
+									<li id="adminPendingMenu"><a href="/admin/video/pending">Pending</a></li>
 								</ul>
 							</li>
 							

@@ -1,7 +1,7 @@
 angular.module('givemeashow.user.service', [])
 
-.factory('UserService', ['$resource', '$q', '$http', 'CREDENTIAL',
-						 function($resource, $q, $http, CREDENTIAL){
+.factory('UserService', ['$resource', '$q', '$http', '$rootScope', 'CREDENTIAL', 'EVENTS',
+						 function($resource, $q, $http, $rootScope, CREDENTIAL, EVENTS){
 	var User = $resource('webservices/user/:dest/:id', {id: '@id'},
 	{
 		getAuth      : {method: 'GET', params: {dest:''}},
@@ -20,6 +20,7 @@ angular.module('givemeashow.user.service', [])
 	User.getAuth({}, function(datas){
 		CREDENTIAL.isAdmin = datas.isAdmin;
 		CREDENTIAL.userName = datas.login;
+		$rootScope.$broadcast(EVENTS.credentials, CREDENTIAL);
 	});
 
     return User;
