@@ -13,7 +13,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 /**
  * This class is used to automatically update/insert shows, seasons and videos
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Component
-@Repository
 public class LocalFilesAutoInserter
 {
 	private static final Logger		LOGGER	= Logger.getLogger(LocalFilesAutoInserter.class.getName());
@@ -31,6 +29,9 @@ public class LocalFilesAutoInserter
 
 	@Autowired
 	public Inserter					inserter;
+
+	@Autowired
+	public GiveMeProperties			giveMeAShowProperties;
 
 	/**
 	 *
@@ -41,7 +42,8 @@ public class LocalFilesAutoInserter
 		try
 
 		{
-			videoFormatFilter = new FileNameExtensionFilter("video extension filter", GiveMeProperties.VIDEO_EXT);
+			videoFormatFilter = new FileNameExtensionFilter("video extension filter",
+					giveMeAShowProperties.getVIDEO_EXT());
 		} catch (Exception e)
 		{
 		} finally
@@ -59,7 +61,7 @@ public class LocalFilesAutoInserter
 	public void visitAll()
 	{
 		// Get shows names from the first folder level
-		final File baseFolder = new File(GiveMeProperties.BASE_FOLDER);
+		final File baseFolder = new File(giveMeAShowProperties.getBASE_FOLDER());
 		visitShowFolder(baseFolder);
 	}
 
@@ -139,7 +141,7 @@ public class LocalFilesAutoInserter
 
 	private void createUrlAndRelativePath(String relativePath, Video video)
 	{
-		String path = relativePath.replace(GiveMeProperties.BASE_FOLDER, "");
+		String path = relativePath.replace(giveMeAShowProperties.getBASE_FOLDER(), "");
 		String url = "/showsDB" + relativePath.replace(File.separatorChar, '/');
 		video.setUrl(url);
 		video.setRelativePath(path);

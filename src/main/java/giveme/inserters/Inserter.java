@@ -1,6 +1,5 @@
 package giveme.inserters;
 
-import static giveme.shared.GiveMeProperties.BANNER_SUFFIX;
 import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
@@ -9,16 +8,15 @@ import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.common.dao.VideoDao;
+import giveme.shared.GiveMeProperties;
 
 import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Component
-@Repository
 public class Inserter
 {
 	public Inserter()
@@ -40,12 +38,16 @@ public class Inserter
 	@Autowired
 	public ISOLangDao			languageDao;
 
+	@Autowired
+	public GiveMeProperties		giveMeAShowProperties;
+
 	public Show insertShow(String rawShowName)
 	{
 		final Show show = new Show();
 
 		show.setName(rawShowName.replaceAll("_", " "));
-		final String showPath = rawShowName + File.separator + rawShowName.toLowerCase() + BANNER_SUFFIX;
+		final String showPath = rawShowName + File.separator + rawShowName.toLowerCase()
+				+ giveMeAShowProperties.getBANNER_SUFFIX();
 		// TODO maybe a mistake there, replacing with \\.
 		show.setIconUrl(showPath.replace(File.separatorChar, '\\'));
 		final Show showInDb = showDao.findByName(show.getName());
@@ -133,7 +135,8 @@ public class Inserter
 	{
 		final Season season = new Season();
 		season.setName(seasonFolderName.replaceAll("_", " "));
-		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase() + BANNER_SUFFIX);
+		season.setIconUrl(seasonFolderName + File.separator + seasonFolderName.toLowerCase()
+				+ giveMeAShowProperties.getBANNER_SUFFIX());
 		season.setShowId(show.getId());
 		extractPosition(seasonFolderName, season);
 		if (seasonDao.findBy(season.getName(), season.getShowId()) != null)

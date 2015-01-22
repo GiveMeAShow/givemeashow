@@ -60,6 +60,9 @@ public class UserController
 	@Autowired
 	ISOLangDao						isoLangDao;
 
+	@Autowired
+	public GiveMeProperties			giveMeAShowProperties;
+
 	public UserController()
 	{
 		emailValidator = EmailValidator.getInstance();
@@ -173,7 +176,7 @@ public class UserController
 		LOGGER.info(emails);
 		JSONArray jsonEmails = new JSONArray(emails);
 		int invited = user.getInvited();
-		if (invited < GiveMeProperties.MAX_INVITE && !user.getIsAdmin())
+		if (invited < giveMeAShowProperties.getMAX_INVITE() && !user.getIsAdmin())
 		{
 			// TODO ERRH
 			return "YOU CAN'T";
@@ -187,7 +190,7 @@ public class UserController
 				LOGGER.info("Sending email :D");
 				try
 				{
-					if (user.getIsAdmin() || (!user.getIsAdmin() && invited < GiveMeProperties.MAX_INVITE))
+					if (user.getIsAdmin() || (!user.getIsAdmin() && invited < giveMeAShowProperties.getMAX_INVITE()))
 					{
 						String inviteCodeStr = mailServices.sendInvite(userName, email);
 						invited += 1;

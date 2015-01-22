@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,8 @@ public class FileExplorer
 	private final Map<Integer, VideoFile>	foldersMap		= new HashMap<Integer, VideoFile>();
 
 	private Integer							folderCounter	= 0;
+	@Autowired
+	GiveMeProperties						giveMeProperties;
 
 	/**
 	 * Used at INIT to list all folders
@@ -31,7 +34,7 @@ public class FileExplorer
 	{
 		if (folderIdToPath.isEmpty())
 		{
-			BASE_FOLDER = GiveMeProperties.BASE_FOLDER;
+			BASE_FOLDER = giveMeProperties.getBASE_FOLDER();
 			LOGGER.info("Initilazing folder list");
 			File baseFolder = new File(BASE_FOLDER);
 
