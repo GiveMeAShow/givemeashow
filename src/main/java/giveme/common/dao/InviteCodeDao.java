@@ -11,10 +11,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Component
 @Repository
 public class InviteCodeDao extends IDao<InviteCode>
 {
