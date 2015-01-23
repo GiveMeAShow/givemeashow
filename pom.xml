@@ -287,9 +287,9 @@
 				
 				<configuration>
 					<coberturaReports>
-						<list>
+						<values>
 							<value>${basedir}/target</value>
-						</list>
+						</values>
 					</coberturaReports>
 					<sourceEncoding>UTF-8</sourceEncoding>
 					<serviceName>travis-ci</serviceName>
