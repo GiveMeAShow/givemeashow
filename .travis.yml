@@ -10,4 +10,7 @@ before_install :
   - sudo npm install
   
 install :
-  - mvn install
+  - mvn install -DskipTests=true -B -V -q
+  
+test:
+- mvn test -B -q
