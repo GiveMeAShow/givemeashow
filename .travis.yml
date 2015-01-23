@@ -1,6 +1,6 @@
 language : java
 
-install :
+before_install :
   # JavaScript test requirements
   - sudo add-apt-repository -y ppa:chris-lea/node.js
   - sudo apt-get -y update
@@ -8,3 +8,6 @@ install :
   - sudo npm install -g grunt-cli
   - sudo npm install -g bower
   - sudo npm install
+  
+install :
+  - mvn install
