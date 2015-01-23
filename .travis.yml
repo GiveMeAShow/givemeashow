@@ -13,4 +13,7 @@ install :
   - mvn install -DskipTests=true -B -V -q
   
 test:
-- mvn test -B -q
+  - mvn test -B -q
+
+after_success:
+  - mvn clean cobertura:cobertura coveralls:report -DserviceName=Travis-CI -DserviceJobId=$TRAVIS_JOB_ID

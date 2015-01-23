@@ -208,7 +208,10 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
+			<!-- TODO : Check why I did that... -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.7</version>
@@ -236,11 +239,12 @@
 				</executions>
 			</plugin>
 
+			<!-- TODO : grunt mave, install npm, run bower and grunt before the war is packaged -->
 			<plugin>
 				<groupId>pl.allegro</groupId>
 				<artifactId>grunt-maven-plugin</artifactId>
 				<version>1.5.0</version>
-				
+
 				<configuration>
 					<!-- relative to src/main/webapp/, default: static -->
 					<gruntBuildDirectory>${basedir}</gruntBuildDirectory>
@@ -260,7 +264,35 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<format>xml</format>
+					<maxmem>256m</maxmem>
+					<!-- aggregated reports for multi-module projects -->
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<serviceName></serviceName>
+				</configuration>
+			</plugin>
 		</plugins>
+
+
+
+
 		<finalName>GiveMeAShow</finalName>
 	</build>
 
