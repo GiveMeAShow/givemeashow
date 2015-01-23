@@ -16,4 +16,4 @@ test:
   - mvn test -B -q
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report -DserviceName=Travis-CI -DserviceJobId=$TRAVIS_JOB_ID
+  - mvn clean cobertura:cobertura coveralls:report -DserviceName=Travis-CI -DserviceJobId=$TRAVIS_BUIILD_ID
