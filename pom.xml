@@ -246,15 +246,10 @@
 					<gruntBuildDirectory>${basedir}</gruntBuildDirectory>
 					<jsSourceDirectory>${basedir}</jsSourceDirectory>
 
-					<!-- example options usage to get verbose output in logs -->
-					<gruntOptions>
-						<gruntOption>--verbose</gruntOption>
-					</gruntOptions>
-
 				</configuration>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>create-resources</goal>
 							<goal>npm</goal>

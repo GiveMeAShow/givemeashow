@@ -98,9 +98,9 @@ module.exports = function(grunt) {
 							suffix : "-->",
 							includesDir : "Templates/jsp/",
 							globals : {
-								'libresources' :'/resources/jsLibs/',
+								'libresources' : '/resources/jsLibs/',
 								'includeFirst' : '/resources/jsLibs/includeFirst/',
-								'jsresources' : '/resources/js/',
+								'jsresources'  : '/resources/js/',
 								'cssresources' : '/resources/css/'
 							}
 						},
