@@ -178,6 +178,7 @@ public class UserDao extends IDao<User> implements UserDetailsService
 			{ userName }, new MyObjectMapper());
 		} catch (final Exception e)
 		{
+			e.printStackTrace();
 			return null;
 		}
 		return user;
