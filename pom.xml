@@ -288,7 +288,7 @@
 				<configuration>
 					<coberturaReports>
 						<coberturaReport>
-							${basedir}/target
+							${basedir}/target/coverage.xml
 						</coberturaReport>
 					</coberturaReports>
 					<sourceEncoding>UTF-8</sourceEncoding>
