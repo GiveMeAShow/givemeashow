@@ -210,33 +210,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<!-- here the phase you need -->
-						<phase>install</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>src/main/resources</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/Resources</directory>
-									<includes>
-										<include>gmas-database.properties</include>
-									</includes>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>pl.allegro</groupId>
 				<artifactId>grunt-maven-plugin</artifactId>
 				<version>1.5.0</version>
