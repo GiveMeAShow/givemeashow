@@ -296,27 +296,6 @@
 					<serviceJobId>${env.TRAVIS_JOB_ID} </serviceJobId>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<echo>Displaying required environment variables</echo>
-								<echo>[COMPUTERNAME] ${env.TRAVIS_JOB_ID}</echo>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
 		</plugins>
 		
 
