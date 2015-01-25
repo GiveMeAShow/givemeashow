@@ -18,3 +18,4 @@ src/main/webapp/WEB-INF/pages/*.html
 src/main/resources/*.properties
 target-grunt/
 grunt-maven.json
+/target

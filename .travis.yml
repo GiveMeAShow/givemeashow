@@ -13,4 +13,7 @@ install :
   - mvn install -DskipTests=true -B -V -q
   
 test:
-- mvn test -B -q
+  - mvn test -B -q
+
+after_success:
+  - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
