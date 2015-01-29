@@ -256,7 +256,7 @@
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>3.0.1</version>
-				
+
 				<configuration>
 					<coberturaReports>
 						<coberturaReport>
@@ -268,8 +268,21 @@
 					<serviceJobId>${env.TRAVIS_JOB_ID} </serviceJobId>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<username>${env.GU}</username>
+					<password>${env.GUP}</password>
+					<url>http://188.166.63.146:8080/manager/html</url>
+					<server>TomcatServer</server>
+					<path>/givemeashow</path>
+				</configuration>
+			</plugin>
 		</plugins>
-		
+
 
 		<finalName>GiveMeAShow</finalName>
 	</build>
