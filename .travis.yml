@@ -1,19 +1,18 @@
-language : java
-
-before_install :
-  # JavaScript test requirements
-  - sudo add-apt-repository -y ppa:chris-lea/node.js
-  - sudo apt-get -y update
-  - sudo apt-get -y install nodejs
-  - sudo npm install -g grunt-cli
-  - sudo npm install -g bower
-  - sudo npm install
-  
-install :
-  - mvn install -DskipTests=true -B -V -q
-  
+language: java
+before_install:
+- sudo add-apt-repository -y ppa:chris-lea/node.js
+- sudo apt-get -y update
+- sudo apt-get -y install nodejs
+- sudo npm install -g grunt-cli
+- sudo npm install -g bower
+- sudo npm install
+install:
+- mvn install -DskipTests=true -B -V -q
 test:
-  - mvn test -B -q
-
+- mvn test -B -q
 after_success:
-  - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
+- mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
+env:
+  global:
+  - secure: yplZ7TFn5V8amqdoYmtAR3X2In1KIgpfK/yBD/j7RmvTKmc1r3sdK/Mp31ctNuXcm0JE3lSMzw/x6q8W5ax3W2nqWdmnlyQyeHCnBH/PWskNO9eA7fBASMBNeunjs1uxmwVCddGK706blk4+lszwj/Xve901Hyn62v+ASPCzuhQ=
+  - secure: wod2iYWKVKxubk2pqaUysQ14St9WCSeg76GTCQW/yYr+QvAnRzE31uiXcIXzywy1rPycbuBIM2rE63xEC6NVGqZ/d5KCLqcaOqXrSQyF4B7xhD0T8rPLcLuMGDkCnMZtMU5+/m6SHOlDpaXC3MoYKsudlxPiBvbdVdyE+Z0YYbg=
