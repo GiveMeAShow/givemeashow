@@ -12,7 +12,8 @@ test:
 - mvn test -B -q
 after_success:
 - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
-- mvn tomcat7:deploy
+- echo $GU
+- mvn tomcat7:deploy -DGU=$GU -DGUP=$GUP
 env:
   global:
   - secure: VU3tR0HXEf85fyUmNSvjwnhpczeMYW9XE0wk65dwhwjoxoUTt+vhkypekRgCLuT2gxLiz4YQKo7G/bBLbNDr6TeQGS/ksVLDAeBa3WJBOVUZqPWz64+LK7I/0IYEGftBcQHuIajmRmDmJlIDEHId4iDDhn9Bn1VsucOe7yfaBoQ=
