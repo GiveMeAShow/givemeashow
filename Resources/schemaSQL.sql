@@ -26,22 +26,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `givemeashow`.`User_roles`
+-- Table `givemeashow`.`user_roles`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `givemeashow`.`User_roles` ;
+DROP TABLE IF EXISTS `givemeashow`.`user_roles` ;
 
-CREATE TABLE IF NOT EXISTS `givemeashow`.`User_roles` (
+CREATE TABLE IF NOT EXISTS `givemeashow`.`user_roles` (
   `user_role` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`user_role`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `givemeashow`.`User`
+-- Table `givemeashow`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `givemeashow`.`User` ;
+DROP TABLE IF EXISTS `givemeashow`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `givemeashow`.`User` (
+CREATE TABLE IF NOT EXISTS `givemeashow`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(32) NOT NULL,
   `is_admin` TINYINT(1) NOT NULL DEFAULT false,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `givemeashow`.`User` (
   PRIMARY KEY (`id`),
   INDEX `dontcare_idx` (`default_lang` ASC),
   INDEX `keytwo_idx` (`sub_default_lang` ASC),
-  INDEX `fk_User_User_roles1_idx` (`user_role` ASC),
+  INDEX `fk_user_user_roles1_idx` (`user_role` ASC),
   CONSTRAINT `dontcare`
     FOREIGN KEY (`default_lang`)
     REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
@@ -68,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `givemeashow`.`User` (
     REFERENCES `givemeashow`.`lang_iso` (`lang_iso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_User_roles1`
+  CONSTRAINT `fk_user_user_roles1`
     FOREIGN KEY (`user_role`)
-    REFERENCES `givemeashow`.`User_roles` (`user_role`)
+    REFERENCES `givemeashow`.`user_roles` (`user_role`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `givemeashow`.`feedback` (
   INDEX `fk_feedback_2_idx` (`kind` ASC),
   CONSTRAINT `fk_feedback_1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `givemeashow`.`User` (`id`)
+    REFERENCES `givemeashow`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_feedback_2`
@@ -260,10 +260,10 @@ CREATE TABLE IF NOT EXISTS `givemeashow`.`invite_code` (
   `varc` VARCHAR(32) NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`varc`),
-  INDEX `fk_invite_code_User1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_invite_code_User1`
+  INDEX `fk_invite_code_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_invite_code_user1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `givemeashow`.`User` (`id`)
+    REFERENCES `givemeashow`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
