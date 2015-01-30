@@ -210,81 +210,112 @@
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<plugins>
-			<!-- TODO : Check why I did that... -->
-			<plugin>
-				<groupId>pl.allegro</groupId>
-				<artifactId>grunt-maven-plugin</artifactId>
-				<version>1.5.0</version>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<outputDirectory>${basedir}/target</outputDirectory>
+						<format>xml</format>
+						<maxmem>256m</maxmem>
+						<!-- aggregated reports for multi-module projects -->
+						<aggregate>true</aggregate>
+					</configuration>
+				</plugin>
 
-				<configuration>
-					<!-- relative to src/main/webapp/, default: static -->
-					<gruntBuildDirectory>${basedir}</gruntBuildDirectory>
-					<jsSourceDirectory>${basedir}</jsSourceDirectory>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>0.0.20</version>
 
-				</configuration>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>create-resources</goal>
-							<goal>npm</goal>
-							<!-- or npm-offline if npm failure is not an option -->
-							<goal>bower</goal>
-							<goal>grunt</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+					<configuration>
+						<workingDirectory>${basedir}</workingDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+							<id>install node and npm</id>
+							<goals>
+								<goal>install-node-and-npm</goal>
+							</goals>
+							<!-- optional: default phase is "generate-resources" -->
+							<phase>generate-resources</phase>
+							<configuration>
+								<nodeVersion>v0.10.36</nodeVersion>
+								<npmVersion>1.4.14</npmVersion>
+							</configuration>
+						</execution>
 
+						<execution>
+							<id>npm install</id>
+							<goals>
+								<goal>npm</goal>
+							</goals>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<outputDirectory>${basedir}/target</outputDirectory>
-					<format>xml</format>
-					<maxmem>256m</maxmem>
-					<!-- aggregated reports for multi-module projects -->
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
+							<!-- optional: default phase is "generate-resources" -->
+							<phase>generate-resources</phase>
 
+							<configuration>
+								<!-- optional: The default argument is actually "install", so unless you need to run some other npm command, you 
+									can remove this whole <configuration> section. -->
+								<arguments>install</arguments>
+							</configuration>
+						</execution>
 
-			<plugin>
-				<groupId>org.eluder.coveralls</groupId>
-				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>3.0.1</version>
+						<execution>
+							<id>bower install</id>
+							<phase>generate-resources</phase>
 
-				<configuration>
-					<coberturaReports>
-						<coberturaReport>
-							${basedir}/target/coverage.xml
-						</coberturaReport>
-					</coberturaReports>
-					<sourceEncoding>UTF-8</sourceEncoding>
-					<serviceName>travis-ci</serviceName>
-					<serviceJobId>${env.TRAVIS_JOB_ID} </serviceJobId>
-				</configuration>
-			</plugin>
+							<goals>
+								<goal>bower</goal>
+							</goals>
 
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<username>${env.GU}</username>
-					<password>${env.GUP}</password>
-					<url>http://188.166.63.146:8080/manager/html</url>
-					<server>TomcatServer</server>
-					<path>/givemeashow</path>
-				</configuration>
-			</plugin>
-		</plugins>
+							<configuration>
 
+								<!-- optional: The default argument is actually "install", so unless you need to run some other bower command, you 
+									can remove this whole <configuration> section. -->
+								<arguments>install</arguments>
+							</configuration>
+						</execution>
+
+						<execution>
+							<id>grunt build</id>
+							<goals>
+								<goal>grunt</goal>
+							</goals>
+
+							<!-- optional: the default phase is "generate-resources" -->
+							<phase>generate-resources</phase>
+
+							<configuration>
+								<!-- optional: if not specified, it will run Grunt's default task (and you can remove this whole <configuration> 
+									section.) -->
+								<arguments>build</arguments>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eluder.coveralls</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>3.0.1</version>
+					<configuration>
+						<coberturaReports>
+							<coberturaReport>
+								${basedir}/target/coverage.xml
+							</coberturaReport>
+						</coberturaReports>
+						<sourceEncoding>UTF-8</sourceEncoding>
+						<serviceName>travis-ci</serviceName>
+						<serviceJobId>${env.TRAVIS_JOB_ID} </serviceJobId>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
 		<finalName>GiveMeAShow</finalName>
 	</build>
-
 </project>
