@@ -299,6 +299,30 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.3</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>copy</goal>
+							</goals>
+							<configuration>
+								<artifactItems>
+									<artifactItem>
+										<groupId>com.github.jsimone</groupId>
+										<artifactId>webapp-runner</artifactId>
+										<version>7.0.57.1</version>
+										<destFileName>webapp-runner.jar</destFileName>
+									</artifactItem>
+								</artifactItems>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
 					<groupId>org.eluder.coveralls</groupId>
 					<artifactId>coveralls-maven-plugin</artifactId>
 					<version>3.0.1</version>
@@ -313,6 +337,7 @@
 						<serviceJobId>${env.TRAVIS_JOB_ID} </serviceJobId>
 					</configuration>
 				</plugin>
+
 			</plugins>
 		</pluginManagement>
 
