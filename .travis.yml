@@ -1,20 +1,12 @@
 language: java
-env:
-  global:
-  - secure: VU3tR0HXEf85fyUmNSvjwnhpczeMYW9XE0wk65dwhwjoxoUTt+vhkypekRgCLuT2gxLiz4YQKo7G/bBLbNDr6TeQGS/ksVLDAeBa3WJBOVUZqPWz64+LK7I/0IYEGftBcQHuIajmRmDmJlIDEHId4iDDhn9Bn1VsucOe7yfaBoQ=
-  - secure: nFMrGuUs0zqA0WF/Ehxs5kx99MBH2dC5Dmpt1CKuZ8bWns5KM8qMezctBJi47idDzayLoFUJlR47QQbVtSzIVCy58OVfGFgUMdKjnE50AERD0U4+GY3m1n78t54u/prCwvj2+ixLBNCv6z5ZptjOBGpBb4eS1GdNJxAl46FOGxA=
-before_install:
-- sudo add-apt-repository -y ppa:chris-lea/node.js
-- sudo apt-get -y update
-- sudo apt-get -y install nodejs
-- sudo npm install -g grunt-cli
-- sudo npm install -g bower
-- sudo npm install
+
 install:
 - mvn install -DskipTests=true -B -V -q
 test:
 - mvn test -B -q
 after_success:
 - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
-- echo $gu
-- mvn tomcat7:deploy -DGU=$gu -DGUP=$gup
+env:
+  global:
+  - secure: yplZ7TFn5V8amqdoYmtAR3X2In1KIgpfK/yBD/j7RmvTKmc1r3sdK/Mp31ctNuXcm0JE3lSMzw/x6q8W5ax3W2nqWdmnlyQyeHCnBH/PWskNO9eA7fBASMBNeunjs1uxmwVCddGK706blk4+lszwj/Xve901Hyn62v+ASPCzuhQ=
+  - secure: wod2iYWKVKxubk2pqaUysQ14St9WCSeg76GTCQW/yYr+QvAnRzE31uiXcIXzywy1rPycbuBIM2rE63xEC6NVGqZ/d5KCLqcaOqXrSQyF4B7xhD0T8rPLcLuMGDkCnMZtMU5+/m6SHOlDpaXC3MoYKsudlxPiBvbdVdyE+Z0YYbg=
