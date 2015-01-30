@@ -1,1 +1,1 @@
-web: java -jar /tmp/build/target/dependency/webapp-runner.jar /tmp/build/target/*.war
+web: java -jar target/webapp-runner.jar target/*.war
