@@ -4,6 +4,7 @@
 	<groupId>com.cap</groupId>
 	<artifactId>GiveMeAShow</artifactId>
 	<packaging>war</packaging>
+
 	<version>0.1</version>
 	<name>GiveMeAShow Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -210,6 +211,37 @@
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+
+				<executions>
+					<execution>
+						<id>maven-runner plugin</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>7.0.57.1</version>
+									<destFileName>webapp-runner.jar</destFileName>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -282,41 +314,18 @@
 
 						<execution>
 							<id>grunt build</id>
+							<phase>generate-resources</phase>
+
 							<goals>
 								<goal>grunt</goal>
 							</goals>
 
 							<!-- optional: the default phase is "generate-resources" -->
-							<phase>generate-resources</phase>
 
 							<configuration>
 								<!-- optional: if not specified, it will run Grunt's default task (and you can remove this whole <configuration> 
 									section.) -->
 								<arguments>build</arguments>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.3</version>
-					<executions>
-						<execution>
-							<phase>package</phase>
-							<goals>
-								<goal>copy</goal>
-							</goals>
-							<configuration>
-								<artifactItems>
-									<artifactItem>
-										<groupId>com.github.jsimone</groupId>
-										<artifactId>webapp-runner</artifactId>
-										<version>7.0.57.1</version>
-										<destFileName>webapp-runner.jar</destFileName>
-									</artifactItem>
-								</artifactItems>
 							</configuration>
 						</execution>
 					</executions>
