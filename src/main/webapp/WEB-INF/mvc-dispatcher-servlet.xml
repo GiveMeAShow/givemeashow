@@ -27,8 +27,8 @@
 	<bean id="environmentVariablesConfiguration"
 		class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
 		<property name="algorithm" value="PBEWithMD5AndDES" />
-		<property name="passwordEnvName" value="CAS_PBE_PASSWORD" />
-		<!-- <property name="password" value="i_love_shows_in_gmas_01" /> -->
+		<!-- <property name="passwordEnvName" value="CAS_PBE_PASSWORD" /> -->
+		<property name="password" value="i_love_shows_in_gmas_01" />
 	</bean>
 
 	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
