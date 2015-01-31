@@ -318,11 +318,9 @@
 						<execution>
 							<id>bower install</id>
 							<phase>generate-resources</phase>
-
 							<goals>
 								<goal>bower</goal>
 							</goals>
-
 							<configuration>
 
 								<!-- optional: The default argument is actually "install", so unless 
