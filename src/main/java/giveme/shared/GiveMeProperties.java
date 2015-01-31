@@ -1,8 +1,5 @@
 package giveme.shared;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -15,51 +12,29 @@ import org.springframework.stereotype.Repository;
 public class GiveMeProperties
 {
 	@Value("${baseFolder")
-	private String				BASE_FOLDER;
-
-	private final Properties	props;
+	private String	BASE_FOLDER;
 
 	@Value("${max_invite}")
-	private int					MAX_INVITE;
+	private int		MAX_INVITE;
 
 	@Value("${extensions}")
-	private String				VIDEO_EXT;
+	private String	VIDEO_EXT;
 
 	@Value("${bannerSuffixe}")
-	private String				BANNER_SUFFIX;
+	private String	BANNER_SUFFIX;
 
 	@Value("${accessKey}")
-	private String				AWKEY;
+	private String	AWKEY;
 
 	@Value("${accessSecret}")
-	private String				AWSECRET;
+	private String	AWSECRET;
 
 	@Value("${aws}")
-	private boolean				AWS;
+	private boolean	AWS;
 
 	public GiveMeProperties()
 	{
-		props = new Properties();
-		try
-		{
-			loadBaseFolder();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 
-	}
-
-	private void loadBaseFolder() throws IOException
-	{
-		// props.load(GiveMeProperties.class.getClassLoader().getResourceAsStream("givemeashow.properties"));
-		// BASE_FOLDER = props.getProperty("baseFolder");
-		// MAX_INVITE = Integer.parseInt(props.getProperty("max_invite"));
-		// BANNER_SUFFIX = props.getProperty("bannerSuffixe");
-		// VIDEO_EXT = props.getProperty("extensions");
-		// AWKEY = props.getProperty("accessKey");
-		// AWSECRET = props.getProperty("accessSecret");
-		// AWS = Boolean.parseBoolean(props.getProperty("aws"));
 	}
 
 	public String getBASE_FOLDER()
