@@ -8,6 +8,7 @@
 	<version>0.1</version>
 	<name>GiveMeAShow Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	
 
 	<properties>
 		<spring.version>3.2.4.RELEASE</spring.version>
@@ -249,7 +250,7 @@
 									<artifactId>webapp-runner</artifactId>
 									<version>7.0.57.1</version>
 									<destFileName>webapp-runner.jar</destFileName>
-									<outputDirectory>${project.build.directory}</outputDirectory>
+									<outputDirectory>${/app/target/tomcat.8080/webapps}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
