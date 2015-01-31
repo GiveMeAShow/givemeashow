@@ -231,7 +231,7 @@
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.10</version>
@@ -250,13 +250,13 @@
 									<artifactId>webapp-runner</artifactId>
 									<version>7.0.57.1</version>
 									<destFileName>webapp-runner.jar</destFileName>
-									<outputDirectory>${/app/target/tomcat.8080/webapps}</outputDirectory>
+									<outputDirectory>${project.build.directory}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 
 		</plugins>
 
