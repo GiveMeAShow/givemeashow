@@ -17,7 +17,7 @@ angular.module('givemeashow.user.service', [])
 	})
 
 	/* Store user and role information for the whole app */
-	User.getAuth({}, function(datas){
+	User.getAuth({}, function(datas){ 
 		CREDENTIAL.isAdmin = datas.isAdmin;
 		CREDENTIAL.userName = datas.login;
 		$rootScope.$broadcast(EVENTS.credentials, CREDENTIAL);
