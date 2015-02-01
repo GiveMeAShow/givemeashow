@@ -1,13 +1,20 @@
 language: java
-before_script:
-- git clone https://username:password@github.com/username/repository.git
+before_install:
+- sudo add-apt-repository -y ppa:chris-lea/node.js
+- sudo apt-get -y update
+- sudo apt-get -y install nodejs
+- sudo npm install -g grunt-cli
+- sudo npm install -g bower
+- sudo npm install
 install:
 - mvn install -DskipTests=true -B -V -q
 test:
 - mvn test -B -q
 after_success:
 - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
+- mvn tomcat7:redeploy -DTU=$TU -DTU_PW=$TU_PW
+
 env:
   global:
-  - secure: yplZ7TFn5V8amqdoYmtAR3X2In1KIgpfK/yBD/j7RmvTKmc1r3sdK/Mp31ctNuXcm0JE3lSMzw/x6q8W5ax3W2nqWdmnlyQyeHCnBH/PWskNO9eA7fBASMBNeunjs1uxmwVCddGK706blk4+lszwj/Xve901Hyn62v+ASPCzuhQ=
-  - secure: wod2iYWKVKxubk2pqaUysQ14St9WCSeg76GTCQW/yYr+QvAnRzE31uiXcIXzywy1rPycbuBIM2rE63xEC6NVGqZ/d5KCLqcaOqXrSQyF4B7xhD0T8rPLcLuMGDkCnMZtMU5+/m6SHOlDpaXC3MoYKsudlxPiBvbdVdyE+Z0YYbg=
+  - secure: U6F/5b4Sr0QA5HhAM+CEc6YtxytzrMPn5TQlzp0WnyHOEMSD1Fd3y7PLE5vbUtdnDsYxt7FWF4czo49wRgMmlKaHLD4o049pcaeTNBdHbmDSxBZQthJBnJ9773ZaimFzH23JQdKh0vHufy2t9GbsRZqpRt5Z3VGeCZK4y1jTtmY=
+  - secure: AAhQkvFr0T/M2BwwqCL3HS4OVVmBtSNfJi6jp/0t+ksJudVW/TPYxAU1/GMqcvD3GkMgAMbPQKJWjLDsOywsIllFp7eU7lVZYqsamFU0csNnBmGuwuUilmxUWEbcK+R7eqjIMMU4NgrnQIGrP7YJBBembd/lWl8G6uoTcYIwCCY=
