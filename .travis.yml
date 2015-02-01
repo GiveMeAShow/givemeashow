@@ -1,5 +1,6 @@
 language: java
-
+before_script:
+- git clone https://username:password@github.com/username/repository.git
 install:
 - mvn install -DskipTests=true -B -V -q
 test:

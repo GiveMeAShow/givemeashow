@@ -8,6 +8,7 @@
 	<version>0.1</version>
 	<name>GiveMeAShow Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	
 
 	<properties>
 		<spring.version>3.2.4.RELEASE</spring.version>
@@ -22,6 +23,16 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+
+		<!-- JASYPT -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+
+		<!-- AMAZON -->
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
@@ -101,6 +112,13 @@
 			<artifactId>jasypt</artifactId>
 			<version>1.9.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-spring31</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
 
 
 
@@ -213,7 +231,7 @@
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
@@ -245,7 +263,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -318,11 +336,9 @@
 						<execution>
 							<id>bower install</id>
 							<phase>generate-resources</phase>
-
 							<goals>
 								<goal>bower</goal>
 							</goals>
-
 							<configuration>
 
 								<!-- optional: The default argument is actually "install", so unless 
