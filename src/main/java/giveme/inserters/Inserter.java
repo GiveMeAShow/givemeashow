@@ -104,6 +104,7 @@ public class Inserter
 		{
 			videoDao.save(video);
 		}
+		// TODO intelligent update(path, url ..)
 		return video;
 	}
 
@@ -139,12 +140,6 @@ public class Inserter
 				+ giveMeAShowProperties.getBANNER_SUFFIX());
 		season.setShowId(show.getId());
 		extractPosition(seasonFolderName, season);
-		if (seasonDao.findBy(season.getName(), season.getShowId()) != null)
-		{
-			seasonDao.update(season);
-		}
-		LOGGER.info("Season \"" + season.getName() + "\" from show " + season.getShowId() + " at pos "
-				+ season.getPosition() + " with icon " + season.getIconUrl() + " has been updated");
 
 		return season;
 	}
@@ -192,6 +187,26 @@ public class Inserter
 	{
 		final int position = Integer.parseInt("" + videoFileName.subSequence(0, videoFileName.indexOf('-')));
 		video.setPosition(position);
+	}
+
+	public void setShowDao(ShowDao showDao)
+	{
+		this.showDao = showDao;
+	}
+
+	public void setSeasonDao(SeasonDao seasonDao)
+	{
+		this.seasonDao = seasonDao;
+	}
+
+	public void setVideoDao(VideoDao videoDao)
+	{
+		this.videoDao = videoDao;
+	}
+
+	public void setGiveMeAShowProperties(GiveMeProperties giveMeAShowProperties)
+	{
+		this.giveMeAShowProperties = giveMeAShowProperties;
 	}
 
 }

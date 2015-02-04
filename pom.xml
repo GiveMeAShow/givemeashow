@@ -119,6 +119,19 @@
 			<version>1.9.2</version>
 		</dependency>
 
+		<!-- ASSERTJ -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		<!-- MOCKITO -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+		</dependency>
+
 
 
 
@@ -241,7 +254,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
@@ -249,8 +262,7 @@
 				<configuration>
 					<username>${env.TU}</username>
 					<password>${env.TU_PW}</password>
-					<!-- <username>admin</username>
-					<password>password</password> -->
+					<!-- <username>admin</username> <password>password</password> -->
 					<url>http://188.166.50.122/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/GiveMeAShow</path>
