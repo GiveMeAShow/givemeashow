@@ -122,7 +122,7 @@ public class InserterTest
 		Show show = createShow("Show 1");
 		Season season = createSeason("Season 1");
 		String relativePath = "path/to/video.mp4";
-		String videoFileName = "07-Les_étoiles_dans_le_ciel.mp4";
+		String videoFileName = "07-Les_etoiles_dans_le_ciel.mp4";
 		String videoUrl = "url.mp4";
 		ISOLang lang = createIsoLang();
 		Video video = new Video();
@@ -134,7 +134,7 @@ public class InserterTest
 		inserter.setVideoDao(videoDao);
 		inserter.insertVideo(show, season, videoFileName, lang, relativePath, video);
 
-		assertThat(video.getTitle()).isEqualTo("Les étoiles dans le ciel");
+		assertThat(video.getTitle()).isEqualTo("Les etoiles dans le ciel");
 		assertThat(video.getPosition()).isEqualTo(7);
 		assertThat(video.getIsTransition()).isEqualTo(false);
 		assertThat(video.getEndIntroTime()).isEqualTo(0.0);
