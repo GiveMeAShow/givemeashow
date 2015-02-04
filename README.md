@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GiveMeAShow/givemeashow.svg?branch=master)](https://travis-ci.org/GiveMeAShow/givemeashow) [![Coverage Status](https://coveralls.io/repos/GiveMeAShow/givemeashow/badge.svg?branch=%2337)](https://coveralls.io/r/GiveMeAShow/givemeashow?branch=%2337)  
+[![Build Status](https://travis-ci.org/GiveMeAShow/givemeashow.svg?branch=master)](https://travis-ci.org/GiveMeAShow/givemeashow) [![Coverage Status](https://coveralls.io/repos/GiveMeAShow/givemeashow/badge.svg?branch=master)](https://coveralls.io/r/GiveMeAShow/givemeashow?branch=master)
 
 GiveMeAShow  
 V2 with database/tomcat/angularJS/bower etc...
