@@ -12,6 +12,8 @@ import giveme.common.dao.VideoDao;
 import giveme.inserters.Inserter;
 import giveme.shared.GiveMeProperties;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +115,8 @@ public class InserterTest
 		assertThat(season.getId()).as("season id").isEqualTo(3);
 		assertThat(season.getPosition()).as("season position").isEqualTo(1);
 		assertThat(season.getShowId()).as("show is").isEqualTo(show.getId());
-		assertThat(season.getIconUrl()).as("season iconurl").isEqualTo("Season_1\\season_1_banner.png");
+		assertThat(season.getIconUrl()).as("season iconurl").isEqualTo(
+				"Season_1" + File.separator + "season_1_banner.png");
 	}
 
 	@Test
