@@ -5,6 +5,7 @@ import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
 import giveme.common.beans.Video;
+import giveme.common.dao.ISOLangDao;
 import giveme.common.dao.SeasonDao;
 import giveme.common.dao.ShowDao;
 import giveme.common.dao.VideoDao;
@@ -84,6 +85,16 @@ public class InserterTest
 		Season season = inserter.insertSeason(show, seasonFolderName);
 
 		assertThat(season.getName()).as("season name").isEqualTo("Season 1");
+	}
+
+	@Test
+	public void insertLangTest()
+	{
+		String langIsoString = "fr";
+		ISOLangDao isoLangDao = Mockito.mock(ISOLangDao.class);
+		inserter.setLanguageDao(isoLangDao);
+		ISOLang lang = inserter.insertLang(langIsoString);
+		assertThat(lang.getLanguage()).isEqualTo(langIsoString);
 	}
 
 	@Test

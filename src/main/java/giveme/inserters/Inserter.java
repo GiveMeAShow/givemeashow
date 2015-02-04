@@ -121,7 +121,6 @@ public class Inserter
 			isoLang = new ISOLang();
 			isoLang.setLanguage(langIsoString);
 			languageDao.save(isoLang);
-			LOGGER.error("LANG NOT FOUND");
 		}
 		return isoLang;
 	}
@@ -207,6 +206,11 @@ public class Inserter
 	public void setGiveMeAShowProperties(GiveMeProperties giveMeAShowProperties)
 	{
 		this.giveMeAShowProperties = giveMeAShowProperties;
+	}
+
+	public void setLanguageDao(ISOLangDao languageDao)
+	{
+		this.languageDao = languageDao;
 	}
 
 }
