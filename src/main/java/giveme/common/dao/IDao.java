@@ -22,7 +22,7 @@ public abstract class IDao<T>
 
 	public List<T> list()
 	{
-		LOGGER.info("Listing shows.");
+		LOGGER.info("Listing " + TABLE_NAME);
 
 		final List<T> resultList = new ArrayList<T>();
 		final String query = "select * from " + TABLE_NAME;
