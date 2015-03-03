@@ -29,6 +29,9 @@ public class GiveMeProperties
 	@Value("${accessSecret}")
 	private String	AWSECRET;
 
+	@Value("${cloudUrl}")
+	private String	cloudUrl;
+
 	@Value("${aws}")
 	private boolean	AWS;
 
@@ -107,4 +110,11 @@ public class GiveMeProperties
 		AWS = aWS;
 	}
 
+	public String getCloudUrl() {
+		return cloudUrl;
+	}
+
+	public void setCloudUrl(String cloudUrl) {
+		this.cloudUrl = cloudUrl;
+	}
 }

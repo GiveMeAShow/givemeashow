@@ -4,10 +4,9 @@ import giveme.common.beans.ISOLang;
 import giveme.common.beans.Season;
 import giveme.common.beans.Show;
 import giveme.common.beans.Video;
+import giveme.shared.GiveMeProperties;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -31,25 +30,29 @@ public class AwsFilesAutoInserter
 	private static final Logger	LOGGER	= Logger.getLogger(AwsFilesAutoInserter.class.getName());
 
 	AmazonS3Client				s3;
+
 	private static String		cloudUrl;
+
 	@Autowired
 	Inserter					inserter;
 
+	@Autowired
+	public GiveMeProperties		giveMeAShowProperties;
+
 	public AwsFilesAutoInserter()
 	{
-		Properties props = new Properties();
-		try
-		{
-			props.load(AwsFilesAutoInserter.class.getClassLoader().getResourceAsStream("givemeashow.properties"));
-			String AWKEY = props.getProperty("accessKey");
-			String AWSECRET = props.getProperty("accessSecret");
-			cloudUrl = props.getProperty("cloudUrl");
+		if (giveMeAShowProperties != null) {
+			cloudUrl = giveMeAShowProperties.getCloudUrl();
+			String AWKEY = giveMeAShowProperties.getAWKEY();
+			String AWSECRET = giveMeAShowProperties.getAWSECRET();
 			s3 = new AmazonS3Client(new BasicAWSCredentials(AWKEY, AWSECRET));
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {
+			LOGGER.error("Properties class not instanciated !");
 		}
+	}
+
+	public void setS3(AmazonS3Client s3) {
+		this.s3 = s3;
 	}
 
 	private Show	show	= new Show();
@@ -86,8 +89,6 @@ public class AwsFilesAutoInserter
 				video = inserter.insertVideo(show, season, paths[3], isoLang, key, video);
 				// LOGGER.info(paths[3] + " is a video");
 				break;
-			default:
-				break;
 			}
 		}
 	}
@@ -103,5 +104,14 @@ public class AwsFilesAutoInserter
 	{
 		ObjectListing listing = s3.listObjects("givemeashowvideos");
 		visitAll(listing.getObjectSummaries());
+	}
+
+	public void setGiveMeAShowProperties(GiveMeProperties givemeAShowProperties) {
+		this.giveMeAShowProperties = givemeAShowProperties;
+
+	}
+
+	public void setInserter(Inserter inserter) {
+		this.inserter = inserter;
 	}
 }
