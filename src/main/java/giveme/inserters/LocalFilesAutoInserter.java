@@ -7,6 +7,8 @@ import giveme.common.beans.Video;
 import giveme.shared.GiveMeProperties;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -38,16 +40,34 @@ public class LocalFilesAutoInserter
 	 */
 	public LocalFilesAutoInserter()
 	{
+		init();
+	}
 
+	public FileNameExtensionFilter getVideoFormatFilter() {
+		return videoFormatFilter;
+	}
+
+	public void setVideoFormatFilter(FileNameExtensionFilter videoFormatFilter) {
+		this.videoFormatFilter = videoFormatFilter;
+	}
+
+
+	public void setInserter(Inserter inserter) {
+		this.inserter = inserter;
+	}
+
+	public void setGiveMeAShowProperties(GiveMeProperties giveMeAShowProperties) {
+		this.giveMeAShowProperties = giveMeAShowProperties;
+	}
+
+	public void init() {
 		try
-
 		{
 			videoFormatFilter = new FileNameExtensionFilter("video extension filter",
 					giveMeAShowProperties.getVIDEO_EXT());
 		} catch (Exception e)
 		{
-		} finally
-		{
+			LOGGER.warn("GiveMeASho properties not available !");
 			videoFormatFilter = new FileNameExtensionFilter("video extension filter", "mp4");
 		}
 	}
@@ -68,29 +88,34 @@ public class LocalFilesAutoInserter
 	/**
 	 * 
 	 * @param baseFolder
+	 * @return 
 	 */
-	private void visitShowFolder(final File baseFolder)
+	public ArrayList<Show> visitShowFolder(final File baseFolder)
 	{
+		ArrayList<Show> showList = new ArrayList<Show>();
 		if (baseFolder != null && baseFolder.listFiles() != null && baseFolder.listFiles().length != 0)
 		{
 			for (final File showFolder : baseFolder.listFiles())
 			{
 				final String showFolderName = showFolder.getName();
 				final Show show = inserter.insertShow(showFolderName);
-
 				// now add the seasons if they don't exist
 				visitSeasonFolder(showFolder, show);
+				showList.add(show);
 			}
 		}
+		return showList;
 	}
 
 	/**
 	 * 
 	 * @param showFolder
 	 * @param show
+	 * @return 
 	 */
-	private void visitSeasonFolder(final File showFolder, final Show show)
+	public List<Season> visitSeasonFolder(final File showFolder, final Show show)
 	{
+		List<Season> seasonList = new ArrayList<Season>();
 		if (showFolder.listFiles() != null && showFolder.listFiles().length != 0)
 		{
 			for (final File seasonFolder : showFolder.listFiles())
@@ -104,9 +129,11 @@ public class LocalFilesAutoInserter
 					// Add all the files in a season folder. It can be a video,
 					// a subtitle or a poster
 					visitVideoFolder(show, seasonFolder, season);
+					seasonList.add(season);
 				}
 			}
 		}
+		return seasonList;
 	}
 
 	/**
@@ -115,7 +142,8 @@ public class LocalFilesAutoInserter
 	 * @param seasonFolder
 	 * @param season
 	 */
-	private void visitVideoFolder(final Show show, final File seasonFolder, final Season season)
+	public void visitVideoFolder(final Show show, final File seasonFolder,
+			final Season season)
 	{
 		if (seasonFolder.listFiles() != null && seasonFolder.listFiles().length != 0)
 		{
@@ -139,10 +167,10 @@ public class LocalFilesAutoInserter
 		}
 	}
 
-	private void createUrlAndRelativePath(String relativePath, Video video)
+	public void createUrlAndRelativePath(String relativePath, Video video)
 	{
 		String path = relativePath.replace(giveMeAShowProperties.getBASE_FOLDER(), "");
-		String url = "/showsDB" + relativePath.replace(File.separatorChar, '/');
+		String url = "/showsDB/" + relativePath.replace(File.separatorChar, '/');
 		video.setUrl(url);
 		video.setRelativePath(path);
 		LOGGER.info("video relative path : " + relativePath);
