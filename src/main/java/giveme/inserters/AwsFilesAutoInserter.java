@@ -41,6 +41,10 @@ public class AwsFilesAutoInserter
 
 	public AwsFilesAutoInserter()
 	{
+		init();
+	}
+
+	public void init() {
 		if (giveMeAShowProperties != null) {
 			cloudUrl = giveMeAShowProperties.getCloudUrl();
 			String AWKEY = giveMeAShowProperties.getAWKEY();
@@ -64,7 +68,6 @@ public class AwsFilesAutoInserter
 		for (S3ObjectSummary awsObjSum : objectSummaries)
 		{
 			String key = awsObjSum.getKey();
-			String name = key;
 			String[] paths = StringUtils.split(key, "/");
 
 			int level = paths.length;
@@ -114,4 +117,9 @@ public class AwsFilesAutoInserter
 	public void setInserter(Inserter inserter) {
 		this.inserter = inserter;
 	}
+
+	public AmazonS3Client getS3() {
+		return s3;
+	}
+
 }

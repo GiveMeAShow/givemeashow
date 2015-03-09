@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -38,10 +39,13 @@ public class AwsFilesAutoInserterTest {
 		sum3.setKey("/American_dad/Season_1/fr");
 		S3ObjectSummary sum4 = new S3ObjectSummary();
 		sum4.setKey("/American_dad/Season_1/fr/video10.webm");
+		S3ObjectSummary tooDeep = new S3ObjectSummary();
+		tooDeep.setKey("/American_dad/Season_1/fr/video10/file.webm");
 		objctSummaries.add(sum1);
 		objctSummaries.add(sum2);
 		objctSummaries.add(sum3);
 		objctSummaries.add(sum4);
+		objctSummaries.add(tooDeep);
 		Mockito.doReturn(objctSummaries).when(returnListMock)
 				.getObjectSummaries();
 	
@@ -61,5 +65,21 @@ public class AwsFilesAutoInserterTest {
 		awsFilesAutoInserter.setGiveMeAShowProperties(givemeAShowProperties);
 		awsFilesAutoInserter.visitAll();
 		LOGGER.info("visit");
+	}
+
+	@Test
+	public void initWithPropertiesToNull() {
+		AwsFilesAutoInserter awsAuto = new AwsFilesAutoInserter();
+		Assertions.assertThat(awsAuto.getS3()).isNull();
+	}
+
+	@Test
+	public void initWithProperties() {
+		GiveMeProperties givemeAShowProperties = new GiveMeProperties();
+		givemeAShowProperties.setAWKEY("key");
+		givemeAShowProperties.setAWSECRET("secret");
+		awsFilesAutoInserter.setGiveMeAShowProperties(givemeAShowProperties);
+		awsFilesAutoInserter.init();
+		Assertions.assertThat(awsFilesAutoInserter.getS3()).isNotNull();
 	}
 }
