@@ -12,7 +12,8 @@ test:
 - mvn test -B -q
 after_success:
 - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID cobertura:cobertura coveralls:report
-- mvn tomcat7:redeploy -DTU=$TU -DTU_PW=$TU_PW
+- if [[ $TRAVIS_BRANCH == 'master' ]]; then mvn tomcat7:redeploy -DTU=$TU -DTU_PW=$TU_PW; fi
+
 
 env:
   global:
