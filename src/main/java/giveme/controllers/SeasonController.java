@@ -120,13 +120,14 @@ public class SeasonController
 	 * @return to a new page
 	 */
 	@RequestMapping(value = "/admin/season/addSeason", method = RequestMethod.POST)
-	public ModelAndView adminInsertNewShow(
+	public ModelAndView adminInsertNewSeason(
 			@ModelAttribute("seasonAndShowName") final SeasonAndShowName seasonAndShowName)
 	{
 		ModelAndView mdv = new ModelAndView("/admin/season/validInsertion.jsp");
 		Show show = showDao.findByName(seasonAndShowName.getShowName());
 		seasonAndShowName.getSeason().setShowId(show.getId());
 		seasonDao.save(seasonAndShowName.getSeason());
+		mdv.addObject("season", seasonAndShowName.getSeason());
 		return mdv;
 	}
 
@@ -139,4 +140,10 @@ public class SeasonController
 
 		return mdv;
 	}
+
+	public List<Integer> getPositionChooser()
+	{
+		return positionChooser;
+	}
+
 }
