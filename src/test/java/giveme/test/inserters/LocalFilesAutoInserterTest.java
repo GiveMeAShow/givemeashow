@@ -104,8 +104,10 @@ public class LocalFilesAutoInserterTest {
 
 		List<Show> showList = mockAuto.visitShowFolder(testFolder);
 
-		assertThat(showList.size()).isEqualTo(2);
-		assertThat(showList.get(0).getIconUrl()).isEqualTo("iconurl.png");
+		LOGGER.info("Found " + showList.size() + " shows");
+		assertThat(showList.size()).as("Number of shows").isEqualTo(2);
+		assertThat(showList.get(0).getIconUrl()).as("First show icon url")
+				.isEqualTo("iconurl.png");
 	}
 
 	@Test
@@ -139,6 +141,7 @@ public class LocalFilesAutoInserterTest {
 		File showFolder = new File("src/test/resources/localTest/");
 
 		List<Season> seasonList = mockAuto.visitSeasonFolder(showFolder, show);
+		LOGGER.info("Found " + seasonList.size() + " seasons");
 		assertThat(seasonList.size()).isEqualTo(2);
 		assertThat(seasonList.get(0).getName()).isEqualTo("Season 1");
 	}
