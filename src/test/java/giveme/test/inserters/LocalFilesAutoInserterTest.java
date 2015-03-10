@@ -88,6 +88,13 @@ public class LocalFilesAutoInserterTest {
 		Mockito.doCallRealMethod().when(mockAuto)
 				.setInserter(Mockito.any(Inserter.class));
 		Inserter inserter = Mockito.mock(Inserter.class);
+		
+		Show show = new Show();
+		show.setIconUrl("iconurl.png");
+		show.setName("Show 1");
+		show.setId(1);
+		
+		Mockito.doReturn(show).when(inserter).insertShow(Mockito.anyString());
 		mockAuto.setInserter(inserter);
 
 		GiveMeProperties props = new GiveMeProperties();
@@ -98,6 +105,7 @@ public class LocalFilesAutoInserterTest {
 		List<Show> showList = mockAuto.visitShowFolder(testFolder);
 
 		assertThat(showList.size()).isEqualTo(2);
+		assertThat(showList.get(0).getIconUrl()).isEqualTo("iconurl.png");
 	}
 
 	@Test
@@ -110,16 +118,29 @@ public class LocalFilesAutoInserterTest {
 		Mockito.doCallRealMethod().when(mockAuto)
 				.setInserter(Mockito.any(Inserter.class));
 		Inserter inserter = Mockito.mock(Inserter.class);
-		mockAuto.setInserter(inserter);
+
 
 		Show show = new Show();
 		show.setIconUrl("url/icon.png");
 		show.setId(1);
 		show.setName("Show 1");
+
+		Season season = new Season();
+		season.setIconUrl("iconUrl.png");
+		season.setId(2);
+		season.setName("Season 1");
+		season.setPosition(1);
+		season.setShowId(show.getId());
+
+		Mockito.doReturn(season).when(inserter)
+				.insertSeason(Mockito.any(Show.class), Mockito.anyString());
+		mockAuto.setInserter(inserter);
+
 		File showFolder = new File("src/test/resources/localTest/");
 
 		List<Season> seasonList = mockAuto.visitSeasonFolder(showFolder, show);
 		assertThat(seasonList.size()).isEqualTo(2);
+		assertThat(seasonList.get(0).getName()).isEqualTo("Season 1");
 	}
 
 	@Test
