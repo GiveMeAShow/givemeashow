@@ -33,6 +33,7 @@ public class LangController
 		LOGGER.info("saving lang " + lang.getLanguage());
 		ModelAndView mdv = new ModelAndView("/admin/lang/validInsertion.jsp");
 		langDao.save(lang);
+		mdv.addObject("lang", lang);
 		return mdv;
 	}
 }
