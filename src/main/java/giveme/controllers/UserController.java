@@ -159,8 +159,9 @@ public class UserController
 
 		LOGGER.info(emails);
 		JSONArray jsonEmails = new JSONArray(emails);
+
 		int invited = user.getInvited();
-		if (invited < giveMeAShowProperties.getMAX_INVITE() && !user.getIsAdmin())
+		if (invited >= giveMeAShowProperties.getMAX_INVITE() && !user.getIsAdmin())
 		{
 			// TODO ERRH
 			return "YOU CAN'T";
@@ -252,7 +253,7 @@ public class UserController
 		if (user.getLogin() == null || user.getEmail() == null || user.getPassword() == null)
 		{
 			redirectView.addObject("error", "Please fill all the fields");
-			return new ModelAndView("redirect:/");
+			return redirectView;
 		}
 		if (userDao.findByLogin(user.getLogin()) == null)
 		{
@@ -357,10 +358,5 @@ public class UserController
 				userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		LOGGER.info("user " + user.getLogin() + " logged in.");
-	}
-
-	public EmailValidator getEmailValidator()
-	{
-		return emailValidator;
 	}
 }
