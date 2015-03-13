@@ -70,22 +70,6 @@ public class UserController
 
 	/**
 	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-	public ModelAndView adminPage()
-	{
-
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security Custom Login Form");
-		model.addObject("message", "This is protected page!");
-		model.setViewName("admin");
-
-		return model;
-	}
-
-	/**
-	 * 
 	 * @param resonse
 	 * @param request
 	 * @return
@@ -373,5 +357,10 @@ public class UserController
 				userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		LOGGER.info("user " + user.getLogin() + " logged in.");
+	}
+
+	public EmailValidator getEmailValidator()
+	{
+		return emailValidator;
 	}
 }
