@@ -80,7 +80,7 @@ public class VideoController
 	@RequestMapping(value = "/admin/video/auto", method = RequestMethod.GET)
 	public ModelAndView autoInsert()
 	{
-		final ModelAndView mdv = new ModelAndView();
+		final ModelAndView mdv = new ModelAndView("redirect:/admin/video/pending");
 		if (giveMeAShowProperties.isAWS())
 		{
 			LOGGER.info("AWS auto");
