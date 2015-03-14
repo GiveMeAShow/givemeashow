@@ -359,4 +359,5 @@ public class UserController
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		LOGGER.info("user " + user.getLogin() + " logged in.");
 	}
+
 }

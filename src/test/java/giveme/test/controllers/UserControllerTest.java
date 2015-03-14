@@ -24,6 +24,8 @@ import giveme.shared.GiveMeProperties;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +37,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,6 +50,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -327,6 +332,30 @@ public class UserControllerTest
 	 * @throws Exception
 	 */
 	@Test
+	public void inviteMailExceptionTest() throws Exception
+	{
+		Mockito.doReturn(50).when(givemeAShowProperties).getMAX_INVITE();
+		injectMockPrincipal();
+
+		JSONArray emailsJson = new JSONArray();
+		emailsJson.put("coucou@coucou.com");
+		emailsJson.put("testmail@mailTest.com");
+		giveme.common.beans.User user = new giveme.common.beans.User(1, "zda", false, "xaxaxaxa", "isx27", 0, true,
+				true, "zdwa@sdzw.com");
+		Mockito.doThrow(new MailSendException("mail exception")).when(mailService)
+				.sendInvite(Mockito.anyString(), Mockito.anyString());
+
+		MvcResult result = mockMvc.perform(
+				post("/webservices/user/invite").accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON).content(emailsJson.toString())).andReturn();
+	}
+
+	/**
+	 * Test failure when max invite is reached
+	 * 
+	 * @throws Exception
+	 */
+	@Test
 	public void inviteMaxSecondReachedTest() throws Exception
 	{
 		Mockito.doReturn(1).when(givemeAShowProperties).getMAX_INVITE();
@@ -460,11 +489,7 @@ public class UserControllerTest
 		ISOLang french = new ISOLang();
 		french.setIso("fr");
 		Mockito.doReturn(french).when(isoLangDao).findByISO(Mockito.anyString());
-		giveme.common.beans.User user = new giveme.common.beans.User();
-		user.setId(1);
-		user.setLogin("username");
-		user.setEmail("user@user.com");
-		user.setPassword("password");
+		giveme.common.beans.User user = createBeanUser();
 		Mockito.doReturn(null).when(userDao).findByLogin(Mockito.anyString());
 		Mockito.doReturn(null).when(userDao).findByEmail(Mockito.anyString());
 		MockUserLogin(user);
@@ -490,11 +515,7 @@ public class UserControllerTest
 		ISOLang french = new ISOLang();
 		french.setIso("fr");
 		Mockito.doReturn(french).when(isoLangDao).findByISO(Mockito.anyString());
-		giveme.common.beans.User user = new giveme.common.beans.User();
-		user.setId(1);
-		user.setLogin("username");
-		user.setEmail("user@user.com");
-		user.setPassword("password");
+		giveme.common.beans.User user = createBeanUser();
 		Mockito.doReturn(null).when(userDao).findByLogin(Mockito.anyString());
 		Mockito.doReturn("hey !").when(userDao).findByEmail(Mockito.anyString());
 		MockUserLogin(user);
@@ -521,11 +542,7 @@ public class UserControllerTest
 		ISOLang french = new ISOLang();
 		french.setIso("fr");
 		Mockito.doReturn(french).when(isoLangDao).findByISO(Mockito.anyString());
-		giveme.common.beans.User user = new giveme.common.beans.User();
-		user.setId(1);
-		user.setLogin("username");
-		user.setEmail("user@user.com");
-		user.setPassword("password");
+		giveme.common.beans.User user = createBeanUser();
 		Mockito.doReturn(new giveme.common.beans.User()).when(userDao).findByLogin(Mockito.anyString());
 		Mockito.doReturn("hey !").when(userDao).findByEmail(Mockito.anyString());
 		MockUserLogin(user);
@@ -535,6 +552,46 @@ public class UserControllerTest
 						.param("email", user.getEmail()).param("password", user.getPassword()))
 				.andExpect(view().name("redirect:/"))
 				.andExpect(model().attribute("error", is("This login is already in use")));
+	}
+
+	/**
+	 * Mail already in use
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void registerPOSTWithInviteCodeMailExceptionTest() throws Exception
+	{
+
+		InviteCode inviteCode = new InviteCode();
+		inviteCode.setInviteCode("code");
+		inviteCode.setUserId(1);
+		Mockito.doReturn(inviteCode).when(inviteCodeDao).find(Mockito.anyString());
+		ISOLang french = new ISOLang();
+		french.setIso("fr");
+		Mockito.doReturn(french).when(isoLangDao).findByISO(Mockito.anyString());
+		Mockito.doReturn("pass").when(encryptionServices).encryptPassword(Mockito.anyString());
+		giveme.common.beans.User user = createBeanUser();
+		Mockito.doThrow(new MailSendException("exception")).when(mailService)
+				.sendWelcome(Mockito.any(giveme.common.beans.User.class));
+		;
+		Mockito.doReturn(null).when(userDao).findByLogin(Mockito.anyString());
+		Mockito.doReturn(null).when(userDao).findByEmail(Mockito.anyString());
+
+		mockMvc.perform(
+				post("/register/{inviteCode}", "code").param("id", "1").param("login", user.getLogin())
+						.param("email", user.getEmail()).param("password", user.getPassword())).andExpect(
+				view().name("redirect:/"));
+	}
+
+	private giveme.common.beans.User createBeanUser()
+	{
+		giveme.common.beans.User user = new giveme.common.beans.User();
+		user.setId(1);
+		user.setLogin("username");
+		user.setEmail("user@user.com");
+		user.setPassword("password");
+		return user;
 	}
 
 	/**
@@ -591,6 +648,28 @@ public class UserControllerTest
 		mockMvc.perform(
 				post("/login").param("id", "1").param("login", user.getLogin()).param("email", user.getEmail())
 						.param("password", user.getPassword())).andExpect(view().name("redirect:/"));
+	}
+
+	/**
+	 * Logout success
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void logOutTest() throws Exception
+	{
+		Collection<SimpleGrantedAuthority> grantedAuths = new ArrayList<SimpleGrantedAuthority>();
+		SimpleGrantedAuthority grantedAuth = new SimpleGrantedAuthority("ROLE_USER");
+		grantedAuths.add(grantedAuth);
+
+		User springUser = new User("zda", "isx27", grantedAuths);
+		Authentication auth = new UsernamePasswordAuthenticationToken(springUser, null);
+
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		MockUserLogin(createBeanUser());
+		MvcResult result = mockMvc.perform(get("/logout")).andExpect(view().name("redirect:/login")).andReturn();
+		HttpSession session = result.getRequest().getSession();
+		assertThat(session.isNew()).isTrue();
 	}
 
 	private void MockUserLogin(giveme.common.beans.User user)
