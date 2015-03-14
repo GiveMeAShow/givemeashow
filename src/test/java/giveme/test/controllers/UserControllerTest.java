@@ -335,7 +335,7 @@ public class UserControllerTest
 		JSONArray emailsJson = new JSONArray();
 		emailsJson.put("coucou@coucou.com");
 		emailsJson.put("testmail@mailTest.com");
-		emailsJson.put("ç");
+		emailsJson.put("vvssd");
 		giveme.common.beans.User user = new giveme.common.beans.User(1, "zda", false, "xaxaxaxa", "isx27", 0, true,
 				true, "zdwa@sdzw.com");
 
@@ -382,7 +382,7 @@ public class UserControllerTest
 		JSONArray emailsJson = new JSONArray();
 		emailsJson.put("coucou@coucou.com");
 		emailsJson.put("testmail@mailTest.com");
-		emailsJson.put("ç");
+		emailsJson.put("azezazzesdq");
 		giveme.common.beans.User user = new giveme.common.beans.User(1, "zda", false, "xaxaxaxa", "isx27", 0, true,
 				true, "zdwa@sdzw.com");
 
