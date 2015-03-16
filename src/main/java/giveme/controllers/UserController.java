@@ -70,22 +70,6 @@ public class UserController
 
 	/**
 	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-	public ModelAndView adminPage()
-	{
-
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security Custom Login Form");
-		model.addObject("message", "This is protected page!");
-		model.setViewName("admin");
-
-		return model;
-	}
-
-	/**
-	 * 
 	 * @param resonse
 	 * @param request
 	 * @return
@@ -175,8 +159,9 @@ public class UserController
 
 		LOGGER.info(emails);
 		JSONArray jsonEmails = new JSONArray(emails);
+
 		int invited = user.getInvited();
-		if (invited < giveMeAShowProperties.getMAX_INVITE() && !user.getIsAdmin())
+		if (invited >= giveMeAShowProperties.getMAX_INVITE() && !user.getIsAdmin())
 		{
 			// TODO ERRH
 			return "YOU CAN'T";
@@ -268,7 +253,7 @@ public class UserController
 		if (user.getLogin() == null || user.getEmail() == null || user.getPassword() == null)
 		{
 			redirectView.addObject("error", "Please fill all the fields");
-			return new ModelAndView("redirect:/");
+			return redirectView;
 		}
 		if (userDao.findByLogin(user.getLogin()) == null)
 		{
@@ -374,4 +359,5 @@ public class UserController
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		LOGGER.info("user " + user.getLogin() + " logged in.");
 	}
+
 }

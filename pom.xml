@@ -201,7 +201,6 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>3.1.4.RELEASE</version>
 		</dependency>
-
 		<!-- Mysql Driver -->
 		<dependency>
 			<groupId>mysql</groupId>

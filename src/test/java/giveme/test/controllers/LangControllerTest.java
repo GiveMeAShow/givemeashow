@@ -26,15 +26,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:gmas-db-cfg-test.xml",
-		"file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
+@ContextConfiguration(locations =
+{ "classpath:gmas-db-cfg-test.xml", "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 @WebAppConfiguration
-public class LangControllerTest {
+public class LangControllerTest
+{
 
-	private static final Logger	LOGGER	= Logger.getLogger(LangControllerTest.class
-												.getName());
+	private static final Logger	LOGGER	= Logger.getLogger(LangControllerTest.class.getName());
 
-	//	public MockMvc	mockMvc;
+	// public MockMvc mockMvc;
 	@InjectMocks
 	LangController				langController;
 
@@ -44,7 +44,8 @@ public class LangControllerTest {
 	private MockMvc				mockMvc;
 
 	@Before
-	public void init() {
+	public void init()
+	{
 		isoLangDaoMock = mock(ISOLangDao.class);
 		initMocks(this);
 
@@ -52,32 +53,26 @@ public class LangControllerTest {
 	}
 
 	@Test
-	public void showNewPageTest() throws Exception {
-		mockMvc.perform(get("/admin/lang/new"))
-				.andExpect(view().name("/admin/lang/createNew.jsp"))
+	public void showNewPageTest() throws Exception
+	{
+		mockMvc.perform(get("/admin/lang/new")).andExpect(view().name("/admin/lang/createNew.jsp"))
 				.andExpect(model().attribute("lang", notNullValue()));
 	}
 
 	@Test
-	public void insertTest() throws Exception {
+	public void insertTest() throws Exception
+	{
 		ISOLang lang = new ISOLang();
 		lang.setFlagUrl("url/icon.png");
 		lang.setIso("fr");
 		lang.setLanguage("French");
 
 		mockMvc.perform(
-				post("/admin/lang/insert")
-						.param("language", "French").param("iso", "fr")
-						.param("flagUrl", "urlicon.png"))
-				.andExpect(view().name("/admin/lang/validInsertion.jsp"))
+				post("/admin/lang/insert").param("language", "French").param("iso", "fr")
+						.param("flagUrl", "urlicon.png")).andExpect(view().name("/admin/lang/validInsertion.jsp"))
 				.andExpect(model().attribute("lang", notNullValue()))
-				.andExpect(
-						model().attribute("lang",
-								hasProperty("language", is("French"))))
-				.andExpect(
-						model().attribute("lang", hasProperty("iso", is("FR"))))
-				.andExpect(
-						model().attribute("lang",
-								hasProperty("flagUrl", is("urlicon.png"))));
+				.andExpect(model().attribute("lang", hasProperty("language", is("French"))))
+				.andExpect(model().attribute("lang", hasProperty("iso", is("FR"))))
+				.andExpect(model().attribute("lang", hasProperty("flagUrl", is("urlicon.png"))));
 	}
 }

@@ -62,7 +62,7 @@ public class ShowController
 	@RequestMapping(value = "/admin/show/{showId}", method = RequestMethod.GET)
 	public ModelAndView showShow(@ModelAttribute("showId") int showId)
 	{
-		ModelAndView mdv = new ModelAndView("admin/show/showShow");
+		ModelAndView mdv = new ModelAndView("/admin/show/showShow.jsp");
 		mdv.addObject("show", showDao.findById(showId));
 
 		List<Season> seasonList = seasonDao.listByShowId(showId);
@@ -94,7 +94,7 @@ public class ShowController
 	@RequestMapping(value = "/admin/show/addShow", method = RequestMethod.POST)
 	public ModelAndView adminInsertNewShow(@ModelAttribute("command") final Show show)
 	{
-		ModelAndView mdv = new ModelAndView("/admin/show/validInsertion");
+		ModelAndView mdv = new ModelAndView("/admin/show/validInsertion.jsp");
 		showDao.save(show);
 		mdv.addObject("show", show);
 		return mdv;
