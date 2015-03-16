@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -175,11 +176,10 @@ public class ShowControllerTest {
 
 	@Test
 	public void insertNewShowAdminTest() throws Exception {
-		//		mockMvc.perform(
-		//				post("/admin/show/new").param("id", "1")
-		//						.param("name", "Show 1")
-		//						.param("iconUrl", "url"))
-		//				.andExpect(view().name("/admin/show/createNew.jsp"))
-		//				.andExpect(model().attribute("command", notNullValue()));
+		mockMvc.perform(
+				post("/admin/show/addShow").param("id", "1")
+						.param("name", "Show 1").param("iconUrl", "url"))
+				.andExpect(view().name("/admin/show/validInsertion.jsp"))
+				.andExpect(model().attribute("show", notNullValue()));
 	}
 }

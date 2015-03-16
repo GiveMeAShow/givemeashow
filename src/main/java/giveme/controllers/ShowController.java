@@ -94,7 +94,7 @@ public class ShowController
 	@RequestMapping(value = "/admin/show/addShow", method = RequestMethod.POST)
 	public ModelAndView adminInsertNewShow(@ModelAttribute("command") final Show show)
 	{
-		ModelAndView mdv = new ModelAndView("/admin/show/validInsertion");
+		ModelAndView mdv = new ModelAndView("/admin/show/validInsertion.jsp");
 		showDao.save(show);
 		mdv.addObject("show", show);
 		return mdv;
