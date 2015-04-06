@@ -9,7 +9,7 @@
 </head>
 <body>
 	<jsp:include page="../../shared/navBar.jsp"></jsp:include>
-	<div class="adminContent">
+	<div class="mainContent">
 		<div class="list col-md-12">
 				<div class="row">
 					<button type="button" class="col-md-1 btn btn-default leftHeader">ID</button>
