@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by couty on 21/03/14.
  */
 @Component
-@Repository
 public class GiveMeProperties
 {
 	@Value("${baseFolder")

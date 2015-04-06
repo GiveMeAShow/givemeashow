@@ -39,6 +39,7 @@ public class AwsFilesAutoInserter
 	@Autowired
 	public GiveMeProperties		giveMeAShowProperties;
 
+
 	public AwsFilesAutoInserter()
 	{
 		init();
@@ -46,13 +47,17 @@ public class AwsFilesAutoInserter
 
 	public void init() {
 		if (giveMeAShowProperties != null) {
-			cloudUrl = giveMeAShowProperties.getCloudUrl();
-			String AWKEY = giveMeAShowProperties.getAWKEY();
-			String AWSECRET = giveMeAShowProperties.getAWSECRET();
-			s3 = new AmazonS3Client(new BasicAWSCredentials(AWKEY, AWSECRET));
+			initS3();
 		} else {
 			LOGGER.error("Properties class not instanciated !");
 		}
+	}
+
+	private void initS3() {
+		cloudUrl = giveMeAShowProperties.getCloudUrl();
+		String AWKEY = giveMeAShowProperties.getAWKEY();
+		String AWSECRET = giveMeAShowProperties.getAWSECRET();
+		s3 = new AmazonS3Client(new BasicAWSCredentials(AWKEY, AWSECRET));
 	}
 
 	public void setS3(AmazonS3Client s3) {
@@ -105,6 +110,10 @@ public class AwsFilesAutoInserter
 
 	public void visitAll()
 	{
+		if (s3 == null)
+		{
+			initS3();
+		}
 		ObjectListing listing = s3.listObjects("givemeashowvideos");
 		visitAll(listing.getObjectSummaries());
 	}
