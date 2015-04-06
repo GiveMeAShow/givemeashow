@@ -77,7 +77,7 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		
 		changeToNextVideo: function ()
 		{
-			var url = $scope.playList[index].url;
+			var url = $scope.playList[$scope.index].url;
 			$scope.setVideo(url);
 			$scope.index = $scope.index + 1;
 		},
@@ -96,7 +96,7 @@ angular.module("givemeashow.video.player", ['givemeashow.video.service'])
 		
 		changeToPreviousVideo: function()
 		{
-			var url = $scope.playList[index].url;
+			var url = $scope.playList[$scope.index].url;
 			console.log(url);
 			$scope.setVideo(url);
 			$scope.decreaseIndex();
