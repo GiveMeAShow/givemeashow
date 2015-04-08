@@ -8,6 +8,6 @@ V2 with database/tomcat/angularJS/bower etc...
 [Timeline](http://visjs.org/#example)  
 [Coveralls](https://coveralls.io)  
 [Piwik](http://fr.piwik.org/)  
-
+[UserSnap - feebacks/bugs](https://usersnap.com/)
 
 [docker-tomcat](https://github.com/tutumcloud/tutum-docker-tomcat)
